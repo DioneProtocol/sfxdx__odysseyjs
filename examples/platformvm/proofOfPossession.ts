@@ -1,7 +1,7 @@
 // using https://www.npmjs.com/package/@noble/bls12-381
 // import { getPublicKey, sign, verify } from "@noble/bls12-381"
 import "dotenv/config"
-import { Avalanche, Buffer } from "../../src"
+import { Odyssey, Buffer } from "../../src"
 import {
   KeyChain,
   KeyPair,
@@ -25,8 +25,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
 const keychain: KeyChain = pchain.keyChain()
 const keypair: KeyPair = keychain.makeKey()
 

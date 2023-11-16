@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   EVMAPI,
   EVMOutput,
@@ -23,8 +23,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const cchain: EVMAPI = avalanche.CChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const cchain: EVMAPI = odyssey.CChain()
 const bintools: BinTools = BinTools.getInstance()
 const cKeychain: KeyChain = cchain.keyChain()
 const cHexAddress: string = "0xeA6B543A9E625C04745EcA3D7a74D74B733b8C15"

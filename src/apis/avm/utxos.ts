@@ -429,7 +429,7 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
    * @param initialState The [[InitialStates]] that represent the intial state of a created asset
    * @param name String for the descriptive name of the asset
    * @param symbol String for the ticker symbol of the asset
-   * @param denomination Optional number for the denomination which is 10^D. D must be >= 0 and <= 32. Ex: $1 AVAX = 10^9 $nAVAX
+   * @param denomination Optional number for the denomination which is 10^D. D must be >= 0 and <= 32. Ex: $1 DIONE = 10^9 $nDIONE
    * @param mintOutputs Optional. Array of [[SECPMintOutput]]s to be included in the transaction. These outputs can be spent to mint more tokens.
    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
    * @param feeAssetID Optional. The assetID of the fees being burned.
@@ -1012,9 +1012,9 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
    * @param networkID The number representing NetworkID of the node
    * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
    * @param amount The amount being exported as a {@link https://github.com/indutny/bn.js/|BN}
-   * @param avaxAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for AVAX
-   * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who recieves the AVAX
-   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who owns the AVAX
+   * @param dioneAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for DIONE
+   * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who recieves the DIONE
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who owns the DIONE
    * @param changeAddresses Optional. The addresses that can spend the change remaining from the spent UTXOs.
    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
    * @param destinationChain Optional. A {@link https://github.com/feross/buffer|Buffer} for the chainid where to send the asset.

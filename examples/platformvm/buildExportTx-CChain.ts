@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN, Buffer } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import { AVMAPI, KeyChain as AVMKeyChain } from "../../src/apis/avm"
 import {
   PlatformVMAPI,
@@ -19,9 +19,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
+const pchain: PlatformVMAPI = odyssey.PChain()
 const xKeychain: AVMKeyChain = xchain.keyChain()
 const pKeychain: KeyChain = pchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -34,7 +34,7 @@ const fee: BN = pchain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildExportTx to export AVAX from the P-Chain to the C-Chain"
+  "PlatformVM utility method buildExportTx to export DIONE from the P-Chain to the C-Chain"
 )
 const asOf: BN = UnixNow()
 

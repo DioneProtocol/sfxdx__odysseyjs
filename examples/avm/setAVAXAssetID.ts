@@ -1,18 +1,18 @@
 import "dotenv/config"
-import { Avalanche, Buffer } from "../../src"
+import { Odyssey, Buffer } from "../../src"
 import { AVMAPI } from "../../src/apis/avm"
 
 const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
 
 const main = async (): Promise<any> => {
   const newAssetID: string = "11FtAxv"
-  xchain.setAVAXAssetID(newAssetID)
-  const assetID: Buffer = await xchain.getAVAXAssetID()
+  xchain.setDIONEAssetID(newAssetID)
+  const assetID: Buffer = await xchain.getDIONEAssetID()
   console.log(assetID)
 }
 

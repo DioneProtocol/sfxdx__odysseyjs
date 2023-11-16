@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN, Buffer } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import { AVMAPI, KeyChain, UTXOSet, UnsignedTx, Tx } from "../../src/apis/avm"
 import {
   GetBalanceResponse,
@@ -17,15 +17,15 @@ const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
 const xBlockchainID: string = Defaults.network[networkID].X.blockchainID
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avalanche: Avalanche = new Avalanche(
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
+const odyssey: Odyssey = new Odyssey(
   ip,
   port,
   protocol,
   networkID,
   xBlockchainID
 )
-const xchain: AVMAPI = avalanche.XChain()
+const xchain: AVMAPI = odyssey.XChain()
 const xKeychain: KeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
@@ -33,13 +33,13 @@ const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const asOf: BN = UnixNow()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("AVM utility method buildBaseTx to send AVAX")
+const memo: Buffer = Buffer.from("AVM utility method buildBaseTx to send DIONE")
 const fee: BN = xchain.getDefaultTxFee()
 
 const main = async (): Promise<any> => {
   const getBalanceResponse: GetBalanceResponse = await xchain.getBalance(
     xAddressStrings[0],
-    avaxAssetID
+    dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const avmUTXOResponse: GetUTXOsResponse = await xchain.getUTXOs(
@@ -51,7 +51,7 @@ const main = async (): Promise<any> => {
   const unsignedTx: UnsignedTx = await xchain.buildBaseTx(
     utxoSet,
     amount,
-    avaxAssetID,
+    dioneAssetID,
     xAddressStrings,
     xAddressStrings,
     xAddressStrings,

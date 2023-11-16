@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN, Buffer } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import {
   AVMAPI,
   KeyChain as AVMKeyChain,
@@ -20,9 +20,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
-const cchain: EVMAPI = avalanche.CChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
+const cchain: EVMAPI = odyssey.CChain()
 const xKeychain: AVMKeyChain = xchain.keyChain()
 const cKeychain: EVMKeyChain = cchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`

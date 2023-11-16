@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module AvalancheCore
+ * @module OdysseyCore
  */
 import axios, {
   AxiosRequestConfig,
@@ -14,16 +14,16 @@ import { fetchAdapter } from "./utils/fetchadapter"
 import { getPreferredHRP } from "./utils/helperfunctions"
 
 /**
- * AvalancheCore is middleware for interacting with Avalanche node RPC APIs.
+ * OdysseyCore is middleware for interacting with Odyssey node RPC APIs.
  *
  * Example usage:
  * ```js
- * let avalanche = new AvalancheCore("127.0.0.1", 9650, "https")
+ * let odyssey = new OdysseyCore("127.0.0.1", 9650, "https")
  * ```
  *
  *
  */
-export default class AvalancheCore {
+export default class OdysseyCore {
   protected networkID: number = 0
   protected hrp: string = ""
   protected protocol: string
@@ -38,13 +38,13 @@ export default class AvalancheCore {
   protected apis: { [k: string]: APIBase } = {}
 
   /**
-   * Sets the address and port of the main Avalanche Client.
+   * Sets the address and port of the main Odyssey Client.
    *
-   * @param host The hostname to resolve to reach the Avalanche Client RPC APIs.
-   * @param port The port to resolve to reach the Avalanche Client RPC APIs.
+   * @param host The hostname to resolve to reach the Odyssey Client RPC APIs.
+   * @param port The port to resolve to reach the Odyssey Client RPC APIs.
    * @param protocol The protocol string to use before a "://" in a request,
    * ex: "http", "https", etc. Defaults to http
-   * @param baseEndpoint the base endpoint to reach the Avalanche Client RPC APIs,
+   * @param baseEndpoint the base endpoint to reach the Odyssey Client RPC APIs,
    * ex: "/rpc". Defaults to "/"
    * The following special characters are removed from host and protocol
    * &#,@+()$~%'":*?{} also less than and greater than signs
@@ -61,7 +61,7 @@ export default class AvalancheCore {
     if (!protocols.includes(protocol)) {
       /* istanbul ignore next */
       throw new ProtocolError(
-        "Error - AvalancheCore.setAddress: Invalid protocol"
+        "Error - OdysseyCore.setAddress: Invalid protocol"
       )
     }
 
@@ -92,27 +92,27 @@ export default class AvalancheCore {
   getProtocol = (): string => this.protocol
 
   /**
-   * Returns the host for the Avalanche node.
+   * Returns the host for the Odyssey node.
    */
   getHost = (): string => this.host
 
   /**
-   * Returns the IP for the Avalanche node.
+   * Returns the IP for the Odyssey node.
    */
   getIP = (): string => this.host
 
   /**
-   * Returns the port for the Avalanche node.
+   * Returns the port for the Odyssey node.
    */
   getPort = (): number => this.port
 
   /**
-   * Returns the base endpoint for the Avalanche node.
+   * Returns the base endpoint for the Odyssey node.
    */
   getBaseEndpoint = (): string => this.baseEndpoint
 
   /**
-   * Returns the URL of the Avalanche node (ip + port)
+   * Returns the URL of the Odyssey node (ip + port)
    */
   getURL = (): string => this.url
 
@@ -242,12 +242,12 @@ export default class AvalancheCore {
    *
    * In TypeScript:
    * ```js
-   * avalanche.addAPI<MyVMClass>("mychain", MyVMClass, "/ext/bc/mychain")
+   * odyssey.addAPI<MyVMClass>("mychain", MyVMClass, "/ext/bc/mychain")
    * ```
    *
    * In Javascript:
    * ```js
-   * avalanche.addAPI("mychain", MyVMClass, "/ext/bc/mychain")
+   * odyssey.addAPI("mychain", MyVMClass, "/ext/bc/mychain")
    * ```
    *
    * @typeparam GA Class of the API being added
@@ -259,7 +259,7 @@ export default class AvalancheCore {
   addAPI = <GA extends APIBase>(
     apiName: string,
     ConstructorFN: new (
-      avax: AvalancheCore,
+      dione: OdysseyCore,
       baseurl?: string,
       ...args: any[]
     ) => GA,
@@ -464,10 +464,10 @@ export default class AvalancheCore {
     )
 
   /**
-   * Creates a new Avalanche instance. Sets the address and port of the main Avalanche Client.
+   * Creates a new Odyssey instance. Sets the address and port of the main Odyssey Client.
    *
-   * @param host The hostname to resolve to reach the Avalanche Client APIs
-   * @param port The port to resolve to reach the Avalanche Client APIs
+   * @param host The hostname to resolve to reach the Odyssey Client APIs
+   * @param port The port to resolve to reach the Odyssey Client APIs
    * @param protocol The protocol string to use before a "://" in a request, ex: "http", "https", "git", "ws", etc ...
    */
   constructor(host?: string, port?: number, protocol: string = "http") {

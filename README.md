@@ -1,12 +1,8 @@
-# AvalancheJS - The Avalanche Platform JavaScript Library
-
-## Deprecation of avalancheJS
-
-The [npm package](https://www.npmjs.com/package/avalanche) is being deprecated. For the latest version please use @avalabs/avalanchejs. We will no longer support the [avalanche npm package](https://www.npmjs.com/package/avalanche).
+# OdysseyJS - The Odyssey Platform JavaScript Library
 
 ## Overview
 
-AvalancheJS is a JavaScript Library for interfacing with the Avalanche Platform. It is built using TypeScript and intended to support both browser and Node.js. The AvalancheJS library allows you to issue commands to the Avalanche node APIs.
+OdysseyJS is a JavaScript Library for interfacing with the Odyssey Platform. It is built using TypeScript and intended to support both browser and Node.js. The OdysseyJS library allows you to issue commands to the Odyssey node APIs.
 
 The APIs currently supported by default are:
 
@@ -22,9 +18,9 @@ The APIs currently supported by default are:
 * PlatformVM API (P-Chain)
 * Socket
 
-We built AvalancheJS with ease of use in mind. With this library, any Javascript developer is able to interact with a node on the Avalanche Platform who has enabled their API endpoints for the developer's consumption. We keep the library up-to-date with the latest changes in the [Avalanche Platform Specification](https://docs.avax.network).
+We built OdysseyJS with ease of use in mind. With this library, any Javascript developer is able to interact with a node on the Odyssey Platform who has enabled their API endpoints for the developer's consumption. We keep the library up-to-date with the latest changes in the [Odyssey Platform Specification](https://docs.dione.network).
 
-  Using AvalancheJS, developers can:
+  Using OdysseyJS, developers can:
 
 * Locally manage private keys
 * Retrieve balances on addresses
@@ -32,44 +28,24 @@ We built AvalancheJS with ease of use in mind. With this library, any Javascript
 * Build and sign transactions
 * Issue signed transactions to the X-Chain, P-Chain, and C-Chain
 * Perform cross-chain swaps between the X-Chain<->P-Chain and between the X-Chain<->C-Chain
-* Add Validators and Delegators to the Primary Subnetwork by staking AVAX
+* Add Validators and Delegators to the Primary Subnetwork by staking DIONE
 * Create a Subnetwork
 * Administer a local node
-* Retrieve Avalanche network information from a node
+* Retrieve Odyssey network information from a node
 
 ### Requirements
 
-AvalancheJS requires Node.js LTS version 14.16.0 or higher to compile.
+OdysseyJS requires Node.js LTS version 14.16.0 or higher to compile.
 
 ## Installation
-
-### Using the NPM Package
-
-Add AvalancheJS to your project via `npm` or `yarn`. 
-
-For installing via `npm`:
-
-`npm install --save @avalabs/avalanchejs`
-
-For installing via `yarn`:
-
-`yarn add @avalabs/avalanchejs`
-
-
-Please note that [this](https://www.npmjs.com/package/avalanche)
-npm package is deprecated.
-Make sure to always use
-[@avalabs/avalanchejs](https://www.npmjs.com/package/@avalabs/avalanchejs)
-instead.
-
 
 ### Build from Repository
 
 You can also pull the repo down directly and build it from scratch.
 
-Clone the AvalancheJS repository:
+Clone the OdysseyJS repository:
 
-`git clone https://github.com/ava-labs/avalanchejs.git`
+`git clone https://git.sfxdx.com/green-energy1/odysseyjs`
 
 Then build it:
 
@@ -80,37 +56,37 @@ or
 `yarn build`
 
 This will generate a pure JavaScript library and place it in a folder named
-"web" in the project root. The "avalanchejs" file can then be dropped into any
-project as a pure JavaScript implementation of Avalanche.
+"web" in the project root. The "odysseyjs" file can then be dropped into any
+project as a pure JavaScript implementation of Odyssey.
  
-## Use AvalancheJS in Projects
+## Use OdysseyJS in Projects
 
-The AvalancheJS library can be imported into your existing Node.js project as follows:
+The OdysseyJS library can be imported into your existing Node.js project as follows:
 
 ```ts
-const avalanche = require("@avalabs/avalanchejs")
+const odyssey = require("odysseyjs")
 ```
 
 Or into your TypeScript project like this:
 
 ```ts
-import { Avalanche } from "@avalabs/avalanchejs"
+import { Odyssey } from "odysseyjs"
 ```
 
 ## Importing Essentials
 
 ```ts
-import { Avalanche, BinTools, Buffer, BN } from "@avalabs/avalanchejs"
+import { Odyssey, BinTools, Buffer, BN } from "odysseyjs"
 
 let bintools = BinTools.getInstance()
 ```
 
 The above lines import the libraries used in the tutorials. The libraries include:
 
-- avalanche: Our JavaScript module.
-- bn.js: A big number module use by AvalancheJS.
+- odyssey: Our JavaScript module.
+- bn.js: A big number module use by OdysseyJS.
 - buffer: A Buffer library.
-- BinTools: A singleton built into AvalancheJS that is used for dealing with binary data.
+- BinTools: A singleton built into OdysseyJS that is used for dealing with binary data.
 
 ## Run Scripts
 
@@ -145,7 +121,7 @@ simply run the script:
 
 ### Example
 
-Let's say that the AvalancheJS repository was cloned. There are a lot of 
+Let's say that the OdysseyJS repository was cloned. There are a lot of 
 useful scripts in `Examples`. Suppose the one we want to run is AVM's 
 `getTx`, which has the path `examples/avm/getTX.ts`. 
 
@@ -156,7 +132,7 @@ To execute the script, we use:
 It ran successfully, providing the following output:
 
 ```zsh
-user@users-MacBook-Pro avalanchejs % ts-node examples/avm/getTx.ts
+user@users-MacBook-Pro odysseyjs % ts-node examples/avm/getTx.ts
 {
   unsignedTx: {
     networkID: 1,
@@ -174,16 +150,16 @@ user@users-MacBook-Pro avalanchejs % ts-node examples/avm/getTx.ts
 
 ## Example 1 &mdash; Managing X-Chain Keys
 
-AvalancheJS comes with its own AVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of AvalancheJS connected to our Avalanche Platform endpoint of choice.
+OdysseyJS comes with its own AVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of OdysseyJS connected to our Odyssey Platform endpoint of choice.
 
 ```js
-import { Avalanche, BinTools, Buffer, BN } from "avalanche"
+import { Odyssey, BinTools, Buffer, BN } from "odyssey"
 
 const bintools = BinTools.getInstance()
 
 const myNetworkID = 12345 //default is 1, we want to override that for our local network
-const avalanche = new Avalanche("localhost", 9650, "http", myNetworkID)
-const xchain = avalanche.XChain() //returns a reference to the X-Chain used by AvalancheJS
+const odyssey = new Odyssey("localhost", 9650, "http", myNetworkID)
+const xchain = odyssey.XChain() //returns a reference to the X-Chain used by OdysseyJS
 ```
 
 ### Accessing the KeyChain
@@ -261,20 +237,20 @@ const isValid = keypair.verify(message, signature) // returns a boolean
 
 ## Example 2 &mdash; Creating An Asset
 
-This example creates an asset in the X-Chain and publishes it to the Avalanche Platform. The first step in this process is to create an instance of AvalancheJS connected to our Avalanche Platform endpoint of choice.
+This example creates an asset in the X-Chain and publishes it to the Odyssey Platform. The first step in this process is to create an instance of OdysseyJS connected to our Odyssey Platform endpoint of choice.
 
 ```js
-import { Avalanche, BinTools, Buffer, BN } from "avalanche"
-import { InitialStates, SECPTransferOutput } from "avalanche/dist/apis/avm"
+import { Odyssey, BinTools, Buffer, BN } from "odyssey"
+import { InitialStates, SECPTransferOutput } from "odyssey/dist/apis/avm"
 
 const myNetworkID = 12345 // default is 1, we want to override that for our local network
-const avalanche = new Avalanche("localhost", 9650, "http", myNetworkID)
-const xchain = avalanche.XChain() // returns a reference to the X-Chain used by AvalancheJS
+const odyssey = new Odyssey("localhost", 9650, "http", myNetworkID)
+const xchain = odyssey.XChain() // returns a reference to the X-Chain used by OdysseyJS
 ```
 
 ### Describe the new asset
 
-The first steps in creating a new asset using AvalancheJS is to determine the qualities of the asset. We will give the asset a name, a ticker symbol, as well as a denomination.
+The first steps in creating a new asset using OdysseyJS is to determine the qualities of the asset. We will give the asset a name, a ticker symbol, as well as a denomination.
 
 ```js
 // Name our new coin and give it a symbol
@@ -282,7 +258,7 @@ const name = "TeamRocket"
 const symbol = "ROKT"
 
 // Where is the decimal point indicate what 1 asset is and where fractional assets begin
-// Ex: 1 AVAX is denomination 9, so the smallest unit of AVAX is nanoAVAX (nAVAX) at 10^-9 AVAX
+// Ex: 1 DIONE is denomination 9, so the smallest unit of DIONE is nanoDIONE (nDIONE) at 10^-9 DIONE
 const denomination = 9
 ```
 
@@ -343,7 +319,7 @@ const signed = unsigned.sign(xchain) // returns a Tx class
 
 Now that we have a signed transaction ready to send to the network, let's issue it!
 
-Using the AvalancheJS X-Chain API, we going to call the `issueTx` function. This function can take either the Tx class returned in the previous step, a CB58 representation of the transaction, or a raw Buffer class with the data for the transaction. Examples of each are below:
+Using the OdysseyJS X-Chain API, we going to call the `issueTx` function. This function can take either the Tx class returned in the previous step, a CB58 representation of the transaction, or a raw Buffer class with the data for the transaction. Examples of each are below:
 
 ```js
 // using the Tx class
@@ -384,19 +360,19 @@ The X-Chain uses the TxID of the transaction which created the asset as the uniq
 
 ## Example 3 &mdash; Sending An Asset
 
-This example sends an asset in the X-Chain to a single recipient. The first step in this process is to create an instance of Avalanche connected to our Avalanche Platform endpoint of choice.
+This example sends an asset in the X-Chain to a single recipient. The first step in this process is to create an instance of Odyssey connected to our Odyssey Platform endpoint of choice.
 
 ```js
-import { Avalanche, BinTools, Buffer, BN } from "avalanche"
+import { Odyssey, BinTools, Buffer, BN } from "odyssey"
 
 const myNetworkID = 12345 // default is 1, we want to override that for our local network
-const avalanche = new avalanche.Avalanche(
+const odyssey = new odyssey.Odyssey(
   "localhost",
   9650,
   "http",
   myNetworkID
 )
-const xchain = avalanche.XChain() // returns a reference to the X-Chain used by AvalancheJS
+const xchain = odyssey.XChain() // returns a reference to the X-Chain used by OdysseyJS
 ```
 
 We're also assuming that the keystore contains a list of addresses used in this transaction.
@@ -429,7 +405,7 @@ We have 400 coins! We're going to now send 100 of those coins to our friend's ad
 
 ```js
 const sendAmount = new BN(100) // amounts are in BN format
-const friendsAddress = "X-avax1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk" // address format is Bech32
+const friendsAddress = "X-dione1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk" // address format is Bech32
 
 // The below returns a UnsignedTx
 // Parameters sent are (in order of appearance):
@@ -496,7 +472,7 @@ yarn build && yarn test
 ```
 
 If the E2E check does not pass, go into the 'checks' section of the PR.
-`https://github.com/ava-labs/avalanchejs/pull/<PR number>/checks`
+`https://github.com/ava-labs/odysseyjs/pull/<PR number>/checks`
 
 * Click on the `> E2E` tab on the left
 * Click 'Re-run jobs' on the right

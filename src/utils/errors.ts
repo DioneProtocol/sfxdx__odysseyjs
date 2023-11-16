@@ -45,11 +45,11 @@ const SUBNET_THRESHOLD_ERROR_CODE: string = "1043"
 const SUBNET_ADDRESS_ERROR_CODE: string = "1044"
 const UNKNOWN_FORMAT_ERROR_CODE: string = "1045"
 
-export class AvalancheError extends Error {
+export class OdysseyError extends Error {
   errorCode: string
   constructor(m: string, code: string) {
     super(m)
-    Object.setPrototypeOf(this, AvalancheError.prototype)
+    Object.setPrototypeOf(this, OdysseyError.prototype)
     this.errorCode = code
   }
 
@@ -58,322 +58,322 @@ export class AvalancheError extends Error {
   }
 }
 
-export class AddressError extends AvalancheError {
+export class AddressError extends OdysseyError {
   constructor(m: string) {
     super(m, ADDRESS_ERROR_CODE)
     Object.setPrototypeOf(this, AddressError.prototype)
   }
 }
 
-export class GooseEggCheckError extends AvalancheError {
+export class GooseEggCheckError extends OdysseyError {
   constructor(m: string) {
     super(m, GOOSE_EGG_CHECK_ERROR_CODE)
     Object.setPrototypeOf(this, GooseEggCheckError.prototype)
   }
 }
 
-export class ChainIdError extends AvalancheError {
+export class ChainIdError extends OdysseyError {
   constructor(m: string) {
     super(m, CHAIN_ID_ERROR_CODE)
     Object.setPrototypeOf(this, ChainIdError.prototype)
   }
 }
 
-export class NoAtomicUTXOsError extends AvalancheError {
+export class NoAtomicUTXOsError extends OdysseyError {
   constructor(m: string) {
     super(m, NO_ATOMIX_UTXOS_ERROR_CODE)
     Object.setPrototypeOf(this, NoAtomicUTXOsError.prototype)
   }
 }
 
-export class SymbolError extends AvalancheError {
+export class SymbolError extends OdysseyError {
   constructor(m: string) {
     super(m, SYMBOL_ERROR_CODE)
     Object.setPrototypeOf(this, SymbolError.prototype)
   }
 }
 
-export class NameError extends AvalancheError {
+export class NameError extends OdysseyError {
   constructor(m: string) {
     super(m, NAME_ERROR_CODE)
     Object.setPrototypeOf(this, NameError.prototype)
   }
 }
 
-export class TransactionError extends AvalancheError {
+export class TransactionError extends OdysseyError {
   constructor(m: string) {
     super(m, TRANSACTION_ERROR_CODE)
     Object.setPrototypeOf(this, TransactionError.prototype)
   }
 }
 
-export class CodecIdError extends AvalancheError {
+export class CodecIdError extends OdysseyError {
   constructor(m: string) {
     super(m, CODEC_ID_ERROR_CODE)
     Object.setPrototypeOf(this, CodecIdError.prototype)
   }
 }
 
-export class CredIdError extends AvalancheError {
+export class CredIdError extends OdysseyError {
   constructor(m: string) {
     super(m, CRED_ID_ERROR_CODE)
     Object.setPrototypeOf(this, CredIdError.prototype)
   }
 }
 
-export class TransferableOutputError extends AvalancheError {
+export class TransferableOutputError extends OdysseyError {
   constructor(m: string) {
     super(m, TRANSFERABLE_OUTPUT_ERROR_CODE)
     Object.setPrototypeOf(this, TransferableOutputError.prototype)
   }
 }
 
-export class TransferableInputError extends AvalancheError {
+export class TransferableInputError extends OdysseyError {
   constructor(m: string) {
     super(m, TRANSFERABLE_INPUT_ERROR_CODE)
     Object.setPrototypeOf(this, TransferableInputError.prototype)
   }
 }
 
-export class InputIdError extends AvalancheError {
+export class InputIdError extends OdysseyError {
   constructor(m: string) {
     super(m, INPUT_ID_ERROR_CODE)
     Object.setPrototypeOf(this, InputIdError.prototype)
   }
 }
 
-export class OperationError extends AvalancheError {
+export class OperationError extends OdysseyError {
   constructor(m: string) {
     super(m, OPERATION_ERROR_CODE)
     Object.setPrototypeOf(this, OperationError.prototype)
   }
 }
 
-export class InvalidOperationIdError extends AvalancheError {
+export class InvalidOperationIdError extends OdysseyError {
   constructor(m: string) {
     super(m, INVALID_OPERATION_ID_CODE)
     Object.setPrototypeOf(this, InvalidOperationIdError.prototype)
   }
 }
 
-export class ChecksumError extends AvalancheError {
+export class ChecksumError extends OdysseyError {
   constructor(m: string) {
     super(m, CHECKSUM_ERROR_CODE)
     Object.setPrototypeOf(this, ChecksumError.prototype)
   }
 }
 
-export class OutputIdError extends AvalancheError {
+export class OutputIdError extends OdysseyError {
   constructor(m: string) {
     super(m, OUTPUT_ID_ERROR_CODE)
     Object.setPrototypeOf(this, OutputIdError.prototype)
   }
 }
 
-export class UTXOError extends AvalancheError {
+export class UTXOError extends OdysseyError {
   constructor(m: string) {
     super(m, UTXO_ERROR_CODE)
     Object.setPrototypeOf(this, UTXOError.prototype)
   }
 }
 
-export class InsufficientFundsError extends AvalancheError {
+export class InsufficientFundsError extends OdysseyError {
   constructor(m: string) {
     super(m, INSUFFICIENT_FUNDS_ERROR_CODE)
     Object.setPrototypeOf(this, InsufficientFundsError.prototype)
   }
 }
 
-export class ThresholdError extends AvalancheError {
+export class ThresholdError extends OdysseyError {
   constructor(m: string) {
     super(m, THRESHOLD_ERROR_CODE)
     Object.setPrototypeOf(this, ThresholdError.prototype)
   }
 }
 
-export class SECPMintOutputError extends AvalancheError {
+export class SECPMintOutputError extends OdysseyError {
   constructor(m: string) {
     super(m, SECP_MINT_OUTPUT_ERROR_CODE)
     Object.setPrototypeOf(this, SECPMintOutputError.prototype)
   }
 }
 
-export class EVMInputError extends AvalancheError {
+export class EVMInputError extends OdysseyError {
   constructor(m: string) {
     super(m, EVM_INPUT_ERROR_CODE)
     Object.setPrototypeOf(this, EVMInputError.prototype)
   }
 }
 
-export class EVMOutputError extends AvalancheError {
+export class EVMOutputError extends OdysseyError {
   constructor(m: string) {
     super(m, EVM_OUTPUT_ERROR_CODE)
     Object.setPrototypeOf(this, EVMOutputError.prototype)
   }
 }
 
-export class FeeAssetError extends AvalancheError {
+export class FeeAssetError extends OdysseyError {
   constructor(m: string) {
     super(m, FEE_ASSET_ERROR_CODE)
     Object.setPrototypeOf(this, FeeAssetError.prototype)
   }
 }
 
-export class StakeError extends AvalancheError {
+export class StakeError extends OdysseyError {
   constructor(m: string) {
     super(m, STAKE_ERROR_CODE)
     Object.setPrototypeOf(this, StakeError.prototype)
   }
 }
 
-export class TimeError extends AvalancheError {
+export class TimeError extends OdysseyError {
   constructor(m: string) {
     super(m, TIME_ERROR_CODE)
     Object.setPrototypeOf(this, TimeError.prototype)
   }
 }
 
-export class DelegationFeeError extends AvalancheError {
+export class DelegationFeeError extends OdysseyError {
   constructor(m: string) {
     super(m, DELEGATION_FEE_ERROR_CODE)
     Object.setPrototypeOf(this, DelegationFeeError.prototype)
   }
 }
 
-export class SubnetOwnerError extends AvalancheError {
+export class SubnetOwnerError extends OdysseyError {
   constructor(m: string) {
     super(m, SUBNET_OWNER_ERROR_CODE)
     Object.setPrototypeOf(this, SubnetOwnerError.prototype)
   }
 }
 
-export class BufferSizeError extends AvalancheError {
+export class BufferSizeError extends OdysseyError {
   constructor(m: string) {
     super(m, BUFFER_SIZE_ERROR_CODE)
     Object.setPrototypeOf(this, BufferSizeError.prototype)
   }
 }
 
-export class AddressIndexError extends AvalancheError {
+export class AddressIndexError extends OdysseyError {
   constructor(m: string) {
     super(m, ADDRESS_INDEX_ERROR_CODE)
     Object.setPrototypeOf(this, AddressIndexError.prototype)
   }
 }
 
-export class PublicKeyError extends AvalancheError {
+export class PublicKeyError extends OdysseyError {
   constructor(m: string) {
     super(m, PUBLIC_KEY_ERROR_CODE)
     Object.setPrototypeOf(this, PublicKeyError.prototype)
   }
 }
 
-export class MergeRuleError extends AvalancheError {
+export class MergeRuleError extends OdysseyError {
   constructor(m: string) {
     super(m, MERGE_RULE_ERROR_CODE)
     Object.setPrototypeOf(this, MergeRuleError.prototype)
   }
 }
 
-export class Base58Error extends AvalancheError {
+export class Base58Error extends OdysseyError {
   constructor(m: string) {
     super(m, BASE58_ERROR_CODE)
     Object.setPrototypeOf(this, Base58Error.prototype)
   }
 }
 
-export class PrivateKeyError extends AvalancheError {
+export class PrivateKeyError extends OdysseyError {
   constructor(m: string) {
     super(m, PRIVATE_KEY_ERROR_CODE)
     Object.setPrototypeOf(this, PrivateKeyError.prototype)
   }
 }
 
-export class NodeIdError extends AvalancheError {
+export class NodeIdError extends OdysseyError {
   constructor(m: string) {
     super(m, NODE_ID_ERROR_CODE)
     Object.setPrototypeOf(this, NodeIdError.prototype)
   }
 }
 
-export class HexError extends AvalancheError {
+export class HexError extends OdysseyError {
   constructor(m: string) {
     super(m, HEX_ERROR_CODE)
     Object.setPrototypeOf(this, HexError.prototype)
   }
 }
 
-export class TypeIdError extends AvalancheError {
+export class TypeIdError extends OdysseyError {
   constructor(m: string) {
     super(m, TYPE_ID_ERROR_CODE)
     Object.setPrototypeOf(this, TypeIdError.prototype)
   }
 }
 
-export class TypeNameError extends AvalancheError {
+export class TypeNameError extends OdysseyError {
   constructor(m: string) {
     super(m, TYPE_NAME_ERROR_CODE)
     Object.setPrototypeOf(this, TypeNameError.prototype)
   }
 }
 
-export class UnknownTypeError extends AvalancheError {
+export class UnknownTypeError extends OdysseyError {
   constructor(m: string) {
     super(m, UNKNOWN_TYPE_ERROR_CODE)
     Object.setPrototypeOf(this, UnknownTypeError.prototype)
   }
 }
 
-export class Bech32Error extends AvalancheError {
+export class Bech32Error extends OdysseyError {
   constructor(m: string) {
     super(m, BECH32_ERROR_CODE)
     Object.setPrototypeOf(this, Bech32Error.prototype)
   }
 }
 
-export class EVMFeeError extends AvalancheError {
+export class EVMFeeError extends OdysseyError {
   constructor(m: string) {
     super(m, EVM_FEE_ERROR_CODE)
     Object.setPrototypeOf(this, EVMFeeError.prototype)
   }
 }
 
-export class InvalidEntropy extends AvalancheError {
+export class InvalidEntropy extends OdysseyError {
   constructor(m: string) {
     super(m, INVALID_ENTROPY)
     Object.setPrototypeOf(this, InvalidEntropy.prototype)
   }
 }
 
-export class ProtocolError extends AvalancheError {
+export class ProtocolError extends OdysseyError {
   constructor(m: string) {
     super(m, PROTOCOL_ERROR_CODE)
     Object.setPrototypeOf(this, ProtocolError.prototype)
   }
 }
 
-export class SubnetIdError extends AvalancheError {
+export class SubnetIdError extends OdysseyError {
   constructor(m: string) {
     super(m, SUBNET_ID_ERROR_CODE)
     Object.setPrototypeOf(this, SubnetIdError.prototype)
   }
 }
 
-export class SubnetThresholdError extends AvalancheError {
+export class SubnetThresholdError extends OdysseyError {
   constructor(m: string) {
     super(m, SUBNET_THRESHOLD_ERROR_CODE)
     Object.setPrototypeOf(this, SubnetThresholdError.prototype)
   }
 }
 
-export class SubnetAddressError extends AvalancheError {
+export class SubnetAddressError extends OdysseyError {
   constructor(m: string) {
     super(m, SUBNET_ADDRESS_ERROR_CODE)
     Object.setPrototypeOf(this, SubnetAddressError.prototype)
   }
 }
 
-export class UnknownFormatError extends AvalancheError {
+export class UnknownFormatError extends OdysseyError {
   constructor(m: string) {
     super(m, UNKNOWN_FORMAT_ERROR_CODE)
     Object.setPrototypeOf(this, UnknownFormatError.prototype)

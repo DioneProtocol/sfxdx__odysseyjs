@@ -1,6 +1,6 @@
 # Info RPC
 
-Example scripts for the Avalanche [Info RPC](https://docs.avax.network/build/avalanchego-apis/info-api)
+Example scripts for the Odyssey [Info RPC](https://docs.dione.network/build/odysseygo-apis/info-api)
 
 * [getBlockchainID.ts](./getBlockchainID.ts)
 * [getNetworkID.ts](./getNetworkID.ts)

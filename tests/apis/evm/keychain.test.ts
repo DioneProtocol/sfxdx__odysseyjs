@@ -1,5 +1,5 @@
 import { KeyChain, KeyPair } from "../../../src/apis/avm/keychain"
-import { Avalanche } from "../../../src/index"
+import { Odyssey } from "../../../src/index"
 import { Buffer } from "buffer/"
 import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
@@ -13,7 +13,7 @@ describe("EVMKeyPair", (): void => {
   const ip: string = "127.0.0.1"
   const port: number = 9650
   const protocol: string = "https"
-  const avalanche: Avalanche = new Avalanche(
+  const odyssey: Odyssey = new Odyssey(
     ip,
     port,
     protocol,
@@ -25,44 +25,44 @@ describe("EVMKeyPair", (): void => {
   )
 
   test("human readable part", (): void => {
-    let hrp: string = avalanche.getHRP()
-    let networkID: number = avalanche.getNetworkID()
+    let hrp: string = odyssey.getHRP()
+    let networkID: number = odyssey.getNetworkID()
     expect(hrp).toBe("custom")
     expect(networkID).toBe(1337)
 
-    avalanche.setNetworkID(2)
-    hrp = avalanche.getHRP()
-    networkID = avalanche.getNetworkID()
+    odyssey.setNetworkID(2)
+    hrp = odyssey.getHRP()
+    networkID = odyssey.getNetworkID()
     expect(hrp).toBe("cascade")
     expect(networkID).toBe(2)
 
-    avalanche.setNetworkID(3)
-    hrp = avalanche.getHRP()
-    networkID = avalanche.getNetworkID()
+    odyssey.setNetworkID(3)
+    hrp = odyssey.getHRP()
+    networkID = odyssey.getNetworkID()
     expect(hrp).toBe("denali")
     expect(networkID).toBe(3)
 
-    avalanche.setNetworkID(4)
-    hrp = avalanche.getHRP()
-    networkID = avalanche.getNetworkID()
+    odyssey.setNetworkID(4)
+    hrp = odyssey.getHRP()
+    networkID = odyssey.getNetworkID()
     expect(hrp).toBe("everest")
     expect(networkID).toBe(4)
 
-    avalanche.setNetworkID(0)
-    hrp = avalanche.getHRP()
-    networkID = avalanche.getNetworkID()
+    odyssey.setNetworkID(0)
+    hrp = odyssey.getHRP()
+    networkID = odyssey.getNetworkID()
     expect(hrp).toBe("custom")
     expect(networkID).toBe(0)
 
-    avalanche.setNetworkID(1)
-    hrp = avalanche.getHRP()
-    networkID = avalanche.getNetworkID()
-    expect(hrp).toBe("avax")
+    odyssey.setNetworkID(1)
+    hrp = odyssey.getHRP()
+    networkID = odyssey.getNetworkID()
+    expect(hrp).toBe("dione")
     expect(networkID).toBe(1)
 
-    avalanche.setNetworkID(12345)
-    hrp = avalanche.getHRP()
-    networkID = avalanche.getNetworkID()
+    odyssey.setNetworkID(12345)
+    hrp = odyssey.getHRP()
+    networkID = odyssey.getNetworkID()
     expect(hrp).toBe("local")
     expect(networkID).toBe(12345)
   })

@@ -1,5 +1,5 @@
 import mockAxios from "jest-mock-axios"
-import { Avalanche, BN } from "src"
+import { Odyssey, BN } from "src"
 import { EVMAPI } from "../../../src/apis/evm/api"
 import BinTools from "../../../src/utils/bintools"
 import * as bech32 from "bech32"
@@ -17,10 +17,10 @@ describe("EVMAPI", (): void => {
   const ip: string = "127.0.0.1"
   const port: number = 9650
   const protocol: string = "https"
-  const username: string = "AvaLabs"
+  const username: string = "DioneProtocol"
   const password: string = "password"
 
-  const avalanche: Avalanche = new Avalanche(
+  const odyssey: Odyssey = new Odyssey(
     ip,
     port,
     protocol,
@@ -35,7 +35,7 @@ describe("EVMAPI", (): void => {
   const addrA: string =
     "C-" +
     bech32.bech32.encode(
-      avalanche.getHRP(),
+      odyssey.getHRP(),
       bech32.bech32.toWords(
         bintools.cb58Decode("B6D4v1VtPYLbiUvYXtW4Px8oE9imC2vGW")
       )
@@ -43,14 +43,14 @@ describe("EVMAPI", (): void => {
   const addrC: string =
     "C-" +
     bech32.bech32.encode(
-      avalanche.getHRP(),
+      odyssey.getHRP(),
       bech32.bech32.toWords(
         bintools.cb58Decode("6Y3kysjF9jnHnYkdS9yGAuoHyae2eNmeV")
       )
     )
 
   beforeAll((): void => {
-    api = new EVMAPI(avalanche, "/ext/bc/C/avax", blockchainID)
+    api = new EVMAPI(odyssey, "/ext/bc/C/dione", blockchainID)
   })
 
   afterEach((): void => {
@@ -126,13 +126,13 @@ describe("EVMAPI", (): void => {
     expect(response).toEqual(object)
   })
 
-  test("exportAVAX", async (): Promise<void> => {
+  test("exportDIONE", async (): Promise<void> => {
     let amount: BN = new BN(100)
     let to: string = "abcdef"
     let username: string = "Robert"
     let password: string = "Paulson"
     let txID: string = "valid"
-    let result: Promise<string> = api.exportAVAX(username, password, to, amount)
+    let result: Promise<string> = api.exportDIONE(username, password, to, amount)
     let payload: object = {
       result: {
         txID: txID
@@ -179,12 +179,12 @@ describe("EVMAPI", (): void => {
     expect(response).toBe(txID)
   })
 
-  test("importAVAX", async (): Promise<void> => {
+  test("importDIONE", async (): Promise<void> => {
     let to: string = "abcdef"
     let username: string = "Robert"
     let password: string = "Paulson"
     let txID: string = "valid"
-    let result: Promise<string> = api.importAVAX(
+    let result: Promise<string> = api.importDIONE(
       username,
       password,
       to,
@@ -236,7 +236,7 @@ describe("EVMAPI", (): void => {
   test("refreshBlockchainID", async (): Promise<void> => {
     const n5bcID: string = Defaults.network[5].C["blockchainID"]
     const n1337bcID: string = Defaults.network[1337].C["blockchainID"]
-    const testAPI: EVMAPI = new EVMAPI(avalanche, "/ext/bc/C/avax", n5bcID)
+    const testAPI: EVMAPI = new EVMAPI(odyssey, "/ext/bc/C/dione", n5bcID)
     const bc1: string = testAPI.getBlockchainID()
     expect(bc1).toBe(n5bcID)
 

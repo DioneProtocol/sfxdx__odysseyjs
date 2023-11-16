@@ -79,14 +79,14 @@ export interface GetPendingValidatorsParams {
   nodeIDs?: string[]
 }
 
-export interface ExportAVAXParams {
+export interface ExportDIONEParams {
   username: string
   password: string
   amount: string
   to: string
 }
 
-export interface ImportAVAXParams {
+export interface ImportDIONEParams {
   username: string
   password: string
   sourceChain: string

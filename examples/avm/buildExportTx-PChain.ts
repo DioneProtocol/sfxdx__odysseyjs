@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN, Buffer } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import {
   AVMAPI,
   KeyChain as AVMKeyChain,
@@ -26,9 +26,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
+const pchain: PlatformVMAPI = odyssey.PChain()
 const xKeychain: AVMKeyChain = xchain.keyChain()
 const pKeychain: PlatformVMKeyChain = pchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -37,11 +37,11 @@ pKeychain.importKey(privKey)
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
 const pChainBlockchainID: string = Defaults.network[networkID].P.blockchainID
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildExportTx to export AVAX to the P-Chain from the X-Chain"
+  "AVM utility method buildExportTx to export DIONE to the P-Chain from the X-Chain"
 )
 const fee: BN = xchain.getDefaultTxFee()
 
@@ -52,7 +52,7 @@ const main = async (): Promise<any> => {
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
   const getBalanceResponse: GetBalanceResponse = await xchain.getBalance(
     xAddressStrings[0],
-    avaxAssetID
+    dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const amount: BN = balance.sub(fee)

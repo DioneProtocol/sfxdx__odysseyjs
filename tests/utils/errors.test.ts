@@ -1,6 +1,6 @@
 import BinTools from "../../src/utils/bintools"
 import {
-  AvalancheError,
+  OdysseyError,
   AddressError,
   GooseEggCheckError,
   ChainIdError,
@@ -47,17 +47,17 @@ import {
 } from "src/utils"
 
 describe("Errors", (): void => {
-  test("AvalancheError", (): void => {
+  test("OdysseyError", (): void => {
     try {
-      throw new AvalancheError("Testing AvalancheError", "0")
+      throw new OdysseyError("Testing OdysseyError", "0")
     } catch (error: any) {
       expect(error.getCode()).toBe("0")
     }
     expect((): void => {
-      throw new AvalancheError("Testing AvalancheError", "0")
-    }).toThrow("Testing AvalancheError")
+      throw new OdysseyError("Testing OdysseyError", "0")
+    }).toThrow("Testing OdysseyError")
     expect((): void => {
-      throw new AvalancheError("Testing AvalancheError", "0")
+      throw new OdysseyError("Testing OdysseyError", "0")
     }).toThrowError()
   })
 

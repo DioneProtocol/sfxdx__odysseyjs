@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, Buffer } from "../../src"
+import { Odyssey, BinTools, Buffer } from "../../src"
 import { IndexAPI } from "../../src/apis/index/index"
 import { GetLastAcceptedResponse } from "../../src/apis/index/interfaces"
 import { Vertex } from "../../src/apis/avm"
@@ -8,8 +8,8 @@ const ip = process.env.IP_INDEXER
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const index: IndexAPI = avalanche.Index()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const index: IndexAPI = odyssey.Index()
 const bintools: BinTools = BinTools.getInstance()
 
 const main = async (): Promise<any> => {

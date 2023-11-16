@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN, Buffer } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import { AVMAPI, KeyChain, UTXOSet, UnsignedTx, Tx } from "../../src/apis/avm"
 import { GetUTXOsResponse } from "../../src/apis/avm/interfaces"
 import {
@@ -13,8 +13,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
 const xKeychain: KeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 xKeychain.importKey(privKey)
@@ -24,7 +24,7 @@ const threshold: number = 1
 const locktime: BN = new BN(0)
 const asOf: BN = UnixNow()
 const memo: Buffer = Buffer.from(
-  "AVM utility method buildImportTx to import AVAX to the X-Chain from the P-Chain"
+  "AVM utility method buildImportTx to import DIONE to the X-Chain from the P-Chain"
 )
 
 const main = async (): Promise<any> => {

@@ -1,7 +1,7 @@
 {
-  "name": "@avalabs/avalanchejs",
+  "name": "odysseyjs",
   "version": "3.17.0-alpha.2",
-  "description": "Avalanche Platform JS Library",
+  "description": "Odyssey Platform JS Library",
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist/ && npx tsc -b",
@@ -16,28 +16,12 @@
     "prettier": "npx prettier --write .",
     "prepare": "husky install"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ava-labs/avalanchejs.git"
-  },
   "keywords": [
-    "Avalanche",
+    "Odyssey",
     "blockchain",
     "defi"
   ],
-  "author": "Gabriel Cardona <gabriel@avalabs.org>",
-  "contributors": [
-    "Evan Richard <evan@avalabs.org>",
-    "Paul Kim <paul.kim@avalabs.org>",
-    "Raj Ranjan <raj.ranjan@avalabs.org>",
-    "Gergely Lovas <gergely.lovas@avalabs.org>",
-    "Dhruba Basu <dhruba@avalabs.org>"
-  ],
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/ava-labs/avalanchejs/issues"
-  },
-  "homepage": "https://github.com/ava-labs/avalanchejs#readme",
   "devDependencies": {
     "@semantic-release/changelog": "6.0.2",
     "@semantic-release/git": "10.0.1",

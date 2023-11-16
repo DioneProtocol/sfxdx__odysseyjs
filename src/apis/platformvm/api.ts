@@ -4,7 +4,7 @@
  */
 import { Buffer } from "buffer/"
 import BN from "bn.js"
-import AvalancheCore from "../../avalanche"
+import OdysseyCore from "../../odyssey"
 import { JRPCAPI } from "../../common/jrpcapi"
 import { RequestResponseData } from "../../common/apibase"
 import {
@@ -14,7 +14,7 @@ import {
 } from "../../utils/errors"
 import BinTools from "../../utils/bintools"
 import { KeyChain } from "./keychain"
-import { Defaults, PlatformChainID, ONEAVAX } from "../../utils/constants"
+import { Defaults, PlatformChainID, ONEDIONE } from "../../utils/constants"
 import { PlatformVMConstants } from "./constants"
 import { UnsignedTx, Tx } from "./tx"
 import { PayloadBase } from "../../utils/payload"
@@ -49,10 +49,10 @@ import {
   AddValidatorParams,
   AddDelegatorParams,
   CreateSubnetParams,
-  ExportAVAXParams,
+  ExportDIONEParams,
   ExportKeyParams,
   ImportKeyParams,
-  ImportAVAXParams,
+  ImportDIONEParams,
   CreateBlockchainParams,
   Blockchain,
   GetTxStatusParams,
@@ -76,7 +76,7 @@ const serialization: Serialization = Serialization.getInstance()
  *
  * @category RPCAPIs
  *
- * @remarks This extends the [[JRPCAPI]] class. This class should not be directly called. Instead, use the [[Avalanche.addAPI]] function to register this interface with Avalanche.
+ * @remarks This extends the [[JRPCAPI]] class. This class should not be directly called. Instead, use the [[Odyssey.addAPI]] function to register this interface with Odyssey.
  */
 export class PlatformVMAPI extends JRPCAPI {
   /**
@@ -88,7 +88,7 @@ export class PlatformVMAPI extends JRPCAPI {
 
   protected blockchainAlias: string = undefined
 
-  protected AVAXAssetID: Buffer = undefined
+  protected DIONEAssetID: Buffer = undefined
 
   protected txFee: BN = undefined
 
@@ -193,32 +193,32 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Fetches the AVAX AssetID and returns it in a Promise.
+   * Fetches the DIONE AssetID and returns it in a Promise.
    *
    * @param refresh This function caches the response. Refresh = true will bust the cache.
    *
-   * @returns The the provided string representing the AVAX AssetID
+   * @returns The the provided string representing the DIONE AssetID
    */
-  getAVAXAssetID = async (refresh: boolean = false): Promise<Buffer> => {
-    if (typeof this.AVAXAssetID === "undefined" || refresh) {
+  getDIONEAssetID = async (refresh: boolean = false): Promise<Buffer> => {
+    if (typeof this.DIONEAssetID === "undefined" || refresh) {
       const assetID: string = await this.getStakingAssetID()
-      this.AVAXAssetID = bintools.cb58Decode(assetID)
+      this.DIONEAssetID = bintools.cb58Decode(assetID)
     }
-    return this.AVAXAssetID
+    return this.DIONEAssetID
   }
 
   /**
-   * Overrides the defaults and sets the cache to a specific AVAX AssetID
+   * Overrides the defaults and sets the cache to a specific DIONE AssetID
    *
-   * @param avaxAssetID A cb58 string or Buffer representing the AVAX AssetID
+   * @param dioneAssetID A cb58 string or Buffer representing the DIONE AssetID
    *
-   * @returns The the provided string representing the AVAX AssetID
+   * @returns The the provided string representing the DIONE AssetID
    */
-  setAVAXAssetID = (avaxAssetID: string | Buffer) => {
-    if (typeof avaxAssetID === "string") {
-      avaxAssetID = bintools.cb58Decode(avaxAssetID)
+  setDIONEAssetID = (dioneAssetID: string | Buffer) => {
+    if (typeof dioneAssetID === "string") {
+      dioneAssetID = bintools.cb58Decode(dioneAssetID)
     }
-    this.AVAXAssetID = avaxAssetID
+    this.DIONEAssetID = dioneAssetID
   }
 
   /**
@@ -344,12 +344,12 @@ export class PlatformVMAPI extends JRPCAPI {
     utx: UnsignedTx,
     outTotal: BN = new BN(0)
   ): Promise<boolean> => {
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
     let outputTotal: BN = outTotal.gt(new BN(0))
       ? outTotal
-      : utx.getOutputTotal(avaxAssetID)
-    const fee: BN = utx.getBurn(avaxAssetID)
-    if (fee.lte(ONEAVAX.mul(new BN(10))) || fee.lte(outputTotal)) {
+      : utx.getOutputTotal(dioneAssetID)
+    const fee: BN = utx.getBurn(dioneAssetID)
+    if (fee.lte(ONEDIONE.mul(new BN(10))) || fee.lte(outputTotal)) {
       return true
     } else {
       return false
@@ -532,7 +532,7 @@ export class PlatformVMAPI extends JRPCAPI {
    * cb58 serialized string for the SubnetID or its alias.
    * @param nodeIDs Optional. An array of strings
    *
-   * @returns Promise for an array of validators that are currently staking, see: {@link https://docs.avax.network/v1.0/en/api/platform/#platformgetcurrentvalidators|platform.getCurrentValidators documentation}.
+   * @returns Promise for an array of validators that are currently staking, see: {@link https://docs.dione.network/v1.0/en/api/platform/#platformgetcurrentvalidators|platform.getCurrentValidators documentation}.
    *
    */
   getCurrentValidators = async (
@@ -562,7 +562,7 @@ export class PlatformVMAPI extends JRPCAPI {
    * or a cb58 serialized string for the SubnetID or its alias.
    * @param nodeIDs Optional. An array of strings
    *
-   * @returns Promise for an array of validators that are pending staking, see: {@link https://docs.avax.network/v1.0/en/api/platform/#platformgetpendingvalidators|platform.getPendingValidators documentation}.
+   * @returns Promise for an array of validators that are pending staking, see: {@link https://docs.dione.network/v1.0/en/api/platform/#platformgetpendingvalidators|platform.getPendingValidators documentation}.
    *
    */
   getPendingValidators = async (
@@ -622,7 +622,7 @@ export class PlatformVMAPI extends JRPCAPI {
    * @param nodeID The node ID of the validator
    * @param startTime Javascript Date object for the start time to validate
    * @param endTime Javascript Date object for the end time to validate
-   * @param stakeAmount The amount of nAVAX the validator is staking as
+   * @param stakeAmount The amount of nDIONE the validator is staking as
    * a {@link https://github.com/indutny/bn.js/|BN}
    * @param rewardAddress The address the validator reward will go to, if there is one.
    * @param delegationFeeRate Optional. A {@link https://github.com/indutny/bn.js/|BN} for the percent fee this validator
@@ -712,9 +712,9 @@ export class PlatformVMAPI extends JRPCAPI {
    * @param nodeID The node ID of the delegatee
    * @param startTime Javascript Date object for when the delegator starts delegating
    * @param endTime Javascript Date object for when the delegator starts delegating
-   * @param stakeAmount The amount of nAVAX the delegator is staking as
+   * @param stakeAmount The amount of nDIONE the delegator is staking as
    * a {@link https://github.com/indutny/bn.js/|BN}
-   * @param rewardAddress The address of the account the staked AVAX and validation reward
+   * @param rewardAddress The address of the account the staked DIONE and validation reward
    * (if applicable) are sent to at endTime
    *
    * @returns Promise for an array of validator"s stakingIDs.
@@ -799,7 +799,7 @@ export class PlatformVMAPI extends JRPCAPI {
   /**
    * Get the IDs of the blockchains a Subnet validates.
    *
-   * @param subnetID Either a {@link https://github.com/feross/buffer|Buffer} or an AVAX
+   * @param subnetID Either a {@link https://github.com/feross/buffer|Buffer} or an DIONE
    * serialized string for the SubnetID or its alias.
    *
    * @returns Promise for an array of blockchainIDs the subnet validates.
@@ -833,33 +833,33 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AVAX from an account on the P-Chain to an address on the X-Chain. This transaction
-   * must be signed with the key of the account that the AVAX is sent from and which pays the
-   * transaction fee. After issuing this transaction, you must call the X-Chain’s importAVAX
+   * Send DIONE from an account on the P-Chain to an address on the X-Chain. This transaction
+   * must be signed with the key of the account that the DIONE is sent from and which pays the
+   * transaction fee. After issuing this transaction, you must call the X-Chain’s importDIONE
    * method to complete the transfer.
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The address on the X-Chain to send the AVAX to. Do not include X- in the address
-   * @param amount Amount of AVAX to export as a {@link https://github.com/indutny/bn.js/|BN}
+   * @param to The address on the X-Chain to send the DIONE to. Do not include X- in the address
+   * @param amount Amount of DIONE to export as a {@link https://github.com/indutny/bn.js/|BN}
    *
-   * @returns Promise for an unsigned transaction to be signed by the account the the AVAX is
+   * @returns Promise for an unsigned transaction to be signed by the account the the DIONE is
    * sent from and pays the transaction fee.
    */
-  exportAVAX = async (
+  exportDIONE = async (
     username: string,
     password: string,
     amount: BN,
     to: string
   ): Promise<string | ErrorResponseObject> => {
-    const params: ExportAVAXParams = {
+    const params: ExportDIONEParams = {
       username,
       password,
       to,
       amount: amount.toString(10)
     }
     const response: RequestResponseData = await this.callMethod(
-      "platform.exportAVAX",
+      "platform.exportDIONE",
       params
     )
     return response.data.result.txID
@@ -868,34 +868,34 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AVAX from an account on the P-Chain to an address on the X-Chain. This transaction
-   * must be signed with the key of the account that the AVAX is sent from and which pays
+   * Send DIONE from an account on the P-Chain to an address on the X-Chain. This transaction
+   * must be signed with the key of the account that the DIONE is sent from and which pays
    * the transaction fee. After issuing this transaction, you must call the X-Chain’s
-   * importAVAX method to complete the transfer.
+   * importDIONE method to complete the transfer.
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The ID of the account the AVAX is sent to. This must be the same as the to
-   * argument in the corresponding call to the X-Chain’s exportAVAX
+   * @param to The ID of the account the DIONE is sent to. This must be the same as the to
+   * argument in the corresponding call to the X-Chain’s exportDIONE
    * @param sourceChain The chainID where the funds are coming from.
    *
    * @returns Promise for a string for the transaction, which should be sent to the network
    * by calling issueTx.
    */
-  importAVAX = async (
+  importDIONE = async (
     username: string,
     password: string,
     to: string,
     sourceChain: string
   ): Promise<string | ErrorResponseObject> => {
-    const params: ImportAVAXParams = {
+    const params: ImportDIONEParams = {
       to,
       sourceChain,
       username,
       password
     }
     const response: RequestResponseData = await this.callMethod(
-      "platform.importAVAX",
+      "platform.importDIONE",
       params
     )
     return response.data.result.txID
@@ -999,7 +999,7 @@ export class PlatformVMAPI extends JRPCAPI {
   }
 
   /**
-   * getMaxStakeAmount() returns the maximum amount of nAVAX staking to the named node during the time period.
+   * getMaxStakeAmount() returns the maximum amount of nDIONE staking to the named node during the time period.
    *
    * @param subnetID A Buffer or cb58 string representing subnet
    * @param nodeID A string representing ID of the node whose stake amount is required during the given duration
@@ -1355,7 +1355,7 @@ export class PlatformVMAPI extends JRPCAPI {
     const atomicUTXOs: UTXOSet = await (
       await this.getUTXOs(ownerAddresses, srcChain, 0, undefined)
     ).utxos
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
 
     if (memo instanceof PayloadBase) {
       memo = memo.getPayload()
@@ -1372,7 +1372,7 @@ export class PlatformVMAPI extends JRPCAPI {
       atomics,
       sourceChain,
       this.getTxFee(),
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf,
       locktime,
@@ -1445,7 +1445,7 @@ export class PlatformVMAPI extends JRPCAPI {
     }
     /*
     if(bintools.cb58Encode(destinationChain) !== Defaults.network[this.core.getNetworkID()].X["blockchainID"]) {
-      throw new Error("Error - PlatformVMAPI.buildExportTx: Destination ChainID must The X-Chain ID in the current version of AvalancheJS.")
+      throw new Error("Error - PlatformVMAPI.buildExportTx: Destination ChainID must The X-Chain ID in the current version of OdysseyJS.")
     }*/
 
     let to: Buffer[] = []
@@ -1465,19 +1465,19 @@ export class PlatformVMAPI extends JRPCAPI {
       memo = memo.getPayload()
     }
 
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
 
     const builtUnsignedTx: UnsignedTx = utxoset.buildExportTx(
       this.core.getNetworkID(),
       bintools.cb58Decode(this.blockchainID),
       amount,
-      avaxAssetID,
+      dioneAssetID,
       to,
       from,
       change,
       destinationChain,
       this.getTxFee(),
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf,
       locktime,
@@ -1497,11 +1497,11 @@ export class PlatformVMAPI extends JRPCAPI {
    * [[UnsignedTx]] manually and import the [[AddSubnetValidatorTx]] class directly.
    *
    * @param utxoset A set of UTXOs that the transaction is built on.
-   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees in AVAX
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees in DIONE
    * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the fee payment
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
-   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AVAX is returned).
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
    * @param weight The amount of weight for this subnet validator.
    * @param memo Optional contains arbitrary bytes, up to 256 bytes
    * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
@@ -1536,7 +1536,7 @@ export class PlatformVMAPI extends JRPCAPI {
       memo = memo.getPayload()
     }
 
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
 
     const now: BN = UnixNow()
     if (startTime.lt(now) || endTime.lte(startTime)) {
@@ -1556,7 +1556,7 @@ export class PlatformVMAPI extends JRPCAPI {
       weight,
       subnetID,
       this.getDefaultTxFee(),
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf,
       subnetAuthCredentials
@@ -1576,11 +1576,11 @@ export class PlatformVMAPI extends JRPCAPI {
    *
    * @param utxoset A set of UTXOs that the transaction is built on
    * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who received the staked tokens at the end of the staking period
-   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who own the staking UTXOs the fees in AVAX
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who own the staking UTXOs the fees in DIONE
    * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the fee payment
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
-   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AVAX is returned).
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
    * @param stakeAmount The amount being delegated as a {@link https://github.com/indutny/bn.js/|BN}
    * @param rewardAddresses The addresses which will recieve the rewards from the delegated stake.
    * @param rewardLocktime Optional. The locktime field created in the resulting reward outputs
@@ -1634,7 +1634,7 @@ export class PlatformVMAPI extends JRPCAPI {
       )
     }
 
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
 
     const now: BN = UnixNow()
     if (startTime.lt(now) || endTime.lte(startTime)) {
@@ -1646,7 +1646,7 @@ export class PlatformVMAPI extends JRPCAPI {
     const builtUnsignedTx: UnsignedTx = utxoset.buildAddDelegatorTx(
       this.core.getNetworkID(),
       bintools.cb58Decode(this.blockchainID),
-      avaxAssetID,
+      dioneAssetID,
       to,
       from,
       change,
@@ -1658,7 +1658,7 @@ export class PlatformVMAPI extends JRPCAPI {
       rewardThreshold,
       rewards,
       new BN(0),
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf
     )
@@ -1677,11 +1677,11 @@ export class PlatformVMAPI extends JRPCAPI {
    *
    * @param utxoset A set of UTXOs that the transaction is built on
    * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who received the staked tokens at the end of the staking period
-   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who own the staking UTXOs the fees in AVAX
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who own the staking UTXOs the fees in DIONE
    * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the fee payment
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
-   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AVAX is returned).
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
    * @param stakeAmount The amount being delegated as a {@link https://github.com/indutny/bn.js/|BN}
    * @param rewardAddresses The addresses which will recieve the rewards from the delegated stake.
    * @param delegationFee A number for the percentage of reward to be given to the validator when someone delegates to them. Must be between 0 and 100.
@@ -1747,7 +1747,7 @@ export class PlatformVMAPI extends JRPCAPI {
       )
     }
 
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
 
     const now: BN = UnixNow()
     if (startTime.lt(now) || endTime.lte(startTime)) {
@@ -1759,7 +1759,7 @@ export class PlatformVMAPI extends JRPCAPI {
     const builtUnsignedTx: UnsignedTx = utxoset.buildAddValidatorTx(
       this.core.getNetworkID(),
       bintools.cb58Decode(this.blockchainID),
-      avaxAssetID,
+      dioneAssetID,
       to,
       from,
       change,
@@ -1772,7 +1772,7 @@ export class PlatformVMAPI extends JRPCAPI {
       rewards,
       delegationFee,
       new BN(0),
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf
     )
@@ -1824,7 +1824,7 @@ export class PlatformVMAPI extends JRPCAPI {
       memo = memo.getPayload()
     }
 
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
     const networkID: number = this.core.getNetworkID()
     const blockchainID: Buffer = bintools.cb58Decode(this.blockchainID)
     const fee: BN = this.getCreateSubnetTxFee()
@@ -1836,7 +1836,7 @@ export class PlatformVMAPI extends JRPCAPI {
       owners,
       subnetOwnerThreshold,
       fee,
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf
     )
@@ -1892,7 +1892,7 @@ export class PlatformVMAPI extends JRPCAPI {
       memo = memo.getPayload()
     }
 
-    const avaxAssetID: Buffer = await this.getAVAXAssetID()
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
     fxIDs = fxIDs.sort()
 
     const networkID: number = this.core.getNetworkID()
@@ -1909,7 +1909,7 @@ export class PlatformVMAPI extends JRPCAPI {
       fxIDs,
       genesisData,
       fee,
-      avaxAssetID,
+      dioneAssetID,
       memo,
       asOf,
       subnetAuthCredentials
@@ -1963,12 +1963,12 @@ export class PlatformVMAPI extends JRPCAPI {
 
   /**
    * This class should not be instantiated directly.
-   * Instead use the [[Avalanche.addAPI]] method.
+   * Instead use the [[Odyssey.addAPI]] method.
    *
-   * @param core A reference to the Avalanche class
+   * @param core A reference to the Odyssey class
    * @param baseURL Defaults to the string "/ext/P" as the path to blockchain's baseURL
    */
-  constructor(core: AvalancheCore, baseURL: string = "/ext/bc/P") {
+  constructor(core: OdysseyCore, baseURL: string = "/ext/bc/P") {
     super(core, baseURL)
     this.blockchainID = PlatformChainID
     const netID: number = core.getNetworkID()

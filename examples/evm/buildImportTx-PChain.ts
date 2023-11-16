@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN } from "../../src"
+import { Odyssey, BN } from "../../src"
 import {
   PlatformVMAPI,
   KeyChain as PlatformVMKeyChain
@@ -22,9 +22,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
-const cchain: EVMAPI = avalanche.CChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
+const cchain: EVMAPI = odyssey.CChain()
 const pKeychain: PlatformVMKeyChain = pchain.keyChain()
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`

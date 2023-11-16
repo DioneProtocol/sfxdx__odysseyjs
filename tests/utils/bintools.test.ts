@@ -254,19 +254,19 @@ describe("BinTools", (): void => {
 
   test("stringToAddress", (): void => {
     // Missing prefix
-    let addr: string = "-avax13a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
+    let addr: string = "-dione13a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - Valid address must have prefix before -")
 
     // Missing -
-    addr = "Xavax13a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
+    addr = "Xdione13a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - Valid address should include -")
 
     // Missing seperator (1)
-    addr = "X-avax3a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
+    addr = "X-dione3a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - Valid address must include separator (1)")
@@ -278,7 +278,7 @@ describe("BinTools", (): void => {
     }).toThrow("Error - HRP should be at least 1 character")
 
     // Invalid HRP
-    addr = "X-avax11ycxp65vz60m87mkm2hsw3m5fadjlpldzntvr33"
+    addr = "X-dione11ycxp65vz60m87mkm2hsw3m5fadjlpldzntvr33"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - Invalid HRP")
@@ -336,9 +336,9 @@ describe("BinTools", (): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "X-avax1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
-      "X-avax1ltghj033re64920k786uprcp82p9e36j8yl7hw",
-      "X-avax1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
+      "X-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
+      "X-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
+      "X-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
@@ -360,9 +360,9 @@ describe("BinTools", (): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "P-avax1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
-      "P-avax1ltghj033re64920k786uprcp82p9e36j8yl7hw",
-      "P-avax1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
+      "P-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
+      "P-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
+      "P-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
@@ -387,9 +387,9 @@ describe("BinTools", (): void => {
     })
 
     addrs = [
-      "C-avax1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
-      "C-avax1ltghj033re64920k786uprcp82p9e36j8yl7hw",
-      "C-avax1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
+      "C-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
+      "C-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
+      "C-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)

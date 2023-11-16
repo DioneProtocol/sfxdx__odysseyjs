@@ -1,6 +1,6 @@
 import "dotenv/config"
 import {
-  Avalanche,
+  Odyssey,
   BinTools,
   BN,
   Buffer,
@@ -26,7 +26,7 @@ import { Output } from "../../src/common"
 import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
-  ONEAVAX
+  ONEDIONE
 } from "../../src/utils"
 
 const bintools: BinTools = BinTools.getInstance()
@@ -34,8 +34,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
 // Keychain with 4 keys-A, B, C, and D
 const pKeychain: KeyChain = pchain.keyChain()
 // Keypair A
@@ -62,11 +62,11 @@ const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
 const pChainBlockchainID: string = "11111111111111111111111111111111LpoYY"
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
-const fee: BN = ONEAVAX
+const fee: BN = ONEDIONE
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const avaxUTXOKeychain: Buffer[] = [pAddresses[0], pAddresses[1]]
-const avaxUTXOKeychainStrings: string[] = [
+const dioneUTXOKeychain: Buffer[] = [pAddresses[0], pAddresses[1]]
+const dioneUTXOKeychainStrings: string[] = [
   pAddressStrings[0],
   pAddressStrings[1]
 ]
@@ -79,14 +79,14 @@ const main = async (): Promise<any> => {
   const amount: BN = new BN(507)
   const vcapSecpOutput = new SECPTransferOutput(
     amount,
-    avaxUTXOKeychain,
+    dioneUTXOKeychain,
     locktime,
     threshold
   )
   const initialStates: InitialStates = new InitialStates()
   initialStates.addOutput(vcapSecpOutput)
   const memo: Buffer = Buffer.from(
-    "Manually create a CreateChainTx which creates a 1-of-2 AVAX utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 SubnetAuth"
+    "Manually create a CreateChainTx which creates a 1-of-2 DIONE utxo and instantiates a VM into a blockchain by correctly signing the 2-of-3 SubnetAuth"
   )
   const genesisAsset = new GenesisAsset(
     assetAlias,
@@ -99,23 +99,23 @@ const main = async (): Promise<any> => {
   const genesisAssets: GenesisAsset[] = []
   genesisAssets.push(genesisAsset)
   const genesisData: GenesisData = new GenesisData(genesisAssets, networkID)
-  const avaxAssetID: Buffer = await pchain.getAVAXAssetID()
+  const dioneAssetID: Buffer = await pchain.getDIONEAssetID()
   const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee),
-    avaxUTXOKeychain,
+    dioneUTXOKeychain,
     locktime,
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    dioneAssetID,
     secpTransferOutput
   )
   outputs.push(transferableOutput)
 
   const platformVMUTXOResponse: any = await pchain.getUTXOs(
-    avaxUTXOKeychainStrings
+    dioneUTXOKeychainStrings
   )
   const utxoSet: UTXOSet = platformVMUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
@@ -133,7 +133,7 @@ const main = async (): Promise<any> => {
       const input: TransferableInput = new TransferableInput(
         txid,
         outputidx,
-        avaxAssetID,
+        dioneAssetID,
         secpTransferInput
       )
       inputs.push(input)

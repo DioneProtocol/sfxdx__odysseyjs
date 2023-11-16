@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   AVMAPI,
   KeyChain as AVMKeyChain,
@@ -26,8 +26,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: AVMKeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -35,8 +35,8 @@ xKeychain.importKey(privKey)
 const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].X.blockchainID
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
+const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const fee: BN = xchain.getDefaultTxFee()
@@ -52,7 +52,7 @@ const denomination: number = 3
 const main = async (): Promise<any> => {
   const getBalanceResponse: any = await xchain.getBalance(
     xAddressStrings[0],
-    avaxAssetID
+    dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
@@ -64,7 +64,7 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   // secpTransferOutput.setCodecID(codecID)
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetIDBuf,
+    dioneAssetIDBuf,
     secpTransferOutput
   )
   outputs.push(transferableOutput)
@@ -86,7 +86,7 @@ const main = async (): Promise<any> => {
     const input: TransferableInput = new TransferableInput(
       txid,
       outputidx,
-      avaxAssetIDBuf,
+      dioneAssetIDBuf,
       secpTransferInput
     )
     inputs.push(input)

@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BN, Buffer } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -18,8 +18,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
 // Keychain with 4 keys-A, B, C, and D
 const pKeychain: KeyChain = pchain.keyChain()
 // Keypair A
@@ -44,7 +44,7 @@ pKeychain.importKey(privKey)
 const pAddressStrings: string[] = pchain.keyChain().getAddressStrings()
 const threshold: number = 2
 const memo: Buffer = Buffer.from(
-  "PlatformVM utility method buildCreateSubnetTx to create a CreateSubnetTx which creates a 1-of-2 AVAX utxo and a 2-of-3 SubnetAuth"
+  "PlatformVM utility method buildCreateSubnetTx to create a CreateSubnetTx which creates a 1-of-2 DIONE utxo and a 2-of-3 SubnetAuth"
 )
 const asOf: BN = UnixNow()
 const subnetAuthKeychain: string[] = [

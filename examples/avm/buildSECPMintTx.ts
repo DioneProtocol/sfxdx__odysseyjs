@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   AVMAPI,
   KeyChain,
@@ -20,7 +20,7 @@ import {
 
 // assetID is generated from running
 // ts-node examples/avm/buildCreateAssetTx.ts
-// if you run the avm.getAllBalances method you will see the asset alongside AVAX, and a balance of 507
+// if you run the avm.getAllBalances method you will see the asset alongside DIONE, and a balance of 507
 
 const getUTXOIDs = (
   utxoSet: UTXOSet,
@@ -47,8 +47,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: KeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`

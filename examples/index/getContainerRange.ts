@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche } from "../../src"
+import { Odyssey } from "../../src"
 import { IndexAPI } from "../../src/apis/index"
 import { GetContainerRangeResponse } from "../../src/apis/index/interfaces"
 
@@ -7,8 +7,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const index: IndexAPI = avalanche.Index()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const index: IndexAPI = odyssey.Index()
 
 const main = async (): Promise<any> => {
   const startIndex: number = 0

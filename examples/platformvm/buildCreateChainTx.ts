@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer, GenesisData } from "../../src"
+import { Odyssey, BinTools, BN, Buffer, GenesisData } from "../../src"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -21,8 +21,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
 // Keychain with 4 keys-A, B, C, and D
 const pKeychain: KeyChain = pchain.keyChain()
 // Keypair A

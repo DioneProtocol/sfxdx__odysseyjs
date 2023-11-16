@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -29,8 +29,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
 const bintools: BinTools = BinTools.getInstance()
 const pKeychain: KeyChain = pchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -54,7 +54,7 @@ const delegationFee: number = 10
 
 const main = async (): Promise<any> => {
   const stakeAmount: any = await pchain.getMinStake()
-  const avaxAssetID: Buffer = await pchain.getAVAXAssetID()
+  const dioneAssetID: Buffer = await pchain.getDIONEAssetID()
   const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
@@ -64,7 +64,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    dioneAssetID,
     secpTransferOutput
   )
   outputs.push(transferableOutput)
@@ -76,7 +76,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const stakeTransferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    dioneAssetID,
     stakeSECPTransferOutput
   )
   stakeOuts.push(stakeTransferableOutput)
@@ -105,7 +105,7 @@ const main = async (): Promise<any> => {
       const input: TransferableInput = new TransferableInput(
         txid,
         outputidx,
-        avaxAssetID,
+        dioneAssetID,
         secpTransferInput
       )
       inputs.push(input)

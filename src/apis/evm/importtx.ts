@@ -286,31 +286,31 @@ export class ImportTx extends EVMBaseTx {
         seenAssetSends.set(address, [assetId])
       }
     })
-    // make sure this transaction pays the required avax fee
+    // make sure this transaction pays the required dione fee
     const selectedNetwork: number = this.getNetworkID()
     const feeDiff: BN = new BN(0)
-    const avaxAssetID: string =
-      Defaults.network[`${selectedNetwork}`].X.avaxAssetID
-    // sum incoming AVAX
+    const dioneAssetID: string =
+      Defaults.network[`${selectedNetwork}`].X.dioneAssetID
+    // sum incoming DIONE
     this.importIns.forEach((input: TransferableInput): void => {
       // only check StandardAmountInputs
       if (
         input.getInput() instanceof StandardAmountInput &&
-        avaxAssetID === bintools.cb58Encode(input.getAssetID())
+        dioneAssetID === bintools.cb58Encode(input.getAssetID())
       ) {
         const ui = input.getInput() as unknown
         const i = ui as StandardAmountInput
         feeDiff.iadd(i.getAmount())
       }
     })
-    // subtract all outgoing AVAX
+    // subtract all outgoing DIONE
     this.outs.forEach((evmOutput: EVMOutput): void => {
-      if (avaxAssetID === bintools.cb58Encode(evmOutput.getAssetID())) {
+      if (dioneAssetID === bintools.cb58Encode(evmOutput.getAssetID())) {
         feeDiff.isub(evmOutput.getAmount())
       }
     })
     if (feeDiff.lt(fee)) {
-      const errorMessage: string = `Error - ${fee} nAVAX required for fee and only ${feeDiff} nAVAX provided`
+      const errorMessage: string = `Error - ${fee} nDIONE required for fee and only ${feeDiff} nDIONE provided`
       throw new EVMFeeError(errorMessage)
     }
   }

@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios"
 import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
-import { Avalanche } from "src"
+import { Odyssey } from "src"
 import { KeystoreAPI } from "../../../src/apis/keystore/api"
 
 describe("Keystore", (): void => {
@@ -8,10 +8,10 @@ describe("Keystore", (): void => {
   const port: number = 9650
   const protocol: string = "https"
 
-  const username: string = "AvaLabs"
+  const username: string = "DioneProtocol"
   const password: string = "password"
 
-  const avalanche: Avalanche = new Avalanche(
+  const odyssey: Odyssey = new Odyssey(
     ip,
     port,
     protocol,
@@ -24,7 +24,7 @@ describe("Keystore", (): void => {
   let keystore: KeystoreAPI
 
   beforeAll((): void => {
-    keystore = new KeystoreAPI(avalanche)
+    keystore = new KeystoreAPI(odyssey)
   })
 
   afterEach((): void => {

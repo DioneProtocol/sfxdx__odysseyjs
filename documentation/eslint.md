@@ -1,4 +1,4 @@
-# AvalancheJS - ESlint Documentation
+# OdysseyJS - ESlint Documentation
 
 ## Overview
 

@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import { AVMAPI, KeyChain as AVMKeyChain } from "../../src/apis/avm"
 import {
   EVMAPI,
@@ -22,9 +22,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
-const cchain: EVMAPI = avalanche.CChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
+const cchain: EVMAPI = odyssey.CChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: AVMKeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -38,8 +38,8 @@ const xChainBlockchainIdBuf: Buffer = bintools.cb58Decode(xChainBlockchainIdStr)
 const cChainBlockchainIdStr: string = Defaults.network[networkID].C.blockchainID
 const cChainBlockchainIdBuf: Buffer = bintools.cb58Decode(cChainBlockchainIdStr)
 const cHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
+const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const evmInputs: EVMInput[] = []
 let exportedOuts: TransferableOutput[] = []
 const Web3 = require("web3")
@@ -60,8 +60,8 @@ const main = async (): Promise<any> => {
     antAssetBalanceResponse.data.result,
     16
   )
-  let avaxBalance: BN = await web3.eth.getBalance(cHexAddress)
-  avaxBalance = new BN(avaxBalance.toString().substring(0, 17))
+  let dioneBalance: BN = await web3.eth.getBalance(cHexAddress)
+  dioneBalance = new BN(dioneBalance.toString().substring(0, 17))
   const fee: BN = cchain.getDefaultTxFee()
   const txcount = await web3.eth.getTransactionCount(cHexAddress)
   const nonce: number = txcount
@@ -69,8 +69,8 @@ const main = async (): Promise<any> => {
 
   let evmInput: EVMInput = new EVMInput(
     cHexAddress,
-    avaxBalance,
-    avaxAssetID,
+    dioneBalance,
+    dioneAssetID,
     nonce
   )
   evmInput.addSignatureIdx(0, cAddresses[0])
@@ -81,13 +81,13 @@ const main = async (): Promise<any> => {
   evmInputs.push(evmInput)
 
   let secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    avaxBalance.sub(fee),
+    dioneBalance.sub(fee),
     xAddresses,
     locktime,
     threshold
   )
   let transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetIDBuf,
+    dioneAssetIDBuf,
     secpTransferOutput
   )
   exportedOuts.push(transferableOutput)

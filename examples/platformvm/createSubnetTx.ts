@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   PlatformVMAPI,
   KeyChain,
@@ -26,8 +26,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
 const bintools: BinTools = BinTools.getInstance()
 // Keychain with 4 keys-A, B, C, and D
 const pKeychain: KeyChain = pchain.keyChain()
@@ -61,9 +61,9 @@ const threshold: number = 1
 const threshold2: number = 2
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Manually create a CreateSubnetTx which creates a 1-of-2 AVAX utxo and a 2-of-3 SubnetAuth"
+  "Manually create a CreateSubnetTx which creates a 1-of-2 DIONE utxo and a 2-of-3 SubnetAuth"
 )
-const avaxUTXOKeychain: Buffer[] = [pAddresses[0], pAddresses[1]]
+const dioneUTXOKeychain: Buffer[] = [pAddresses[0], pAddresses[1]]
 const subnetAuthKeychain: Buffer[] = [
   pAddresses[1],
   pAddresses[2],
@@ -71,17 +71,17 @@ const subnetAuthKeychain: Buffer[] = [
 ]
 
 const main = async (): Promise<any> => {
-  const avaxAssetID: Buffer = await pchain.getAVAXAssetID()
+  const dioneAssetID: Buffer = await pchain.getDIONEAssetID()
   const getBalanceResponse: any = await pchain.getBalance(pAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee),
-    avaxUTXOKeychain,
+    dioneUTXOKeychain,
     locktime,
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetID,
+    dioneAssetID,
     secpTransferOutput
   )
   outputs.push(transferableOutput)
@@ -103,7 +103,7 @@ const main = async (): Promise<any> => {
       const input: TransferableInput = new TransferableInput(
         txid,
         outputidx,
-        avaxAssetID,
+        dioneAssetID,
         secpTransferInput
       )
       inputs.push(input)

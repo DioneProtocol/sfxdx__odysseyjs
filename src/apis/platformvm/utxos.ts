@@ -808,10 +808,10 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
    * @param networkID The number representing NetworkID of the node
    * @param blockchainID The {@link https://github.com/feross/buffer|Buffer} representing the BlockchainID for the transaction
    * @param amount The amount being exported as a {@link https://github.com/indutny/bn.js/|BN}
-   * @param avaxAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for AVAX
-   * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who recieves the AVAX
-   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who owns the AVAX
-   * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover of the AVAX
+   * @param dioneAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for DIONE
+   * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who recieves the DIONE
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who owns the DIONE
+   * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover of the DIONE
    * @param destinationChain Optional. A {@link https://github.com/feross/buffer|Buffer} for the chainid where to send the asset.
    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
    * @param feeAssetID Optional. The assetID of the fees being burned.
@@ -827,7 +827,7 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
     networkID: number,
     blockchainID: Buffer,
     amount: BN,
-    avaxAssetID: Buffer, // TODO: rename this to amountAssetID
+    dioneAssetID: Buffer, // TODO: rename this to amountAssetID
     toAddresses: Buffer[],
     fromAddresses: Buffer[],
     changeAddresses: Buffer[] = undefined,
@@ -854,11 +854,11 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
     }
 
     if (typeof feeAssetID === "undefined") {
-      feeAssetID = avaxAssetID
-    } else if (feeAssetID.toString("hex") !== avaxAssetID.toString("hex")) {
+      feeAssetID = dioneAssetID
+    } else if (feeAssetID.toString("hex") !== dioneAssetID.toString("hex")) {
       /* istanbul ignore next */
       throw new FeeAssetError(
-        "Error - UTXOSet.buildExportTx: " + `feeAssetID must match avaxAssetID`
+        "Error - UTXOSet.buildExportTx: " + `feeAssetID must match dioneAssetID`
       )
     }
 
@@ -873,10 +873,10 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       fromAddresses,
       changeAddresses
     )
-    if (avaxAssetID.toString("hex") === feeAssetID.toString("hex")) {
-      aad.addAssetAmount(avaxAssetID, amount, fee)
+    if (dioneAssetID.toString("hex") === feeAssetID.toString("hex")) {
+      aad.addAssetAmount(dioneAssetID, amount, fee)
     } else {
-      aad.addAssetAmount(avaxAssetID, amount, zero)
+      aad.addAssetAmount(dioneAssetID, amount, zero)
       if (this._feeCheck(fee, feeAssetID)) {
         aad.addAssetAmount(feeAssetID, zero, fee)
       }
@@ -914,11 +914,11 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
    *
    * @param networkID Networkid, [[DefaultNetworkID]]
    * @param blockchainID Blockchainid, default undefined
-   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees in AVAX
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees in DIONE
    * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the fee payment
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
-   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AVAX is returned).
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
    * @param weight The amount of weight for this subnet validator.
    * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
    * @param feeAssetID Optional. The assetID of the fees being burned.
@@ -999,14 +999,14 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
    *
    * @param networkID Networkid, [[DefaultNetworkID]]
    * @param blockchainID Blockchainid, default undefined
-   * @param avaxAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for AVAX
+   * @param dioneAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for DIONE
    * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} recieves the stake at the end of the staking period
    * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees and the stake
    * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the staking payment
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
-   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AVAX is returned).
-   * @param stakeAmount A {@link https://github.com/indutny/bn.js/|BN} for the amount of stake to be delegated in nAVAX.
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
+   * @param stakeAmount A {@link https://github.com/indutny/bn.js/|BN} for the amount of stake to be delegated in nDIONE.
    * @param rewardLocktime The locktime field created in the resulting reward outputs
    * @param rewardThreshold The number of signatures required to spend the funds in the resultant reward UTXO
    * @param rewardAddresses The addresses the validator reward goes.
@@ -1021,7 +1021,7 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
   buildAddDelegatorTx = (
     networkID: number = DefaultNetworkID,
     blockchainID: Buffer,
-    avaxAssetID: Buffer,
+    dioneAssetID: Buffer,
     toAddresses: Buffer[],
     fromAddresses: Buffer[],
     changeAddresses: Buffer[],
@@ -1066,10 +1066,10 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       fromAddresses,
       changeAddresses
     )
-    if (avaxAssetID.toString("hex") === feeAssetID.toString("hex")) {
-      aad.addAssetAmount(avaxAssetID, stakeAmount, fee)
+    if (dioneAssetID.toString("hex") === feeAssetID.toString("hex")) {
+      aad.addAssetAmount(dioneAssetID, stakeAmount, fee)
     } else {
-      aad.addAssetAmount(avaxAssetID, stakeAmount, zero)
+      aad.addAssetAmount(dioneAssetID, stakeAmount, zero)
       if (this._feeCheck(fee, feeAssetID)) {
         aad.addAssetAmount(feeAssetID, zero, fee)
       }
@@ -1117,14 +1117,14 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
    *
    * @param networkID NetworkID, [[DefaultNetworkID]]
    * @param blockchainID BlockchainID, default undefined
-   * @param avaxAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for AVAX
+   * @param dioneAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for DIONE
    * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} recieves the stake at the end of the staking period
    * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees and the stake
    * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the staking payment
    * @param nodeID The node ID of the validator being added.
    * @param startTime The Unix time when the validator starts validating the Primary Network.
-   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked AVAX is returned).
-   * @param stakeAmount A {@link https://github.com/indutny/bn.js/|BN} for the amount of stake to be delegated in nAVAX.
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
+   * @param stakeAmount A {@link https://github.com/indutny/bn.js/|BN} for the amount of stake to be delegated in nDIONE.
    * @param rewardLocktime The locktime field created in the resulting reward outputs
    * @param rewardThreshold The number of signatures required to spend the funds in the resultant reward UTXO
    * @param rewardAddresses The addresses the validator reward goes.
@@ -1140,7 +1140,7 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
   buildAddValidatorTx = (
     networkID: number = DefaultNetworkID,
     blockchainID: Buffer,
-    avaxAssetID: Buffer,
+    dioneAssetID: Buffer,
     toAddresses: Buffer[],
     fromAddresses: Buffer[],
     changeAddresses: Buffer[],
@@ -1180,10 +1180,10 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       fromAddresses,
       changeAddresses
     )
-    if (avaxAssetID.toString("hex") === feeAssetID.toString("hex")) {
-      aad.addAssetAmount(avaxAssetID, stakeAmount, fee)
+    if (dioneAssetID.toString("hex") === feeAssetID.toString("hex")) {
+      aad.addAssetAmount(dioneAssetID, stakeAmount, fee)
     } else {
-      aad.addAssetAmount(avaxAssetID, stakeAmount, zero)
+      aad.addAssetAmount(dioneAssetID, stakeAmount, zero)
       if (this._feeCheck(fee, feeAssetID)) {
         aad.addAssetAmount(feeAssetID, zero, fee)
       }

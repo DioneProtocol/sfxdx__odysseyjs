@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   AVMAPI,
   SECPTransferOutput,
@@ -52,8 +52,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: KeyChain = xchain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -61,8 +61,8 @@ xKeychain.importKey(privKey)
 const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].X.blockchainID
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
+const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
 const operations: TransferableOperation[] = []
@@ -90,7 +90,7 @@ const main = async (): Promise<any> => {
       const amountOutput: AmountOutput = utxo.getOutput() as AmountOutput
       const amt: BN = amountOutput.getAmount().clone()
 
-      if (assetID.toString("hex") === avaxAssetIDBuf.toString("hex")) {
+      if (assetID.toString("hex") === dioneAssetIDBuf.toString("hex")) {
         const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
           amt.sub(fee),
           xAddresses,
@@ -100,7 +100,7 @@ const main = async (): Promise<any> => {
         // Uncomment for codecID 00 01
         // secpTransferOutput.setCodecID(codecID)
         const transferableOutput: TransferableOutput = new TransferableOutput(
-          avaxAssetIDBuf,
+          dioneAssetIDBuf,
           secpTransferOutput
         )
         outputs.push(transferableOutput)
@@ -112,7 +112,7 @@ const main = async (): Promise<any> => {
         const input: TransferableInput = new TransferableInput(
           txid,
           outputidx,
-          avaxAssetIDBuf,
+          dioneAssetIDBuf,
           secpTransferInput
         )
         inputs.push(input)

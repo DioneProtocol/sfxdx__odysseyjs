@@ -23,7 +23,7 @@ const bech32Decoder = (item: string) => {
 
 const main = async (): Promise<any> => {
   //can be used for P and X addresses too
-  const address: string = "C-avax1hwgqh0s6yrdy636xv6me5haxecfx99enh5278a"
+  const address: string = "C-dione1hwgqh0s6yrdy636xv6me5haxecfx99enh5278a"
   const bech32DecodedAddress = bech32Decoder(address)
   console.log("Decoded address (0x format): " + bech32DecodedAddress)
 }

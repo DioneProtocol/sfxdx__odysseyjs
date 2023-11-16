@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, Buffer } from "../../src"
+import { Odyssey, Buffer } from "../../src"
 import { EVMAPI, Tx } from "../../src/apis/evm"
 import { Serialization } from "../../src/utils"
 import { SerializedType } from "../../src/utils"
@@ -10,8 +10,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const cchain: EVMAPI = avalanche.CChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const cchain: EVMAPI = odyssey.CChain()
 const cb58: SerializedType = "cb58"
 const serialization: Serialization = Serialization.getInstance()
 
@@ -53,7 +53,7 @@ const main = async (): Promise<any> => {
     return "0x" + hexValueFromJSON.toString().split(",").join("")
   }
   const bech32Encoder = (item: string) => {
-    const hrp = "avax"
+    const hrp = "dione"
     let valueFromJSON = item
     let bufValueFromJson = Buffer.from(valueFromJSON)
     let arrValueFromJSON = [...bufValueFromJson]
@@ -90,7 +90,7 @@ const main = async (): Promise<any> => {
       Address: bufToHex(input.address.data),
       Amount: bufToHex(input.amount.data),
       AmountValue: "0x" + input.amountValue,
-      DecimalAmountValue: fromHexToDec(input.amountValue) + " AVAX",
+      DecimalAmountValue: fromHexToDec(input.amountValue) + " DIONE",
       AssetID: base58Encoder(input.assetID.data),
       Nonce: bufToHex(input.nonce.data),
       NonceValue: input.nonceValue,
@@ -115,7 +115,7 @@ const main = async (): Promise<any> => {
           })),
           Amount: bufToHex(out.output.amount),
           AmountValue: "0x" + out.output.amountValue,
-          DecimalAmountValue: fromHexToDec(out.output.amountValue) + " AVAX"
+          DecimalAmountValue: fromHexToDec(out.output.amountValue) + " DIONE"
         }
       })
     )
@@ -184,7 +184,7 @@ const main = async (): Promise<any> => {
           })),
           Amount: bufToHex(inp.input.amount),
           AmountValue: "0x" + inp.input.amountValue,
-          DecimalAmountValue: fromHexToDec(inp.input.amountValue) + " AVAX"
+          DecimalAmountValue: fromHexToDec(inp.input.amountValue) + " DIONE"
         }
       })
     )
@@ -192,7 +192,7 @@ const main = async (): Promise<any> => {
       Address: bufToHex(out.address.data),
       Amount: bufToHex(out.amount.data),
       AmountValue: "0x" + out.amountValue,
-      DecimalAmountValue: fromHexToDec(out.amountValue) + " AVAX",
+      DecimalAmountValue: fromHexToDec(out.amountValue) + " DIONE",
       AssetID: base58Encoder(out.assetID.data)
     }))
     let importedTxCredentials = jsn.credentials.map((credential) => ({

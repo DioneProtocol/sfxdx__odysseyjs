@@ -8,7 +8,7 @@ const TerserPlugin = require("terser-webpack-plugin")
 
 module.exports = {
   entry: {
-    avalanche: "./dist/index.js"
+    odyssey: "./dist/index.js"
   },
 
   devServer: {
@@ -35,7 +35,7 @@ module.exports = {
     //filename: '[name]-[git-revision-version].js',
     filename: "[name].js",
     path: path.resolve(__dirname, "web"),
-    library: "avalanche",
+    library: "odyssey",
     libraryTarget: "umd",
     umdNamedDefine: true
   },

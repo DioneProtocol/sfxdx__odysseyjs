@@ -2,7 +2,7 @@ import * as bech32 from "bech32"
 import { Buffer } from "../../src"
 
 const bech32Encoder = (item: string) => {
-  const hrp = "avax"
+  const hrp = "dione"
   const bufFromHex = Buffer.from(item.slice(2), "hex")
   const arrBuf = [...bufFromHex]
   const bech32Address = bech32.bech32.encode(hrp, bech32.bech32.toWords(arrBuf))

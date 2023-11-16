@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, Buffer } from "../../src"
+import { Odyssey, Buffer } from "../../src"
 import { Vertex } from "../../src/apis/avm"
 import { IndexAPI } from "../../src/apis/index"
 import {
@@ -11,8 +11,8 @@ const ip = process.env.IP_INDEXER
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const index: IndexAPI = avalanche.Index()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const index: IndexAPI = odyssey.Index()
 
 const sleep = (ms: number): Promise<unknown> => {
   return new Promise((resolve) => setTimeout(resolve, ms))

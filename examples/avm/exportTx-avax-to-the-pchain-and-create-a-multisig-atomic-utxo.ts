@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   AVMAPI,
   KeyChain,
@@ -28,9 +28,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const xchain: AVMAPI = avalanche.XChain()
-const pchain: PlatformVMAPI = avalanche.PChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const xchain: AVMAPI = odyssey.XChain()
+const pchain: PlatformVMAPI = odyssey.PChain()
 const bintools: BinTools = BinTools.getInstance()
 const xKeychain: KeyChain = xchain.keyChain()
 const pKeychain: PlatformVMKeyChain = pchain.keyChain()
@@ -53,8 +53,8 @@ const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 const pAddresses: Buffer[] = pchain.keyChain().getAddresses()
 const xChainID: string = Defaults.network[networkID].X.blockchainID
 const xChainIDBuf: Buffer = bintools.cb58Decode(xChainID)
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
+const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const pChainID: string = Defaults.network[networkID].P.blockchainID
 const pChainIDBuf: Buffer = bintools.cb58Decode(pChainID)
 const exportedOuts: TransferableOutput[] = []
@@ -64,13 +64,13 @@ const fee: BN = xchain.getDefaultTxFee()
 const threshold: number = 2
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "Export AVAX from the X-Chain to the P-Chain and create a multisig atomic utxo"
+  "Export DIONE from the X-Chain to the P-Chain and create a multisig atomic utxo"
 )
 
 const main = async (): Promise<any> => {
   const getBalanceResponse: any = await xchain.getBalance(
     xAddressStrings[0],
-    avaxAssetID
+    dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
@@ -80,7 +80,7 @@ const main = async (): Promise<any> => {
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetIDBuf,
+    dioneAssetIDBuf,
     secpTransferOutput
   )
   exportedOuts.push(transferableOutput)
@@ -100,7 +100,7 @@ const main = async (): Promise<any> => {
     const input: TransferableInput = new TransferableInput(
       txID,
       outputIdx,
-      avaxAssetIDBuf,
+      dioneAssetIDBuf,
       secpTransferInput
     )
     inputs.push(input)

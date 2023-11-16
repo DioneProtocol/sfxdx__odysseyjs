@@ -1,6 +1,6 @@
 # Keystore RPC
 
-Example scripts for the Avalanche [Keystore RPC](https://docs.avax.network/build/avalanchego-apis/keystore)
+Example scripts for the Odyssey [Keystore RPC](https://docs.dione.network/build/odysseygo-apis/keystore)
 
 * [createUser.ts](./createUser.ts)
 * [deleteUser.ts](./deleteUser.ts)

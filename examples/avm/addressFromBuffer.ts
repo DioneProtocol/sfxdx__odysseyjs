@@ -1,12 +1,12 @@
 import "dotenv/config"
-import { Avalanche, Buffer } from "../../src"
+import { Odyssey, Buffer } from "../../src"
 import { AVMAPI } from "../../src/apis/avm"
 import { UTXOSet, UTXO } from "../../src/apis/platformvm"
 import { Output } from "../../src/common"
 // Change the networkID to affect the HRP of the bech32 encoded address
 // NetworkID - Bech32 Address - ChainPrefix-HRP1AddressChecksum
 //         0 - X-custom19rknw8l0grnfunjrzwxlxync6zrlu33yeg5dya
-//         1 - X-avax19rknw8l0grnfunjrzwxlxync6zrlu33y2jxhrg
+//         1 - X-dione19rknw8l0grnfunjrzwxlxync6zrlu33y2jxhrg
 //         2 - X-cascade19rknw8l0grnfunjrzwxlxync6zrlu33ypmtvnh
 //         3 - X-denali19rknw8l0grnfunjrzwxlxync6zrlu33yhc357h
 //         4 - X-everest19rknw8l0grnfunjrzwxlxync6zrlu33yn44wty
@@ -14,13 +14,13 @@ import { Output } from "../../src/common"
 //      1337 - X-custom19rknw8l0grnfunjrzwxlxync6zrlu33yeg5dya
 //     12345 - X-local19rknw8l0grnfunjrzwxlxync6zrlu33ynpm3qq
 const networkID: number = 12345
-const avalanche: Avalanche = new Avalanche(
+const odyssey: Odyssey = new Odyssey(
   undefined,
   undefined,
   undefined,
   networkID
 )
-const xchain: AVMAPI = avalanche.XChain()
+const xchain: AVMAPI = odyssey.XChain()
 
 const main = async (): Promise<any> => {
   const utxoset: UTXOSet = new UTXOSet()

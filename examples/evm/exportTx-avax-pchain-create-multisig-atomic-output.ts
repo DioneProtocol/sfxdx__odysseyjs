@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Avalanche, BinTools, BN, Buffer } from "../../src"
+import { Odyssey, BinTools, BN, Buffer } from "../../src"
 import {
   PlatformVMAPI,
   KeyChain as PlatformVMKeyChain
@@ -18,7 +18,7 @@ import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
   Defaults,
-  ONEAVAX
+  ONEDIONE
 } from "../../src/utils"
 const Web3 = require("web3")
 
@@ -26,9 +26,9 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
-const pchain: PlatformVMAPI = avalanche.PChain()
-const cchain: EVMAPI = avalanche.CChain()
+const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
+const pchain: PlatformVMAPI = odyssey.PChain()
+const cchain: EVMAPI = odyssey.CChain()
 const bintools: BinTools = BinTools.getInstance()
 const pKeychain: PlatformVMKeyChain = pchain.keyChain()
 let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
@@ -54,8 +54,8 @@ const pChainId: string = Defaults.network[networkID].P.blockchainID
 const pChainIdBuf: Buffer = bintools.cb58Decode(pChainId)
 const cChainId: string = Defaults.network[networkID].C.blockchainID
 const cChainIdBuf: Buffer = bintools.cb58Decode(cChainId)
-const avaxAssetID: string = Defaults.network[networkID].X.avaxAssetID
-const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+const dioneAssetID: string = Defaults.network[networkID].X.dioneAssetID
+const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const cHexAddress: string = "0xeA6B543A9E625C04745EcA3D7a74D74B733b8C15"
 const evmInputs: EVMInput[] = []
 const exportedOuts: TransferableOutput[] = []
@@ -73,21 +73,21 @@ const main = async (): Promise<any> => {
 
   const evmInput: EVMInput = new EVMInput(
     cHexAddress,
-    ONEAVAX,
-    avaxAssetID,
+    ONEDIONE,
+    dioneAssetID,
     nonce
   )
   evmInput.addSignatureIdx(0, cAddresses[0])
   evmInputs.push(evmInput)
 
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    ONEAVAX.sub(fee.mul(new BN(2))),
+    ONEDIONE.sub(fee.mul(new BN(2))),
     pAddresses,
     locktime,
     threshold
   )
   const transferableOutput: TransferableOutput = new TransferableOutput(
-    avaxAssetIDBuf,
+    dioneAssetIDBuf,
     secpTransferOutput
   )
   exportedOuts.push(transferableOutput)

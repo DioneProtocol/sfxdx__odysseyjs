@@ -1,8 +1,8 @@
 /**
  * @packageDocumentation
- * @module Avalanche
+ * @module Odyssey
  */
-import AvalancheCore from "./avalanche"
+import OdysseyCore from "./odyssey"
 import { AdminAPI } from "./apis/admin/api"
 import { AuthAPI } from "./apis/auth/api"
 import { AVMAPI } from "./apis/avm/api"
@@ -27,15 +27,15 @@ import BN from "bn.js"
 import { Buffer } from "buffer/"
 
 /**
- * AvalancheJS is middleware for interacting with Avalanche node RPC APIs.
+ * OdysseyJS is middleware for interacting with Odyssey node RPC APIs.
  *
  * Example usage:
  * ```js
- * const avalanche: Avalanche = new Avalanche("127.0.0.1", 9650, "https")
+ * const odyssey: Odyssey = new Odyssey("127.0.0.1", 9650, "https")
  * ```
  *
  */
-export default class Avalanche extends AvalancheCore {
+export default class Odyssey extends OdysseyCore {
   /**
    * Returns a reference to the Admin RPC.
    */
@@ -88,10 +88,10 @@ export default class Avalanche extends AvalancheCore {
   PChain = () => this.apis.pchain as PlatformVMAPI
 
   /**
-   * Creates a new Avalanche instance. Sets the address and port of the main Avalanche Client.
+   * Creates a new Odyssey instance. Sets the address and port of the main Odyssey Client.
    *
-   * @param host The hostname to resolve to reach the Avalanche Client RPC APIs
-   * @param port The port to resolve to reach the Avalanche Client RPC APIs
+   * @param host The hostname to resolve to reach the Odyssey Client RPC APIs
+   * @param port The port to resolve to reach the Odyssey Client RPC APIs
    * @param protocol The protocol string to use before a "://" in a request,
    * ex: "http", "https", "git", "ws", etc. Defaults to http
    * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
@@ -153,7 +153,7 @@ export default class Avalanche extends AvalancheCore {
       this.addAPI("admin", AdminAPI)
       this.addAPI("auth", AuthAPI)
       this.addAPI("xchain", AVMAPI, "/ext/bc/X", xchainid)
-      this.addAPI("cchain", EVMAPI, "/ext/bc/C/avax", cchainid)
+      this.addAPI("cchain", EVMAPI, "/ext/bc/C/dione", cchainid)
       this.addAPI("health", HealthAPI)
       this.addAPI("info", InfoAPI)
       this.addAPI("index", IndexAPI)
@@ -164,8 +164,8 @@ export default class Avalanche extends AvalancheCore {
   }
 }
 
-export { Avalanche }
-export { AvalancheCore }
+export { Odyssey }
+export { OdysseyCore }
 export { BinTools }
 export { BN }
 export { Buffer }

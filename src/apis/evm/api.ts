@@ -5,7 +5,7 @@
 
 import { Buffer } from "buffer/"
 import BN from "bn.js"
-import AvalancheCore from "../../avalanche"
+import OdysseyCore from "../../odyssey"
 import { JRPCAPI } from "../../common/jrpcapi"
 import { RequestResponseData } from "../../common/apibase"
 import BinTools from "../../utils/bintools"
@@ -31,14 +31,14 @@ import {
 } from "../../utils/errors"
 import { Serialization, SerializedType } from "../../utils"
 import {
-  ExportAVAXParams,
+  ExportDIONEParams,
   ExportKeyParams,
   ExportParams,
   GetAtomicTxParams,
   GetAssetDescriptionParams,
   GetAtomicTxStatusParams,
   GetUTXOsParams,
-  ImportAVAXParams,
+  ImportDIONEParams,
   ImportKeyParams,
   ImportParams
 } from "./interfaces"
@@ -54,7 +54,7 @@ const serialization: Serialization = Serialization.getInstance()
  *
  * @category RPCAPIs
  *
- * @remarks This extends the [[JRPCAPI]] class. This class should not be directly called. Instead, use the [[Avalanche.addAPI]] function to register this interface with Avalanche.
+ * @remarks This extends the [[JRPCAPI]] class. This class should not be directly called. Instead, use the [[Odyssey.addAPI]] function to register this interface with Odyssey.
  */
 export class EVMAPI extends JRPCAPI {
   /**
@@ -63,7 +63,7 @@ export class EVMAPI extends JRPCAPI {
   protected keychain: KeyChain = new KeyChain("", "")
   protected blockchainID: string = ""
   protected blockchainAlias: string = undefined
-  protected AVAXAssetID: Buffer = undefined
+  protected DIONEAssetID: Buffer = undefined
   protected txFee: BN = undefined
 
   /**
@@ -201,32 +201,32 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Fetches the AVAX AssetID and returns it in a Promise.
+   * Fetches the DIONE AssetID and returns it in a Promise.
    *
    * @param refresh This function caches the response. Refresh = true will bust the cache.
    *
-   * @returns The the provided string representing the AVAX AssetID
+   * @returns The the provided string representing the DIONE AssetID
    */
-  getAVAXAssetID = async (refresh: boolean = false): Promise<Buffer> => {
-    if (typeof this.AVAXAssetID === "undefined" || refresh) {
+  getDIONEAssetID = async (refresh: boolean = false): Promise<Buffer> => {
+    if (typeof this.DIONEAssetID === "undefined" || refresh) {
       const asset: Asset = await this.getAssetDescription(PrimaryAssetAlias)
-      this.AVAXAssetID = asset.assetID
+      this.DIONEAssetID = asset.assetID
     }
-    return this.AVAXAssetID
+    return this.DIONEAssetID
   }
 
   /**
-   * Overrides the defaults and sets the cache to a specific AVAX AssetID
+   * Overrides the defaults and sets the cache to a specific DIONE AssetID
    *
-   * @param avaxAssetID A cb58 string or Buffer representing the AVAX AssetID
+   * @param dioneAssetID A cb58 string or Buffer representing the DIONE AssetID
    *
-   * @returns The the provided string representing the AVAX AssetID
+   * @returns The the provided string representing the DIONE AssetID
    */
-  setAVAXAssetID = (avaxAssetID: string | Buffer) => {
-    if (typeof avaxAssetID === "string") {
-      avaxAssetID = bintools.cb58Decode(avaxAssetID)
+  setDIONEAssetID = (dioneAssetID: string | Buffer) => {
+    if (typeof dioneAssetID === "string") {
+      dioneAssetID = bintools.cb58Decode(dioneAssetID)
     }
-    this.AVAXAssetID = avaxAssetID
+    this.DIONEAssetID = dioneAssetID
   }
 
   /**
@@ -280,7 +280,7 @@ export class EVMAPI extends JRPCAPI {
     }
 
     const response: RequestResponseData = await this.callMethod(
-      "avax.getAtomicTxStatus",
+      "dione.getAtomicTxStatus",
       params
     )
     return response.data.result.status
@@ -301,7 +301,7 @@ export class EVMAPI extends JRPCAPI {
     }
 
     const response: RequestResponseData = await this.callMethod(
-      "avax.getAtomicTx",
+      "dione.getAtomicTx",
       params
     )
     return response.data.result.tx
@@ -320,13 +320,13 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Avalanche Native Token) assets including AVAX from the C-Chain to an account on the X-Chain.
+   * Send ANT (Odyssey Native Token) assets including DIONE from the C-Chain to an account on the X-Chain.
    *
    * After calling this method, you must call the X-Chain’s import method to complete the transfer.
    *
    * @param username The Keystore user that controls the X-Chain account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The account on the X-Chain to send the AVAX to.
+   * @param to The account on the X-Chain to send the DIONE to.
    * @param amount Amount of asset to export as a {@link https://github.com/indutny/bn.js/|BN}
    * @param assetID The asset id which is being sent
    *
@@ -347,7 +347,7 @@ export class EVMAPI extends JRPCAPI {
       assetID
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.export",
+      "dione.export",
       params
     )
     return response.data.result.txID
@@ -356,31 +356,31 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AVAX from the C-Chain to an account on the X-Chain.
+   * Send DIONE from the C-Chain to an account on the X-Chain.
    *
-   * After calling this method, you must call the X-Chain’s importAVAX method to complete the transfer.
+   * After calling this method, you must call the X-Chain’s importDIONE method to complete the transfer.
    *
    * @param username The Keystore user that controls the X-Chain account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The account on the X-Chain to send the AVAX to.
-   * @param amount Amount of AVAX to export as a {@link https://github.com/indutny/bn.js/|BN}
+   * @param to The account on the X-Chain to send the DIONE to.
+   * @param amount Amount of DIONE to export as a {@link https://github.com/indutny/bn.js/|BN}
    *
    * @returns String representing the transaction id
    */
-  exportAVAX = async (
+  exportDIONE = async (
     username: string,
     password: string,
     to: string,
     amount: BN
   ): Promise<string> => {
-    const params: ExportAVAXParams = {
+    const params: ExportDIONEParams = {
       to,
       amount: amount.toString(10),
       username,
       password
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.exportAVAX",
+      "dione.exportDIONE",
       params
     )
     return response.data.result.txID
@@ -428,7 +428,7 @@ export class EVMAPI extends JRPCAPI {
     }
 
     const response: RequestResponseData = await this.callMethod(
-      "avax.getUTXOs",
+      "dione.getUTXOs",
       params
     )
     const utxos: UTXOSet = new UTXOSet()
@@ -448,7 +448,7 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send ANT (Avalanche Native Token) assets including AVAX from an account on the X-Chain to an address on the C-Chain. This transaction
+   * Send ANT (Odyssey Native Token) assets including DIONE from an account on the X-Chain to an address on the C-Chain. This transaction
    * must be signed with the key of the account that the asset is sent from and which pays
    * the transaction fee.
    *
@@ -473,7 +473,7 @@ export class EVMAPI extends JRPCAPI {
       password
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.import",
+      "dione.import",
       params
     )
     return response.data.result.txID
@@ -482,33 +482,33 @@ export class EVMAPI extends JRPCAPI {
   }
 
   /**
-   * Send AVAX from an account on the X-Chain to an address on the C-Chain. This transaction
-   * must be signed with the key of the account that the AVAX is sent from and which pays
+   * Send DIONE from an account on the X-Chain to an address on the C-Chain. This transaction
+   * must be signed with the key of the account that the DIONE is sent from and which pays
    * the transaction fee.
    *
    * @param username The Keystore user that controls the account specified in `to`
    * @param password The password of the Keystore user
-   * @param to The address of the account the AVAX is sent to. This must be the same as the to
-   * argument in the corresponding call to the X-Chain’s exportAVAX
+   * @param to The address of the account the DIONE is sent to. This must be the same as the to
+   * argument in the corresponding call to the X-Chain’s exportDIONE
    * @param sourceChain The chainID where the funds are coming from.
    *
    * @returns Promise for a string for the transaction, which should be sent to the network
    * by calling issueTx.
    */
-  importAVAX = async (
+  importDIONE = async (
     username: string,
     password: string,
     to: string,
     sourceChain: string
   ): Promise<string> => {
-    const params: ImportAVAXParams = {
+    const params: ImportDIONEParams = {
       to,
       sourceChain,
       username,
       password
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.importAVAX",
+      "dione.importDIONE",
       params
     )
     return response.data.result.txID
@@ -536,7 +536,7 @@ export class EVMAPI extends JRPCAPI {
       privateKey
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.importKey",
+      "dione.importKey",
       params
     )
     return response.data.result.address
@@ -564,7 +564,7 @@ export class EVMAPI extends JRPCAPI {
     } else {
       /* istanbul ignore next */
       throw new TransactionError(
-        "Error - avax.issueTx: provided tx is not expected type of string, Buffer, or Tx"
+        "Error - dione.issueTx: provided tx is not expected type of string, Buffer, or Tx"
       )
     }
     const params: IssueTxParams = {
@@ -572,7 +572,7 @@ export class EVMAPI extends JRPCAPI {
       encoding: "hex"
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.issueTx",
+      "dione.issueTx",
       params
     )
     return response.data.result.txID
@@ -600,7 +600,7 @@ export class EVMAPI extends JRPCAPI {
       address
     }
     const response: RequestResponseData = await this.callMethod(
-      "avax.exportKey",
+      "dione.exportKey",
       params
     )
     return response.data.result
@@ -657,8 +657,8 @@ export class EVMAPI extends JRPCAPI {
     )
     const atomicUTXOs: UTXOSet = utxoResponse.utxos
     const networkID: number = this.core.getNetworkID()
-    const avaxAssetID: string = Defaults.network[`${networkID}`].X.avaxAssetID
-    const avaxAssetIDBuf: Buffer = bintools.cb58Decode(avaxAssetID)
+    const dioneAssetID: string = Defaults.network[`${networkID}`].X.dioneAssetID
+    const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
     const atomics: UTXO[] = atomicUTXOs.getAllUTXOs()
 
     if (atomics.length === 0) {
@@ -674,7 +674,7 @@ export class EVMAPI extends JRPCAPI {
       atomics,
       sourceChain,
       fee,
-      avaxAssetIDBuf
+      dioneAssetIDBuf
     )
 
     return builtUnsignedTx
@@ -734,7 +734,7 @@ export class EVMAPI extends JRPCAPI {
         "Error - EVMAPI.buildExportTx: Destination ChainID must be 32 bytes in length."
       )
     }
-    const assetDescription: any = await this.getAssetDescription("AVAX")
+    const assetDescription: any = await this.getAssetDescription("DIONE")
     let evmInputs: EVMInput[] = []
     if (bintools.cb58Encode(assetDescription.assetID) === assetID) {
       const evmInput: EVMInput = new EVMInput(
@@ -746,17 +746,17 @@ export class EVMAPI extends JRPCAPI {
       evmInput.addSignatureIdx(0, bintools.stringToAddress(fromAddressBech))
       evmInputs.push(evmInput)
     } else {
-      // if asset id isn't AVAX asset id then create 2 inputs
-      // first input will be AVAX and will be for the amount of the fee
+      // if asset id isn't DIONE asset id then create 2 inputs
+      // first input will be DIONE and will be for the amount of the fee
       // second input will be the ANT
-      const evmAVAXInput: EVMInput = new EVMInput(
+      const evmDIONEInput: EVMInput = new EVMInput(
         fromAddressHex,
         fee,
         assetDescription.assetID,
         nonce
       )
-      evmAVAXInput.addSignatureIdx(0, bintools.stringToAddress(fromAddressBech))
-      evmInputs.push(evmAVAXInput)
+      evmDIONEInput.addSignatureIdx(0, bintools.stringToAddress(fromAddressBech))
+      evmInputs.push(evmDIONEInput)
 
       const evmANTInput: EVMInput = new EVMInput(
         fromAddressHex,
@@ -861,15 +861,15 @@ export class EVMAPI extends JRPCAPI {
 
   /**
    * This class should not be instantiated directly.
-   * Instead use the [[Avalanche.addAPI]] method.
+   * Instead use the [[Odyssey.addAPI]] method.
    *
-   * @param core A reference to the Avalanche class
-   * @param baseURL Defaults to the string "/ext/bc/C/avax" as the path to blockchain's baseURL
+   * @param core A reference to the Odyssey class
+   * @param baseURL Defaults to the string "/ext/bc/C/dione" as the path to blockchain's baseURL
    * @param blockchainID The Blockchain's ID. Defaults to an empty string: ""
    */
   constructor(
-    core: AvalancheCore,
-    baseURL: string = "/ext/bc/C/avax",
+    core: OdysseyCore,
+    baseURL: string = "/ext/bc/C/dione",
     blockchainID: string = ""
   ) {
     super(core, baseURL)

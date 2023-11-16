@@ -1,6 +1,6 @@
 # Admin RPC
 
-Example scripts for the Avalanche [Admin RPC](https://docs.avax.network/build/avalanchego-apis/admin-api)
+Example scripts for the Odyssey [Admin RPC](https://docs.dione.network/build/odysseygo-apis/admin-api)
 
 * [alias.ts](./alias.ts)
 * [aliasChain.ts](./aliasChain.ts)
