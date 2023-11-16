@@ -49,8 +49,6 @@ export interface P {
   minStake: BN
   minStakeDuration: number
   maxStakeDuration: number
-  minDelegationStake: BN
-  minDelegationFee: BN
   dioneAssetID?: string
   txFee?: BN | number
   fee?: BN
@@ -67,46 +65,29 @@ export interface Networks {
 }
 
 export const NetworkIDToHRP: object = {
-  0: "custom",
   1: "dione",
-  2: "cascade",
-  3: "denali",
-  4: "everest",
-  5: "fuji",
+  5: "test",
   1337: "custom",
   12345: "local"
 }
 
 export const HRPToNetworkID: object = {
-  manhattan: 0,
   dione: 1,
-  cascade: 2,
-  denali: 3,
-  everest: 4,
-  fuji: 5,
+  test: 5,
   custom: 1337,
   local: 12345
 }
 
 export const NetworkIDToNetworkNames: object = {
-  0: ["Manhattan"],
   1: ["Odyssey", "Mainnet"],
-  2: ["Cascade"],
-  3: ["Denali"],
-  4: ["Everest"],
-  5: ["Fuji", "Testnet"],
+  5: ["Testnet"],
   1337: ["Custom Network"],
   12345: ["Local Network"]
 }
 
 export const NetworkNameToNetworkID: object = {
-  Manhattan: 0,
   Odyssey: 1,
   Mainnet: 1,
-  Cascade: 2,
-  Denali: 3,
-  Everest: 4,
-  Fuji: 5,
   Testnet: 5,
   Custom: 1337,
   "Custom Network": 1337,
@@ -160,55 +141,16 @@ export const DIONEGWEI: BN = NANODIONE.clone()
 
 export const DIONESTAKECAP: BN = ONEDIONE.mul(new BN(3000000))
 
-// Start Manhattan
-const n0X: X = {
-  blockchainID: "2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9",
-  alias: XChainAlias,
-  vm: XChainVMName,
-  fee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  mintTxFee: MILLIDIONE
-}
-
-const n0P: P = {
-  blockchainID: PlatformChainID,
-  alias: PChainAlias,
-  vm: PChainVMName,
-  fee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  createSubnetTx: ONEDIONE,
-  createChainTx: ONEDIONE,
-  minConsumption: 0.1,
-  maxConsumption: 0.12,
-  maxStakingDuration: new BN(31536000),
-  maxSupply: new BN(720000000).mul(ONEDIONE),
-  minStake: ONEDIONE.mul(new BN(2000)),
-  minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEDIONE.mul(new BN(25)),
-  minDelegationFee: new BN(2)
-}
-
-const n0C: C = {
-  blockchainID: "2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb",
-  alias: CChainAlias,
-  vm: CChainVMName,
-  fee: MILLIDIONE,
-  gasPrice: GWEI.mul(new BN(470)), //equivalent to gas price
-  chainID: 43111
-}
-// End Manhattan
-
 // Start mainnet
-let dioneAssetID: string = "FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z"
+let dioneAssetID: string = "2bQKRoEpE62R58KWwSNhGPfmYbEw1dAFVFtQHNA7iQpwkp7JBd"
 const n1X: X = {
-  blockchainID: "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM",
+  blockchainID: "2sf39qr8dm81fQ5mfizWfFBe65TkVU6AqjYx9x7PQ61pDYNr1b",
   dioneAssetID: dioneAssetID,
   alias: XChainAlias,
   vm: XChainVMName,
-  txFee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  mintTxFee: MILLIDIONE
+  txFee: MILLIDIONE.mul(new BN(50)),
+  creationTxFee: DECIDIONE,
+  mintTxFee: MILLIDIONE.mul(new BN(50))
 }
 
 const n1P: P = {
@@ -216,10 +158,10 @@ const n1P: P = {
   dioneAssetID: dioneAssetID,
   alias: PChainAlias,
   vm: PChainVMName,
-  txFee: MILLIDIONE,
+  txFee: MILLIDIONE.mul(new BN(50)),
   createSubnetTx: ONEDIONE,
   createChainTx: ONEDIONE,
-  creationTxFee: CENTIDIONE,
+  creationTxFee: DECIDIONE,
   minConsumption: 0.1,
   maxConsumption: 0.12,
   maxStakingDuration: new BN(31536000),
@@ -227,12 +169,10 @@ const n1P: P = {
   minStake: ONEDIONE.mul(new BN(2000)),
   minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
   maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEDIONE.mul(new BN(25)),
-  minDelegationFee: new BN(2)
 }
 
 const n1C: C = {
-  blockchainID: "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5",
+  blockchainID: "2ApPXu7izxqD47cGEKd29LEoAMerxKR3bcz8TtMuftrCusc3rA",
   alias: CChainAlias,
   vm: CChainVMName,
   txBytesGas: 1,
@@ -245,123 +185,11 @@ const n1C: C = {
   gasPrice: GWEI.mul(new BN(225)),
   minGasPrice: GWEI.mul(new BN(25)),
   maxGasPrice: GWEI.mul(new BN(1000)),
-  chainID: 43114
+  chainID: 43112
 }
 // End Mainnet
 
-// Start Cascade
-const n2X: X = {
-  blockchainID: "4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM",
-  alias: XChainAlias,
-  vm: XChainVMName,
-  txFee: 0,
-  creationTxFee: 0,
-  mintTxFee: new BN(0)
-}
-
-const n2P: P = {
-  blockchainID: PlatformChainID,
-  alias: PChainAlias,
-  vm: PChainVMName,
-  txFee: 0,
-  creationTxFee: 0,
-  createSubnetTx: ONEDIONE,
-  createChainTx: ONEDIONE,
-  minConsumption: 0.1,
-  maxConsumption: 0.12,
-  maxStakingDuration: new BN(31536000),
-  maxSupply: new BN(720000000).mul(ONEDIONE),
-  minStake: ONEDIONE.mul(new BN(2000)),
-  minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEDIONE.mul(new BN(25)),
-  minDelegationFee: new BN(2)
-}
-
-const n2C: C = {
-  blockchainID: "2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i",
-  alias: CChainAlias,
-  vm: CChainVMName,
-  gasPrice: 0
-}
-// End Cascade
-
-// Start Denali
-const n3X: X = {
-  blockchainID: "rrEWX7gc7D9mwcdrdBxBTdqh1a7WDVsMuadhTZgyXfFcRz45L",
-  alias: XChainAlias,
-  vm: XChainVMName,
-  txFee: 0,
-  creationTxFee: 0,
-  mintTxFee: new BN(0)
-}
-
-const n3P: P = {
-  blockchainID: "",
-  alias: PChainAlias,
-  vm: PChainVMName,
-  txFee: 0,
-  creationTxFee: 0,
-  createSubnetTx: ONEDIONE,
-  createChainTx: ONEDIONE,
-  minConsumption: 0.1,
-  maxConsumption: 0.12,
-  maxStakingDuration: new BN(31536000),
-  maxSupply: new BN(720000000).mul(ONEDIONE),
-  minStake: ONEDIONE.mul(new BN(2000)),
-  minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEDIONE.mul(new BN(25)),
-  minDelegationFee: new BN(2)
-}
-
-const n3C: C = {
-  blockchainID: "zJytnh96Pc8rM337bBrtMvJDbEdDNjcXG3WkTNCiLp18ergm9",
-  alias: CChainAlias,
-  vm: CChainVMName,
-  gasPrice: 0
-}
-// End Denali
-
-// Start Everest
-const n4X: X = {
-  blockchainID: "jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC",
-  alias: XChainAlias,
-  vm: XChainVMName,
-  txFee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  mintTxFee: MILLIDIONE
-}
-
-const n4P: P = {
-  blockchainID: PlatformChainID,
-  alias: PChainAlias,
-  vm: PChainVMName,
-  txFee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  createSubnetTx: ONEDIONE,
-  createChainTx: ONEDIONE,
-  minConsumption: 0.1,
-  maxConsumption: 0.12,
-  maxStakingDuration: new BN(31536000),
-  maxSupply: new BN(720000000).mul(ONEDIONE),
-  minStake: ONEDIONE.mul(new BN(2000)),
-  minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEDIONE.mul(new BN(25)),
-  minDelegationFee: new BN(2)
-}
-
-const n4C: C = {
-  blockchainID: "saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK",
-  alias: CChainAlias,
-  vm: CChainVMName,
-  gasPrice: GWEI.mul(new BN(470)),
-  chainID: 43110
-}
-// End Everest
-
-// Start Fuji
+// Start Testnet
 dioneAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
 const n5X: X = {
   blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
@@ -389,8 +217,6 @@ const n5P: P = {
   minStake: ONEDIONE,
   minStakeDuration: 24 * 60 * 60, //one day
   maxStakeDuration: 365 * 24 * 60 * 60, // one year
-  minDelegationStake: ONEDIONE,
-  minDelegationFee: new BN(2)
 }
 
 const n5C: C = {
@@ -409,7 +235,7 @@ const n5C: C = {
   maxGasPrice: GWEI.mul(new BN(1000)),
   chainID: 43113
 }
-// End Fuji
+// End Testnet
 
 // Start custom network
 dioneAssetID = "BUuypiq2wyuLMvyhzFXcPyxPMCgSp7eeDohhQRqTChoBjKziC"
@@ -439,15 +265,6 @@ n12345C.chainID = 43112
 
 export class Defaults {
   static network: Networks = {
-    0: {
-      hrp: NetworkIDToHRP[0],
-      X: n0X,
-      "2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9": n0X,
-      P: n0P,
-      "11111111111111111111111111111111LpoYY": n0P,
-      C: n0C,
-      "2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb": n0C
-    },
     1: {
       hrp: NetworkIDToHRP[1],
       X: n1X,
@@ -456,33 +273,6 @@ export class Defaults {
       "11111111111111111111111111111111LpoYY": n1P,
       C: n1C,
       "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5": n1C
-    },
-    2: {
-      hrp: NetworkIDToHRP[2],
-      X: n2X,
-      "4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM": n2X,
-      P: n2P,
-      "11111111111111111111111111111111LpoYY": n2P,
-      C: n2C,
-      "2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i": n2C
-    },
-    3: {
-      hrp: NetworkIDToHRP[3],
-      X: n3X,
-      rrEWX7gc7D9mwcdrdBxBTdqh1a7WDVsMuadhTZgyXfFcRz45L: n3X,
-      P: n3P,
-      "11111111111111111111111111111111LpoYY": n3P,
-      C: n3C,
-      zJytnh96Pc8rM337bBrtMvJDbEdDNjcXG3WkTNCiLp18ergm9: n3C
-    },
-    4: {
-      hrp: NetworkIDToHRP[4],
-      X: n4X,
-      jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC: n4X,
-      P: n4P,
-      "11111111111111111111111111111111LpoYY": n4P,
-      C: n4C,
-      saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK: n4C
     },
     5: {
       hrp: NetworkIDToHRP[5],
