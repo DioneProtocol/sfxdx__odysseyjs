@@ -7,7 +7,7 @@ import { Buffer } from "buffer/"
 import { Base58Error } from "../utils/errors"
 
 /**
- * A Base58 class that uses the cross-platform Buffer module. Built so that Typescript
+ * A Base58 class that uses the cross-omega Buffer module. Built so that Typescript
  * will accept the code.
  *
  * ```js

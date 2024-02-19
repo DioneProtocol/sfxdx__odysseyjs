@@ -1,7 +1,7 @@
 import { BN } from "src"
 import { Defaults, Networks, Network } from "../../../src/utils/constants"
 
-describe("EVMConstants", (): void => {
+describe("DELTAConstants", (): void => {
   describe("Compare min and max gas prices", (): void => {
     const networks: Networks = Defaults.network
     const minNum: number = 25000000000
@@ -11,10 +11,10 @@ describe("EVMConstants", (): void => {
       test(`NetworkID: ${networkID}`, async (): Promise<void> => {
         const localNetwork: Network = networks[networkID]
 
-        const minGasPriceBN: BN = localNetwork.C.minGasPrice
+        const minGasPriceBN: BN = localNetwork.D.minGasPrice
         const minGasPriceNum: number = new BN(minGasPriceBN).toNumber()
 
-        const maxGasPriceBN: BN = localNetwork.C.maxGasPrice
+        const maxGasPriceBN: BN = localNetwork.D.maxGasPrice
         const maxGasPriceNum: number = new BN(maxGasPriceBN).toNumber()
 
         expect(minGasPriceNum).toBeLessThanOrEqual(maxGasPriceNum)

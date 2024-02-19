@@ -12,7 +12,7 @@ const index: IndexAPI = odyssey.Index()
 
 const main = async (): Promise<any> => {
   const encoding: string = "hex"
-  const baseurl: string = "/ext/index/X/tx"
+  const baseurl: string = "/ext/index/A/tx"
   const lastAccepted: GetLastAcceptedResponse = await index.getLastAccepted(
     encoding,
     baseurl

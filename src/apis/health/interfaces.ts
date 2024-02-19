@@ -12,9 +12,9 @@ export interface Entity {
 }
 
 export interface Checks {
-  C: Entity
-  P: Entity
-  X: Entity
+  D: Entity
+  O: Entity
+  A: Entity
   bootstrapped: Entity
   network: Entity
   router: Entity

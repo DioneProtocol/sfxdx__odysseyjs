@@ -1,30 +1,30 @@
 import mockAxios from "jest-mock-axios"
 import { Odyssey } from "src"
-import { PlatformVMAPI } from "../../../src/apis/platformvm/api"
+import { OmegaVMAPI } from "../../../src/apis/omegavm/api"
 import { Buffer } from "buffer/"
 import BN from "bn.js"
 import BinTools from "../../../src/utils/bintools"
 import * as bech32 from "bech32"
-import { Defaults, PlatformChainID } from "../../../src/utils/constants"
-import { UTXOSet } from "../../../src/apis/platformvm/utxos"
+import { Defaults, OmegaChainID } from "../../../src/utils/constants"
+import { UTXOSet } from "../../../src/apis/omegavm/utxos"
 import { PersistanceOptions } from "../../../src/utils/persistenceoptions"
-import { KeyChain } from "../../../src/apis/platformvm/keychain"
+import { KeyChain } from "../../../src/apis/omegavm/keychain"
 import {
   SECPTransferOutput,
   TransferableOutput,
   AmountOutput,
   ParseableOutput,
   StakeableLockOut
-} from "../../../src/apis/platformvm/outputs"
+} from "../../../src/apis/omegavm/outputs"
 import {
   TransferableInput,
   SECPTransferInput,
   AmountInput,
   StakeableLockIn
-} from "../../../src/apis/platformvm/inputs"
-import { UTXO } from "../../../src/apis/platformvm/utxos"
+} from "../../../src/apis/omegavm/inputs"
+import { UTXO } from "../../../src/apis/omegavm/utxos"
 import createHash from "create-hash"
-import { UnsignedTx, Tx } from "../../../src/apis/platformvm/tx"
+import { UnsignedTx, Tx } from "../../../src/apis/omegavm/tx"
 import { UnixNow } from "../../../src/utils/helperfunctions"
 import { UTF8Payload } from "../../../src/utils/payload"
 import { NodeIDStringToBuffer } from "../../../src/utils/helperfunctions"
@@ -35,7 +35,7 @@ import {
   SerializedEncoding,
   SerializedType
 } from "../../../src/utils/serialization"
-import { AddValidatorTx } from "../../../src/apis/platformvm/validationtx"
+import { AddValidatorTx } from "../../../src/apis/omegavm/validationtx"
 import {
   Blockchain,
   GetMinStakeResponse,
@@ -43,13 +43,13 @@ import {
   Subnet,
   GetTxStatusResponse,
   GetValidatorsAtResponse
-} from "../../../src/apis/platformvm/interfaces"
+} from "../../../src/apis/omegavm/interfaces"
 import { ErrorResponseObject } from "../../../src/utils/errors"
 import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
 import {
   GetBalanceResponse,
   GetUTXOsResponse
-} from "src/apis/platformvm/interfaces"
+} from "src/apis/omegavm/interfaces"
 
 /**
  * @ignore
@@ -65,7 +65,7 @@ const serialzeit = (aThing: Serializable, name: string): void => {
       JSON.stringify(
         serializer.serialize(
           aThing,
-          "platformvm",
+          "omegavm",
           "hex",
           name + " -- Hex Encoded"
         )
@@ -75,7 +75,7 @@ const serialzeit = (aThing: Serializable, name: string): void => {
       JSON.stringify(
         serializer.serialize(
           aThing,
-          "platformvm",
+          "omegavm",
           "display",
           name + " -- Human-Readable"
         )
@@ -84,9 +84,9 @@ const serialzeit = (aThing: Serializable, name: string): void => {
   }
 }
 
-describe("PlatformVMAPI", (): void => {
+describe("OmegaVMAPI", (): void => {
   const networkID: number = 1337
-  const blockchainID: string = PlatformChainID
+  const blockchainID: string = OmegaChainID
   const ip: string = "127.0.0.1"
   const port: number = 9650
   const protocol: string = "https"
@@ -108,11 +108,11 @@ describe("PlatformVMAPI", (): void => {
     undefined,
     true
   )
-  let api: PlatformVMAPI
+  let api: OmegaVMAPI
   let alias: string
 
   const addrA: string =
-    "P-" +
+    "O-" +
     bech32.bech32.encode(
       odyssey.getHRP(),
       bech32.bech32.toWords(
@@ -120,7 +120,7 @@ describe("PlatformVMAPI", (): void => {
       )
     )
   const addrB: string =
-    "P-" +
+    "O-" +
     bech32.bech32.encode(
       odyssey.getHRP(),
       bech32.bech32.toWords(
@@ -128,7 +128,7 @@ describe("PlatformVMAPI", (): void => {
       )
     )
   const addrC: string =
-    "P-" +
+    "O-" +
     bech32.bech32.encode(
       odyssey.getHRP(),
       bech32.bech32.toWords(
@@ -137,7 +137,7 @@ describe("PlatformVMAPI", (): void => {
     )
 
   beforeAll((): void => {
-    api = new PlatformVMAPI(odyssey, "/ext/bc/P")
+    api = new OmegaVMAPI(odyssey, "/ext/bc/O")
     alias = api.getBlockchainAlias()
   })
 
@@ -146,28 +146,28 @@ describe("PlatformVMAPI", (): void => {
   })
 
   test("getCreateSubnetTxFee", async (): Promise<void> => {
-    let pchain: PlatformVMAPI = new PlatformVMAPI(odyssey, "/ext/bc/P")
+    let ochain: OmegaVMAPI = new OmegaVMAPI(odyssey, "/ext/bc/O")
     const feeResponse: string = "1000000000"
-    const fee: BN = pchain.getCreateSubnetTxFee()
+    const fee: BN = ochain.getCreateSubnetTxFee()
     expect(fee.toString()).toBe(feeResponse)
   })
 
   test("getCreateChainTxFee", async (): Promise<void> => {
-    let pchain: PlatformVMAPI = new PlatformVMAPI(odyssey, "/ext/bc/P")
+    let ochain: OmegaVMAPI = new OmegaVMAPI(odyssey, "/ext/bc/O")
     const feeResponse: string = "1000000000"
-    const fee: BN = pchain.getCreateChainTxFee()
+    const fee: BN = ochain.getCreateChainTxFee()
     expect(fee.toString()).toBe(feeResponse)
   })
 
   test("refreshBlockchainID", async (): Promise<void> => {
-    let n3bcID: string = Defaults.network[3].P["blockchainID"]
-    let testAPI: PlatformVMAPI = new PlatformVMAPI(odyssey, "/ext/bc/P")
+    let n3bcID: string = Defaults.network[3].O["blockchainID"]
+    let testAPI: OmegaVMAPI = new OmegaVMAPI(odyssey, "/ext/bc/O")
     let bc1: string = testAPI.getBlockchainID()
-    expect(bc1).toBe(PlatformChainID)
+    expect(bc1).toBe(OmegaChainID)
 
     testAPI.refreshBlockchainID()
     let bc2: string = testAPI.getBlockchainID()
-    expect(bc2).toBe(PlatformChainID)
+    expect(bc2).toBe(OmegaChainID)
 
     testAPI.refreshBlockchainID(n3bcID)
     let bc3: string = testAPI.getBlockchainID()
@@ -1069,15 +1069,15 @@ describe("PlatformVMAPI", (): void => {
     let secpbase2: SECPTransferOutput
     let secpbase3: SECPTransferOutput
     let fungutxoids: string[] = []
-    let platformvm: PlatformVMAPI
+    let omegavm: OmegaVMAPI
     const fee: number = 10
     const name: string = "Mortycoin is the dumb as a sack of hammers."
     const symbol: string = "morT"
     const denomination: number = 8
 
     beforeEach(async (): Promise<void> => {
-      platformvm = new PlatformVMAPI(odyssey, "/ext/bc/P")
-      const result: Promise<Buffer> = platformvm.getDIONEAssetID()
+      omegavm = new OmegaVMAPI(odyssey, "/ext/bc/O")
+      const result: Promise<Buffer> = omegavm.getDIONEAssetID()
       const payload: object = {
         result: {
           name,
@@ -1094,7 +1094,7 @@ describe("PlatformVMAPI", (): void => {
       await result
       set = new UTXOSet()
       lset = new UTXOSet()
-      platformvm.newKeyChain()
+      omegavm.newKeyChain()
       keymgr2 = new KeyChain(odyssey.getHRP(), alias)
       keymgr3 = new KeyChain(odyssey.getHRP(), alias)
       addrs1 = []
@@ -1115,20 +1115,20 @@ describe("PlatformVMAPI", (): void => {
 
       for (let i: number = 0; i < 3; i++) {
         addrs1.push(
-          platformvm.addressFromBuffer(
-            platformvm.keyChain().makeKey().getAddress()
+          omegavm.addressFromBuffer(
+            omegavm.keyChain().makeKey().getAddress()
           )
         )
         addrs2.push(
-          platformvm.addressFromBuffer(keymgr2.makeKey().getAddress())
+          omegavm.addressFromBuffer(keymgr2.makeKey().getAddress())
         )
         addrs3.push(
-          platformvm.addressFromBuffer(keymgr3.makeKey().getAddress())
+          omegavm.addressFromBuffer(keymgr3.makeKey().getAddress())
         )
       }
       const amount: BN = ONEDIONE.mul(new BN(amnt))
-      addressbuffs = platformvm.keyChain().getAddresses()
-      addresses = addressbuffs.map((a) => platformvm.addressFromBuffer(a))
+      addressbuffs = omegavm.keyChain().getAddresses()
+      addresses = addressbuffs.map((a) => omegavm.addressFromBuffer(a))
       const locktime: BN = new BN(54321)
       const threshold: number = 3
       for (let i: number = 0; i < 5; i++) {
@@ -1211,35 +1211,35 @@ describe("PlatformVMAPI", (): void => {
 
       secpbase1 = new SECPTransferOutput(
         new BN(777),
-        addrs3.map((a) => platformvm.parseAddress(a)),
+        addrs3.map((a) => omegavm.parseAddress(a)),
         UnixNow(),
         1
       )
       secpbase2 = new SECPTransferOutput(
         new BN(888),
-        addrs2.map((a) => platformvm.parseAddress(a)),
+        addrs2.map((a) => omegavm.parseAddress(a)),
         UnixNow(),
         1
       )
       secpbase3 = new SECPTransferOutput(
         new BN(999),
-        addrs2.map((a) => platformvm.parseAddress(a)),
+        addrs2.map((a) => omegavm.parseAddress(a)),
         UnixNow(),
         1
       )
     })
 
     test("signTx", async (): Promise<void> => {
-      const assetID: Buffer = await platformvm.getDIONEAssetID()
+      const assetID: Buffer = await omegavm.getDIONEAssetID()
       const txu2: UnsignedTx = set.buildBaseTx(
         networkID,
         bintools.cb58Decode(blockchainID),
         new BN(amnt),
         assetID,
-        addrs3.map((a): Buffer => platformvm.parseAddress(a)),
-        addrs1.map((a): Buffer => platformvm.parseAddress(a)),
-        addrs1.map((a): Buffer => platformvm.parseAddress(a)),
-        platformvm.getTxFee(),
+        addrs3.map((a): Buffer => omegavm.parseAddress(a)),
+        addrs1.map((a): Buffer => omegavm.parseAddress(a)),
+        addrs1.map((a): Buffer => omegavm.parseAddress(a)),
+        omegavm.getTxFee(),
         assetID,
         undefined,
         UnixNow(),
@@ -1247,23 +1247,23 @@ describe("PlatformVMAPI", (): void => {
         1
       )
 
-      txu2.sign(platformvm.keyChain())
+      txu2.sign(omegavm.keyChain())
     })
 
     test("buildImportTx", async (): Promise<void> => {
       const locktime: BN = new BN(0)
       const threshold: number = 1
-      platformvm.setTxFee(new BN(fee))
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
+      omegavm.setTxFee(new BN(fee))
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
       const fungutxo: UTXO = set.getUTXO(fungutxoids[1])
       const fungutxostr: string = fungutxo.toString()
 
-      const result: Promise<UnsignedTx> = platformvm.buildImportTx(
+      const result: Promise<UnsignedTx> = omegavm.buildImportTx(
         set,
         addrs1,
-        PlatformChainID,
+        OmegaChainID,
         addrs3,
         addrs1,
         addrs2,
@@ -1291,9 +1291,9 @@ describe("PlatformVMAPI", (): void => {
         addrbuff1,
         addrbuff2,
         [fungutxo],
-        bintools.cb58Decode(PlatformChainID),
-        platformvm.getTxFee(),
-        await platformvm.getDIONEAssetID(),
+        bintools.cb58Decode(OmegaChainID),
+        omegavm.getTxFee(),
+        await omegavm.getDIONEAssetID(),
         new UTF8Payload("hello world").getPayload(),
         UnixNow(),
         locktime,
@@ -1305,7 +1305,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1316,7 +1316,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -1330,20 +1330,20 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildExportTx", async (): Promise<void> => {
-      platformvm.setTxFee(new BN(fee))
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
+      omegavm.setTxFee(new BN(fee))
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
       const amount: BN = new BN(90)
       const type: SerializedType = "bech32"
-      const txu1: UnsignedTx = await platformvm.buildExportTx(
+      const txu1: UnsignedTx = await omegavm.buildExportTx(
         set,
         amount,
         bintools.cb58Decode(
-          Defaults.network[odyssey.getNetworkID()].X["blockchainID"]
+          Defaults.network[odyssey.getNetworkID()].A["blockchainID"]
         ),
         addrbuff3.map((a) =>
-          serializer.bufferToType(a, type, odyssey.getHRP(), "P")
+          serializer.bufferToType(a, type, odyssey.getHRP(), "O")
         ),
         addrs1,
         addrs2,
@@ -1360,9 +1360,9 @@ describe("PlatformVMAPI", (): void => {
         addrbuff1,
         addrbuff2,
         bintools.cb58Decode(
-          Defaults.network[odyssey.getNetworkID()].X["blockchainID"]
+          Defaults.network[odyssey.getNetworkID()].A["blockchainID"]
         ),
-        platformvm.getTxFee(),
+        omegavm.getTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()
@@ -1373,11 +1373,11 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const txu3: UnsignedTx = await platformvm.buildExportTx(
+      const txu3: UnsignedTx = await omegavm.buildExportTx(
         set,
         amount,
         bintools.cb58Decode(
-          Defaults.network[odyssey.getNetworkID()].X["blockchainID"]
+          Defaults.network[odyssey.getNetworkID()].A["blockchainID"]
         ),
         addrs3,
         addrs1,
@@ -1395,7 +1395,7 @@ describe("PlatformVMAPI", (): void => {
         addrbuff1,
         addrbuff2,
         undefined,
-        platformvm.getTxFee(),
+        omegavm.getTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()
@@ -1411,7 +1411,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1422,7 +1422,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -1436,20 +1436,20 @@ describe("PlatformVMAPI", (): void => {
     })
     /*
         test('buildAddSubnetValidatorTx', async (): Promise<void> => {
-          platformvm.setFee(new BN(fee));
-          const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a));
-          const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a));
-          const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a));
+          omegavm.setFee(new BN(fee));
+          const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a));
+          const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a));
+          const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a));
           const amount:BN = new BN(90);
 
-          const txu1:UnsignedTx = await platformvm.buildAddSubnetValidatorTx(
+          const txu1:UnsignedTx = await omegavm.buildAddSubnetValidatorTx(
             set,
             addrs1,
             addrs2,
             nodeID,
             startTime,
             endTime,
-            PlatformVMConstants.MINSTAKE,
+            OmegaVMConstants.MINSTAKE,
             new UTF8Payload("hello world"), UnixNow()
           );
 
@@ -1460,8 +1460,8 @@ describe("PlatformVMAPI", (): void => {
             NodeIDStringToBuffer(nodeID),
             startTime,
             endTime,
-            PlatformVMConstants.MINSTAKE,
-            platformvm.getFee(),
+            OmegaVMConstants.MINSTAKE,
+            omegavm.getFee(),
             assetID,
             new UTF8Payload("hello world").getPayload(), UnixNow()
           );
@@ -1471,20 +1471,20 @@ describe("PlatformVMAPI", (): void => {
         });
     */
     test("buildAddDelegatorTx 1", async (): Promise<void> => {
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
-      const amount: BN = Defaults.network[networkID]["P"].minDelegationStake
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
+      const amount: BN = Defaults.network[networkID]["O"].minDelegationStake
 
       const locktime: BN = new BN(54321)
       const threshold: number = 2
 
-      platformvm.setMinStake(
-        Defaults.network[networkID]["P"].minStake,
-        Defaults.network[networkID]["P"].minDelegationStake
+      omegavm.setMinStake(
+        Defaults.network[networkID]["O"].minStake,
+        Defaults.network[networkID]["O"].minDelegationStake
       )
 
-      const txu1: UnsignedTx = await platformvm.buildAddDelegatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddDelegatorTx(
         set,
         addrs3,
         addrs1,
@@ -1524,7 +1524,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1535,7 +1535,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -1551,7 +1551,7 @@ describe("PlatformVMAPI", (): void => {
     test("buildAddValidatorTx sort StakeableLockOuts 1", async (): Promise<void> => {
       // two UTXO. The 1st has a lesser stakeablelocktime and a greater amount of DIONE. The 2nd has a greater stakeablelocktime and a lesser amount of DIONE.
       // We expect this test to only consume the 2nd UTXO since it has the greater locktime.
-      const addrbuff1: Buffer[] = addrs1.map((a) => platformvm.parseAddress(a))
+      const addrbuff1: Buffer[] = addrs1.map((a) => omegavm.parseAddress(a))
       const amount1: BN = new BN("20000000000000000")
       const amount2: BN = new BN("10000000000000000")
       const locktime1: BN = new BN(0)
@@ -1594,10 +1594,10 @@ describe("PlatformVMAPI", (): void => {
         parseableOutput2
       )
       const nodeID: string = "NodeID-36giFye5epwBTpGqPk7b4CCYe3hfyoFr1"
-      const stakeAmount: BN = Defaults.network[networkID]["P"].minStake
-      platformvm.setMinStake(
+      const stakeAmount: BN = Defaults.network[networkID]["O"].minStake
+      omegavm.setMinStake(
         stakeAmount,
-        Defaults.network[networkID]["P"].minDelegationStake
+        Defaults.network[networkID]["O"].minDelegationStake
       )
       const delegationFeeRate: number = new BN(2).toNumber()
       const codecID: number = 0
@@ -1609,8 +1609,8 @@ describe("PlatformVMAPI", (): void => {
       )
       const outputidx0: number = 0
       const outputidx1: number = 0
-      const assetID = await platformvm.getDIONEAssetID()
-      const assetID2 = await platformvm.getDIONEAssetID()
+      const assetID = await omegavm.getDIONEAssetID()
+      const assetID2 = await omegavm.getDIONEAssetID()
       const utxo1: UTXO = new UTXO(
         codecID,
         txid,
@@ -1628,7 +1628,7 @@ describe("PlatformVMAPI", (): void => {
       const utxoSet: UTXOSet = new UTXOSet()
       utxoSet.add(utxo1)
       utxoSet.add(utxo2)
-      const txu1: UnsignedTx = await platformvm.buildAddValidatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddValidatorTx(
         utxoSet,
         addrs3,
         addrs1,
@@ -1726,7 +1726,7 @@ describe("PlatformVMAPI", (): void => {
       // this time we're staking a greater amount than is available in the 2nd UTXO.
       // We expect this test to consume the full 2nd UTXO and a fraction of the 1st UTXO..
       const addrbuff1: Buffer[] = addrs1.map(
-        (a): Buffer => platformvm.parseAddress(a)
+        (a): Buffer => omegavm.parseAddress(a)
       )
       const amount1: BN = new BN("20000000000000000")
       const amount2: BN = new BN("10000000000000000")
@@ -1771,9 +1771,9 @@ describe("PlatformVMAPI", (): void => {
       )
       const nodeID: string = "NodeID-36giFye5epwBTpGqPk7b4CCYe3hfyoFr1"
       const stakeAmount: BN = new BN("10000003000000000")
-      platformvm.setMinStake(
+      omegavm.setMinStake(
         stakeAmount,
-        Defaults.network[networkID]["P"].minDelegationStake
+        Defaults.network[networkID]["O"].minDelegationStake
       )
       const delegationFeeRate: number = new BN(2).toNumber()
       const codecID: number = 0
@@ -1785,8 +1785,8 @@ describe("PlatformVMAPI", (): void => {
       )
       const outputidx0: number = 0
       const outputidx1: number = 0
-      const assetID: Buffer = await platformvm.getDIONEAssetID()
-      const assetID2: Buffer = await platformvm.getDIONEAssetID()
+      const assetID: Buffer = await omegavm.getDIONEAssetID()
+      const assetID2: Buffer = await omegavm.getDIONEAssetID()
       const utxo1: UTXO = new UTXO(
         codecID,
         txid,
@@ -1804,7 +1804,7 @@ describe("PlatformVMAPI", (): void => {
       const utxoSet: UTXOSet = new UTXOSet()
       utxoSet.add(utxo1)
       utxoSet.add(utxo2)
-      const txu1: UnsignedTx = await platformvm.buildAddValidatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddValidatorTx(
         utxoSet,
         addrs3,
         addrs1,
@@ -1902,7 +1902,7 @@ describe("PlatformVMAPI", (): void => {
       //
       // this time we're staking a greater amount than is available in the 3rd UTXO.
       // We expect this test to consume the full 3rd UTXO and a fraction of the 2nd UTXO and not to consume the SecpTransferableOutput
-      const addrbuff1: Buffer[] = addrs1.map((a) => platformvm.parseAddress(a))
+      const addrbuff1: Buffer[] = addrs1.map((a) => omegavm.parseAddress(a))
       const amount1: BN = new BN("20000000000000000")
       const amount2: BN = new BN("10000000000000000")
       const locktime1: BN = new BN(0)
@@ -1952,9 +1952,9 @@ describe("PlatformVMAPI", (): void => {
       )
       const nodeID: string = "NodeID-36giFye5epwBTpGqPk7b4CCYe3hfyoFr1"
       const stakeAmount: BN = new BN("10000003000000000")
-      platformvm.setMinStake(
+      omegavm.setMinStake(
         stakeAmount,
-        Defaults.network[networkID]["P"].minDelegationStake
+        Defaults.network[networkID]["O"].minDelegationStake
       )
       const delegationFeeRate: number = new BN(2).toNumber()
       const codecID: number = 0
@@ -1969,8 +1969,8 @@ describe("PlatformVMAPI", (): void => {
       )
       const outputidx0: number = 0
       const outputidx1: number = 0
-      const assetID: Buffer = await platformvm.getDIONEAssetID()
-      const assetID2: Buffer = await platformvm.getDIONEAssetID()
+      const assetID: Buffer = await omegavm.getDIONEAssetID()
+      const assetID2: Buffer = await omegavm.getDIONEAssetID()
       const utxo0: UTXO = new UTXO(
         codecID,
         txid0,
@@ -1996,7 +1996,7 @@ describe("PlatformVMAPI", (): void => {
       utxoSet.add(utxo0)
       utxoSet.add(utxo1)
       utxoSet.add(utxo2)
-      const txu1: UnsignedTx = await platformvm.buildAddValidatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddValidatorTx(
         utxoSet,
         addrs3,
         addrs1,
@@ -2086,22 +2086,22 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildAddValidatorTx 1", async (): Promise<void> => {
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
-      const amount: BN = Defaults.network[networkID]["P"].minStake.add(
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
+      const amount: BN = Defaults.network[networkID]["O"].minStake.add(
         new BN(fee)
       )
 
       const locktime: BN = new BN(54321)
       const threshold: number = 2
 
-      platformvm.setMinStake(
-        Defaults.network[networkID]["P"].minStake,
-        Defaults.network[networkID]["P"].minDelegationStake
+      omegavm.setMinStake(
+        Defaults.network[networkID]["O"].minStake,
+        Defaults.network[networkID]["O"].minDelegationStake
       )
 
-      const txu1: UnsignedTx = await platformvm.buildAddValidatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddValidatorTx(
         set,
         addrs3,
         addrs1,
@@ -2143,7 +2143,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -2154,7 +2154,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -2168,19 +2168,19 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildAddDelegatorTx 2", async (): Promise<void> => {
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
-      const amount: BN = Defaults.network[networkID]["P"].minDelegationStake
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
+      const amount: BN = Defaults.network[networkID]["O"].minDelegationStake
       const locktime: BN = new BN(54321)
       const threshold: number = 2
 
-      platformvm.setMinStake(
-        Defaults.network[networkID]["P"].minStake,
-        Defaults.network[networkID]["P"].minDelegationStake
+      omegavm.setMinStake(
+        Defaults.network[networkID]["O"].minStake,
+        Defaults.network[networkID]["O"].minDelegationStake
       )
 
-      const txu1: UnsignedTx = await platformvm.buildAddDelegatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddDelegatorTx(
         lset,
         addrs3,
         addrs1,
@@ -2220,7 +2220,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -2231,7 +2231,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -2245,17 +2245,17 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildAddValidatorTx 2", async (): Promise<void> => {
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
       const amount: BN = ONEDIONE.mul(new BN(25))
 
       const locktime: BN = new BN(54321)
       const threshold: number = 2
 
-      platformvm.setMinStake(ONEDIONE.mul(new BN(25)), ONEDIONE.mul(new BN(25)))
+      omegavm.setMinStake(ONEDIONE.mul(new BN(25)), ONEDIONE.mul(new BN(25)))
 
-      const txu1: UnsignedTx = await platformvm.buildAddValidatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddValidatorTx(
         lset,
         addrs3,
         addrs1,
@@ -2297,7 +2297,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -2308,7 +2308,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -2322,15 +2322,15 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildAddValidatorTx 3", async (): Promise<void> => {
-      const addrbuff1 = addrs1.map((a) => platformvm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => platformvm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => platformvm.parseAddress(a))
+      const addrbuff1 = addrs1.map((a) => omegavm.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => omegavm.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => omegavm.parseAddress(a))
       const amount: BN = ONEDIONE.mul(new BN(3))
 
       const locktime: BN = new BN(54321)
       const threshold: number = 2
 
-      platformvm.setMinStake(ONEDIONE.mul(new BN(3)), ONEDIONE.mul(new BN(3)))
+      omegavm.setMinStake(ONEDIONE.mul(new BN(3)), ONEDIONE.mul(new BN(3)))
 
       //2 utxos; one lockedstakeable; other unlocked; both utxos have 2 dione; stake 3 DIONE
 
@@ -2379,7 +2379,7 @@ describe("PlatformVMAPI", (): void => {
       dummySet.add(ulu)
       dummySet.add(lu)
 
-      const txu1: UnsignedTx = await platformvm.buildAddValidatorTx(
+      const txu1: UnsignedTx = await omegavm.buildAddValidatorTx(
         dummySet,
         addrs3,
         addrs1,
@@ -2448,18 +2448,18 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildCreateSubnetTx1", async (): Promise<void> => {
-      platformvm.setCreationTxFee(new BN(10))
+      omegavm.setCreationTxFee(new BN(10))
       const addrbuff1: Buffer[] = addrs1.map(
-        (a): Buffer => platformvm.parseAddress(a)
+        (a): Buffer => omegavm.parseAddress(a)
       )
       const addrbuff2: Buffer[] = addrs2.map(
-        (a): Buffer => platformvm.parseAddress(a)
+        (a): Buffer => omegavm.parseAddress(a)
       )
       const addrbuff3: Buffer[] = addrs3.map(
-        (a): Buffer => platformvm.parseAddress(a)
+        (a): Buffer => omegavm.parseAddress(a)
       )
 
-      const txu1: UnsignedTx = await platformvm.buildCreateSubnetTx(
+      const txu1: UnsignedTx = await omegavm.buildCreateSubnetTx(
         set,
         addrs1,
         addrs2,
@@ -2476,7 +2476,7 @@ describe("PlatformVMAPI", (): void => {
         addrbuff2,
         [addrbuff1[0]],
         1,
-        platformvm.getCreateSubnetTxFee(),
+        omegavm.getCreateSubnetTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()
@@ -2486,7 +2486,7 @@ describe("PlatformVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(platformvm.keyChain())
+      const tx1: Tx = txu1.sign(omegavm.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -2497,7 +2497,7 @@ describe("PlatformVMAPI", (): void => {
 
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(platformvm.keyChain())
+      const tx3: Tx = txu1.sign(omegavm.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
 
@@ -2511,18 +2511,18 @@ describe("PlatformVMAPI", (): void => {
     })
 
     test("buildCreateSubnetTx2", async (): Promise<void> => {
-      platformvm.setCreationTxFee(new BN(10))
+      omegavm.setCreationTxFee(new BN(10))
       const addrbuff1: Buffer[] = addrs1.map((a: string) =>
-        platformvm.parseAddress(a)
+        omegavm.parseAddress(a)
       )
       const addrbuff2: Buffer[] = addrs2.map((a: string) =>
-        platformvm.parseAddress(a)
+        omegavm.parseAddress(a)
       )
       const addrbuff3: Buffer[] = addrs3.map((a: string) =>
-        platformvm.parseAddress(a)
+        omegavm.parseAddress(a)
       )
 
-      const txu1: UnsignedTx = await platformvm.buildCreateSubnetTx(
+      const txu1: UnsignedTx = await omegavm.buildCreateSubnetTx(
         lset,
         addrs1,
         addrs2,
@@ -2539,7 +2539,7 @@ describe("PlatformVMAPI", (): void => {
         addrbuff2,
         [addrbuff1[0]],
         1,
-        platformvm.getCreateSubnetTxFee(),
+        omegavm.getCreateSubnetTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()

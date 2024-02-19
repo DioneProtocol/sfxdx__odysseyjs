@@ -1,9 +1,9 @@
-import { UTXOSet, UTXO } from "../../../src/apis/avm/utxos"
-import { KeyChain } from "../../../src/apis/avm/keychain"
+import { UTXOSet, UTXO } from "../../../src/apis/alpha/utxos"
+import { KeyChain } from "../../../src/apis/alpha/keychain"
 import {
   SECPTransferInput,
   TransferableInput
-} from "../../../src/apis/avm/inputs"
+} from "../../../src/apis/alpha/inputs"
 import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
 import BN from "bn.js"
@@ -12,11 +12,11 @@ import {
   SECPTransferOutput,
   AmountOutput,
   TransferableOutput
-} from "../../../src/apis/avm/outputs"
-import { EVMConstants } from "../../../src/apis/evm/constants"
+} from "../../../src/apis/alpha/outputs"
+import { DELTAConstants } from "../../../src/apis/delta/constants"
 import { Input } from "../../../src/common/input"
 import { Output } from "../../../src/common/output"
-import { EVMInput } from "../../../src/apis/evm"
+import { DELTAInput } from "../../../src/apis/delta"
 
 /**
  * @ignore
@@ -33,8 +33,8 @@ describe("Inputs", (): void => {
   const amnt: number = 10000
   beforeEach((): void => {
     set = new UTXOSet()
-    keymgr1 = new KeyChain(hrp, "C")
-    keymgr2 = new KeyChain(hrp, "C")
+    keymgr1 = new KeyChain(hrp, "D")
+    keymgr2 = new KeyChain(hrp, "D")
     addrs1 = []
     addrs2 = []
     utxos = []
@@ -65,7 +65,7 @@ describe("Inputs", (): void => {
       )
       const xferout: TransferableOutput = new TransferableOutput(assetID, out)
       const u: UTXO = new UTXO(
-        EVMConstants.LATESTCODEC,
+        DELTAConstants.LATESTCODEC,
         txid,
         txidx,
         assetID,
@@ -94,7 +94,7 @@ describe("Inputs", (): void => {
     input = new SECPTransferInput(amount)
     xferinput = new TransferableInput(txid, txidx, asset, input)
     expect(xferinput.getUTXOID()).toBe(u.getUTXOID())
-    expect(input.getInputID()).toBe(EVMConstants.SECPINPUTID)
+    expect(input.getInputID()).toBe(DELTAConstants.SECPINPUTID)
 
     input.addSignatureIdx(0, addrs2[0])
     input.addSignatureIdx(1, addrs2[1])
@@ -167,8 +167,8 @@ describe("Inputs", (): void => {
     expect(cmp(in3, in3)).toBe(0)
   })
 
-  test("EVMInput comparator", (): void => {
-    let inputs: EVMInput[] = []
+  test("DELTAInput comparator", (): void => {
+    let inputs: DELTAInput[] = []
     const address1: string = "0x55ee05dF718f1a5C1441e76190EB1a19eE2C9430"
     const address3: string = "0x9632a79656af553F58738B0FB750320158495942"
     const address4: string = "0x4Cf2eD3665F6bFA95cE6A11CFDb7A2EF5FC1C7E4"
@@ -200,23 +200,23 @@ describe("Inputs", (): void => {
     const nonce7: number = 6
     const nonce8: number = 7
 
-    const input1: EVMInput = new EVMInput(address1, amount1, assetID1, nonce1)
+    const input1: DELTAInput = new DELTAInput(address1, amount1, assetID1, nonce1)
     inputs.push(input1)
-    const input2: EVMInput = new EVMInput(address1, amount2, assetID2, nonce2)
+    const input2: DELTAInput = new DELTAInput(address1, amount2, assetID2, nonce2)
     inputs.push(input2)
-    const input3: EVMInput = new EVMInput(address3, amount3, assetID2, nonce3)
+    const input3: DELTAInput = new DELTAInput(address3, amount3, assetID2, nonce3)
     inputs.push(input3)
-    const input4: EVMInput = new EVMInput(address4, amount4, assetID3, nonce4)
+    const input4: DELTAInput = new DELTAInput(address4, amount4, assetID3, nonce4)
     inputs.push(input4)
-    const input5: EVMInput = new EVMInput(address1, amount5, assetID5, nonce5)
+    const input5: DELTAInput = new DELTAInput(address1, amount5, assetID5, nonce5)
     inputs.push(input5)
-    const input6: EVMInput = new EVMInput(address6, amount6, assetID6, nonce6)
+    const input6: DELTAInput = new DELTAInput(address6, amount6, assetID6, nonce6)
     inputs.push(input6)
-    const input7: EVMInput = new EVMInput(address1, amount7, assetID7, nonce7)
+    const input7: DELTAInput = new DELTAInput(address1, amount7, assetID7, nonce7)
     inputs.push(input7)
-    const input8: EVMInput = new EVMInput(address8, amount8, assetID8, nonce8)
+    const input8: DELTAInput = new DELTAInput(address8, amount8, assetID8, nonce8)
     inputs.push(input8)
-    inputs = inputs.sort(EVMInput.comparator())
+    inputs = inputs.sort(DELTAInput.comparator())
     expect(inputs[0].getAmount().toString()).toBe("8")
     expect(inputs[1].getAmount().toString()).toBe("6")
     expect(inputs[2].getAmount().toString()).toBe("4")
@@ -226,7 +226,7 @@ describe("Inputs", (): void => {
     expect(inputs[6].getAmount().toString()).toBe("1")
     expect(inputs[7].getAmount().toString()).toBe("3")
 
-    const cmp = EVMInput.comparator()
+    const cmp = DELTAInput.comparator()
     expect(cmp(input2, input1)).toBe(-1)
     expect(cmp(input1, input3)).toBe(-1)
     expect(cmp(input2, input3)).toBe(-1)

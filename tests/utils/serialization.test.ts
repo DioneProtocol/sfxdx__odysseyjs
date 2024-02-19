@@ -27,7 +27,7 @@ import {
   UTXO,
   UTXOID,
   UTXOSet
-} from "src/apis/avm"
+} from "src/apis/alpha"
 import { Address, Serialized, Signature } from "src/common"
 import {
   DefaultNetworkID,
@@ -41,7 +41,7 @@ import { getPreferredHRP } from "../../src/utils"
 const serialization: Serialization = Serialization.getInstance()
 
 describe("Serialization", (): void => {
-  const address: string = "X-dione1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"
+  const address: string = "A-dione1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"
   const nodeID: string = "NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ"
   const privateKey: string =
     "PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
@@ -54,7 +54,7 @@ describe("Serialization", (): void => {
   const bn: BN = new BN(9000)
   const name: string = "BaseTx"
   const denomination: Buffer = Buffer.alloc(1)
-  const chainID: string = "X"
+  const chainID: string = "A"
   const hrp: any = getPreferredHRP(1)
 
   test("instance of", (): void => {
@@ -318,9 +318,9 @@ describe("Serialization", (): void => {
     const mHex: string =
       "66726f6d20736e6f77666c616b6520746f206176616c616e636865"
     const memo: Buffer = serialization.typeToBuffer(m, "cb58")
-    const cChainID: string =
+    const dChainID: string =
       "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
-    const cChainIDHex: string =
+    const dChainIDHex: string =
       "9d0775f450604bd2fbc49ce0c5c1c6dfeb2dc2acb8c92c26eeae6e6df4502b19"
     const hex: SerializedEncoding = "hex"
     const cb58: SerializedEncoding = "cb58"
@@ -328,15 +328,15 @@ describe("Serialization", (): void => {
     const amount: BN = new BN(0)
     const amountHex: string = "0000000000000000"
     const bytes: string = "0000000000000000000000000000000000000000"
-    const xAddress: string = "X-dione1pdurs53v6vtue9sw7am9ayjqh9mcnqe9s80sgn"
+    const xAddress: string = "A-dione1pdurs53v6vtue9sw7am9ayjqh9mcnqe9s80sgn"
     const xAddressHex: string = "0b7838522cd317cc960ef7765e9240b977898325"
-    const address: string = "X-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
+    const address: string = "A-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
     const bech32: SerializedType = "bech32"
     const addressBuf: Buffer = serialization.typeToBuffer(address, bech32)
     const threshold: number = 1
     const thresholdHex: string = "00000001"
     const minters: string[] = [xAddress]
-    const assetID: Buffer = serialization.typeToBuffer(cChainID, cb58)
+    const assetID: Buffer = serialization.typeToBuffer(dChainID, cb58)
     const assetidHex: string =
       "9d0775f450604bd2fbc49ce0c5c1c6dfeb2dc2acb8c92c26eeae6e6df4502b19"
     const payload: Buffer = Buffer.from("From snowflake to Odyssey")
@@ -346,9 +346,9 @@ describe("Serialization", (): void => {
     const locktime: BN = new BN(0)
     const locktimeHex: string = "0000000000000000"
 
-    describe("AVM", (): void => {
+    describe("ALPHA", (): void => {
       const blockchainIDCB58: Buffer = serialization.typeToBuffer(
-        Defaults.network[12345]["X"].blockchainID,
+        Defaults.network[12345]["A"].blockchainID,
         cb58
       )
       const blockchainIDHex: string =
@@ -357,7 +357,7 @@ describe("Serialization", (): void => {
       const localNetworkIDHex: string = "00000539"
       const outs: TransferableOutput[] = []
       const ins: TransferableInput[] = []
-      const vm: string = "AVM"
+      const vm: string = "ALPHA"
       const groupID: number = 12345
 
       test("GenesisAsset", (): void => {
@@ -384,7 +384,7 @@ describe("Serialization", (): void => {
           memo
         )
         const genesisasset2: GenesisAsset = new GenesisAsset()
-        const notes: string = "AVM GenesisAsset"
+        const notes: string = "ALPHA GenesisAsset"
         const serialized: Serialized = serialization.serialize(
           genesisasset,
           vm,
@@ -435,7 +435,7 @@ describe("Serialization", (): void => {
           memo
         )
         const basetx2: BaseTx = new BaseTx()
-        const notes: string = "AVM BaseTx"
+        const notes: string = "ALPHA BaseTx"
         const serialized: Serialized = serialization.serialize(
           basetx,
           vm,
@@ -489,7 +489,7 @@ describe("Serialization", (): void => {
           initialState
         )
         const createassettx2: CreateAssetTx = new CreateAssetTx()
-        const notes: string = "AVM CreateAssetTx"
+        const notes: string = "ALPHA CreateAssetTx"
         const serialized: Serialized = serialization.serialize(
           createassettx,
           vm,
@@ -544,7 +544,7 @@ describe("Serialization", (): void => {
           ops
         )
         const operationtx2: OperationTx = new OperationTx()
-        const notes: string = "AVM OperationTx"
+        const notes: string = "ALPHA OperationTx"
         const serialized: Serialized = serialization.serialize(
           operationtx,
           vm,
@@ -583,7 +583,7 @@ describe("Serialization", (): void => {
       })
 
       test("ImportTx", (): void => {
-        const sourceChain: Buffer = serialization.typeToBuffer(cChainID, cb58)
+        const sourceChain: Buffer = serialization.typeToBuffer(dChainID, cb58)
         const importIns: TransferableInput[] = []
         const importtx: ImportTx = new ImportTx(
           networkID,
@@ -595,7 +595,7 @@ describe("Serialization", (): void => {
           importIns
         )
         const importtx2: ImportTx = new ImportTx()
-        const notes: string = "AVM ImportTx"
+        const notes: string = "ALPHA ImportTx"
         const serialized: Serialized = serialization.serialize(
           importtx,
           vm,
@@ -613,7 +613,7 @@ describe("Serialization", (): void => {
         expect(serialized.fields["outs"]).toStrictEqual([])
         expect(serialized.fields["ins"]).toStrictEqual([])
         expect(serialized.fields["memo"]).toBe(mHex)
-        expect(serialized.fields["sourceChain"]).toBe(cChainIDHex)
+        expect(serialized.fields["sourceChain"]).toBe(dChainIDHex)
         expect(serialized.fields["importIns"]).toStrictEqual([])
 
         serialization.deserialize(serialized, importtx2)
@@ -637,7 +637,7 @@ describe("Serialization", (): void => {
 
       test("ExportTx", (): void => {
         const destinationChain: Buffer = serialization.typeToBuffer(
-          cChainID,
+          dChainID,
           cb58
         )
         const exportOuts: TransferableOutput[] = []
@@ -651,7 +651,7 @@ describe("Serialization", (): void => {
           exportOuts
         )
         const exporttx2: ExportTx = new ExportTx()
-        const notes: string = "AVM ExportTx"
+        const notes: string = "ALPHA ExportTx"
         const serialized: Serialized = serialization.serialize(
           exporttx,
           vm,
@@ -669,7 +669,7 @@ describe("Serialization", (): void => {
         expect(serialized.fields["outs"]).toStrictEqual([])
         expect(serialized.fields["ins"]).toStrictEqual([])
         expect(serialized.fields["memo"]).toBe(mHex)
-        expect(serialized.fields["destinationChain"]).toBe(cChainIDHex)
+        expect(serialized.fields["destinationChain"]).toBe(dChainIDHex)
         expect(serialized.fields["exportOuts"]).toStrictEqual([])
 
         serialization.deserialize(serialized, exporttx2)
@@ -695,7 +695,7 @@ describe("Serialization", (): void => {
         const sigArray: Signature[] = []
         const secpcredential: SECPCredential = new SECPCredential(sigArray)
         const secpcredential2: SECPCredential = new SECPCredential()
-        const notes: string = "AVM SECPCredential"
+        const notes: string = "ALPHA SECPCredential"
         const serialized: Serialized = serialization.serialize(
           secpcredential,
           vm,
@@ -725,7 +725,7 @@ describe("Serialization", (): void => {
         const sigArray: Signature[] = []
         const nftcredential: NFTCredential = new NFTCredential(sigArray)
         const nftcredential2: NFTCredential = new NFTCredential()
-        const notes: string = "AVM NFTCredential"
+        const notes: string = "ALPHA NFTCredential"
         const serialized: Serialized = serialization.serialize(
           nftcredential,
           vm,
@@ -754,7 +754,7 @@ describe("Serialization", (): void => {
       test("InitialStates", (): void => {
         const initialStates: InitialStates = new InitialStates()
         const initialStates2: InitialStates = new InitialStates()
-        const notes: string = "AVM InitialStates"
+        const notes: string = "ALPHA InitialStates"
         const serialized: Serialized = serialization.serialize(
           initialStates,
           vm,
@@ -782,7 +782,7 @@ describe("Serialization", (): void => {
       test("SECPTransferInput", (): void => {
         const secptransferinput: SECPTransferInput = new SECPTransferInput()
         const secptransferinput2: SECPTransferInput = new SECPTransferInput()
-        const notes: string = "AVM SECPTransferInput"
+        const notes: string = "ALPHA SECPTransferInput"
         const serialized: Serialized = serialization.serialize(
           secptransferinput,
           vm,
@@ -815,7 +815,7 @@ describe("Serialization", (): void => {
       test("MinterSet", (): void => {
         const minterset: MinterSet = new MinterSet(threshold, minters)
         const minterset2: MinterSet = new MinterSet()
-        const notes: string = "AVM MinterSet"
+        const notes: string = "ALPHA MinterSet"
         const serialized: Serialized = serialization.serialize(
           minterset,
           vm,
@@ -853,7 +853,7 @@ describe("Serialization", (): void => {
           new TransferableOperation(assetID, utxoids, secpmintoperation)
         const transferableoperation2: TransferableOperation =
           new TransferableOperation()
-        const notes: string = "AVM TransferableOperation"
+        const notes: string = "ALPHA TransferableOperation"
         const serialized: Serialized = serialization.serialize(
           transferableoperation,
           vm,
@@ -895,7 +895,7 @@ describe("Serialization", (): void => {
           secptransferoutput
         )
         const secpmintoperation2: SECPMintOperation = new SECPMintOperation()
-        const notes: string = "AVM SECPMintOperation"
+        const notes: string = "ALPHA SECPMintOperation"
         const serialized: Serialized = serialization.serialize(
           secpmintoperation,
           vm,
@@ -927,7 +927,7 @@ describe("Serialization", (): void => {
         // const nftmintoutput: NFTMintOutput = new NFTMintOutput()
         // const nftmintoperation: NFTMintOperation = new NFTMintOperation(groupID, payload, [nftmintoutput])
         // const nftmintoperation2: NFTMintOperation = new NFTMintOperation()
-        // const notes: string = "AVM NFTMintOperation"
+        // const notes: string = "ALPHA NFTMintOperation"
         // const serialized: Serialized = serialization.serialize(nftmintoperation, vm, hex, notes)
         // expect(serialized.vm).toBe(vm)
         // expect(serialized.encoding).toBe(hex)
@@ -958,7 +958,7 @@ describe("Serialization", (): void => {
           new NFTTransferOperation(nfttransferoutput)
         const nfttransferoperation2: NFTTransferOperation =
           new NFTTransferOperation()
-        const notes: string = "AVM NFTTransferOperation"
+        const notes: string = "ALPHA NFTTransferOperation"
         const serialized: Serialized = serialization.serialize(
           nfttransferoperation,
           vm,
@@ -998,7 +998,7 @@ describe("Serialization", (): void => {
           "000000000000000000000000000000000000000000000000000000000000000000000000"
         const utxoid: UTXOID = new UTXOID()
         const utxoid2: UTXOID = new UTXOID()
-        const notes: string = "AVM UTXOID"
+        const notes: string = "ALPHA UTXOID"
         const serialized: Serialized = serialization.serialize(
           utxoid,
           vm,
@@ -1032,7 +1032,7 @@ describe("Serialization", (): void => {
           secpmintoutput
         )
         const transferableoutput2: TransferableOutput = new TransferableOutput()
-        const notes: string = "AVM TransferableOutput"
+        const notes: string = "ALPHA TransferableOutput"
         const serialized: Serialized = serialization.serialize(
           transferableoutput,
           vm,
@@ -1065,7 +1065,7 @@ describe("Serialization", (): void => {
       test("SECPTransferOutput", (): void => {
         const secptransferoutput: SECPTransferOutput = new SECPTransferOutput()
         const secptransferoutput2: SECPTransferOutput = new SECPTransferOutput()
-        const notes: string = "AVM SECPTransferOutput"
+        const notes: string = "ALPHA SECPTransferOutput"
         const serialized: Serialized = serialization.serialize(
           secptransferoutput,
           vm,
@@ -1106,7 +1106,7 @@ describe("Serialization", (): void => {
       test("SECPMintOutput", (): void => {
         const secpmintoutput: SECPMintOutput = new SECPMintOutput()
         const secpmintoutput2: SECPMintOutput = new SECPMintOutput()
-        const notes: string = "AVM SECPMintOutput"
+        const notes: string = "ALPHA SECPMintOutput"
         const serialized: Serialized = serialization.serialize(
           secpmintoutput,
           vm,
@@ -1141,7 +1141,7 @@ describe("Serialization", (): void => {
       test("NFTMintOutput", (): void => {
         const nftmintoutput: NFTMintOutput = new NFTMintOutput(groupID)
         const nftmintoutput2: NFTMintOutput = new NFTMintOutput()
-        const notes: string = "AVM NFTMintOutput"
+        const notes: string = "ALPHA NFTMintOutput"
         const serialized: Serialized = serialization.serialize(
           nftmintoutput,
           vm,
@@ -1181,7 +1181,7 @@ describe("Serialization", (): void => {
           payload
         )
         const nfttransferoutput2: NFTTransferOutput = new NFTTransferOutput()
-        const notes: string = "AVM NFTTransferOutput"
+        const notes: string = "ALPHA NFTTransferOutput"
         const serialized: Serialized = serialization.serialize(
           nfttransferoutput,
           vm,
@@ -1227,7 +1227,7 @@ describe("Serialization", (): void => {
         )
         const unsignedtx: UnsignedTx = new UnsignedTx(basetx)
         const unsignedtx2: UnsignedTx = new UnsignedTx()
-        const notes: string = "AVM UnsignedTx"
+        const notes: string = "ALPHA UnsignedTx"
         const serialized: Serialized = serialization.serialize(
           unsignedtx,
           vm,
@@ -1264,7 +1264,7 @@ describe("Serialization", (): void => {
         const unsignedtx: UnsignedTx = new UnsignedTx(basetx)
         const tx: Tx = new Tx(unsignedtx)
         const tx2: Tx = new Tx()
-        const notes: string = "AVM Tx"
+        const notes: string = "ALPHA Tx"
         const serialized: Serialized = serialization.serialize(
           tx,
           vm,
@@ -1290,12 +1290,12 @@ describe("Serialization", (): void => {
 
       test("UTXO", (): void => {
         const codecID: number = 0
-        const txID: Buffer = serialization.typeToBuffer(cChainID, cb58)
+        const txID: Buffer = serialization.typeToBuffer(dChainID, cb58)
         const txidHex: string =
           "9d0775f450604bd2fbc49ce0c5c1c6dfeb2dc2acb8c92c26eeae6e6df4502b19"
         const outputidx: number = 0
         const outputidxHex: string = "00000000"
-        const assetID: Buffer = serialization.typeToBuffer(cChainID, cb58)
+        const assetID: Buffer = serialization.typeToBuffer(dChainID, cb58)
         const nfttransferoutput: NFTTransferOutput = new NFTTransferOutput(
           groupID,
           payload
@@ -1308,7 +1308,7 @@ describe("Serialization", (): void => {
           nfttransferoutput
         )
         const utxo2: UTXO = new UTXO()
-        const notes: string = "AVM UTXO"
+        const notes: string = "ALPHA UTXO"
         const serialized: Serialized = serialization.serialize(
           utxo,
           vm,
@@ -1343,7 +1343,7 @@ describe("Serialization", (): void => {
       test("UTXOSet", (): void => {
         const utxoset: UTXOSet = new UTXOSet()
         const utxoset2: UTXOSet = new UTXOSet()
-        const notes: string = "AVM UTXOSet"
+        const notes: string = "ALPHA UTXOSet"
         const serialized: Serialized = serialization.serialize(
           utxoset,
           vm,

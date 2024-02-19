@@ -18,9 +18,9 @@ describe("PubSub", (): void => {
 
   test("addAddresses", (): void => {
     const data: string =
-      '{"addAddresses":{"addresses":["X-dione1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"]}}'
+      '{"addAddresses":{"addresses":["A-dione1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"]}}'
     const addresses: string[] = [
-      "X-dione1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"
+      "A-dione1wst8jt3z3fm9ce0z6akj3266zmgccdp03hjlaj"
     ]
     const addAddresses: string = pubsub.addAddresses(addresses)
     expect(addAddresses).toEqual(data)

@@ -1,6 +1,6 @@
 import "dotenv/config"
 import { Odyssey, Buffer } from "../../src"
-import { Vertex } from "../../src/apis/avm"
+import { Vertex } from "../../src/apis/alpha"
 import { IndexAPI } from "../../src/apis/index"
 import {
   GetContainerByIndexResponse,
@@ -21,7 +21,7 @@ const mstimeout: number = 1000
 
 const main = async (): Promise<any> => {
   const encoding: string = "hex"
-  const baseurl: string = "/ext/index/X/vtx"
+  const baseurl: string = "/ext/index/A/vtx"
   const lastAccepted: GetLastAcceptedResponse = await index.getLastAccepted(
     encoding,
     baseurl

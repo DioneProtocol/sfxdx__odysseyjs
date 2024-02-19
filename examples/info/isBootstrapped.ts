@@ -10,7 +10,7 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const info: InfoAPI = odyssey.Info()
 
 const main = async (): Promise<any> => {
-  const chain: string = "X"
+  const chain: string = "A"
   const bootstrapped: boolean = await info.isBootstrapped(chain)
   console.log(bootstrapped)
 }

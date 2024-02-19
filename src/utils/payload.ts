@@ -464,27 +464,27 @@ export abstract class ChainAddressPayload extends PayloadBase {
 }
 
 /**
- * Class for payloads representing X-Chin addresses.
+ * Class for payloads representing A-Chin addresses.
  */
 export class XCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 6
-  protected chainid = "X"
+  protected chainid = "A"
 }
 
 /**
- * Class for payloads representing P-Chain addresses.
+ * Class for payloads representing O-Chain addresses.
  */
 export class PCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 7
-  protected chainid = "P"
+  protected chainid = "O"
 }
 
 /**
- * Class for payloads representing C-Chain addresses.
+ * Class for payloads representing D-Chain addresses.
  */
 export class CCHAINADDRPayload extends ChainAddressPayload {
   protected typeid = 8
-  protected chainid = "C"
+  protected chainid = "D"
 }
 
 /**

@@ -32,7 +32,7 @@ export abstract class APIBase {
   /**
    * Sets the path of the APIs baseURL.
    *
-   * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/X"
+   * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/A"
    */
   setBaseURL = (baseURL: string) => {
     if (this.db && this.baseURL !== baseURL) {

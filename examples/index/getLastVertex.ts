@@ -2,7 +2,7 @@ import "dotenv/config"
 import { Odyssey, BinTools, Buffer } from "../../src"
 import { IndexAPI } from "../../src/apis/index/index"
 import { GetLastAcceptedResponse } from "../../src/apis/index/interfaces"
-import { Vertex } from "../../src/apis/avm"
+import { Vertex } from "../../src/apis/alpha"
 
 const ip = process.env.IP_INDEXER
 const port = Number(process.env.PORT)
@@ -14,7 +14,7 @@ const bintools: BinTools = BinTools.getInstance()
 
 const main = async (): Promise<any> => {
   const encoding: string = "cb58"
-  const baseurl: string = "/ext/index/X/vtx"
+  const baseurl: string = "/ext/index/A/vtx"
   const lastVertex: GetLastAcceptedResponse = await index.getLastAccepted(
     encoding,
     baseurl

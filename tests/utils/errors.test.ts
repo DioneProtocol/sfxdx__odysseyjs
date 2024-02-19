@@ -21,8 +21,8 @@ import {
   InsufficientFundsError,
   ThresholdError,
   SECPMintOutputError,
-  EVMInputError,
-  EVMOutputError,
+  DELTAInputError,
+  DELTAOutputError,
   FeeAssetError,
   StakeError,
   TimeError,
@@ -40,7 +40,7 @@ import {
   TypeNameError,
   UnknownTypeError,
   Bech32Error,
-  EVMFeeError,
+  DELTAFeeError,
   InvalidEntropy,
   ProtocolError,
   SubnetIdError
@@ -341,31 +341,31 @@ describe("Errors", (): void => {
     }).toThrowError()
   })
 
-  test("EVMInputError", (): void => {
+  test("DELTAInputError", (): void => {
     try {
-      throw new EVMInputError("Testing EVMInputError")
+      throw new DELTAInputError("Testing DELTAInputError")
     } catch (error: any) {
       expect(error.getCode()).toBe("1020")
     }
     expect((): void => {
-      throw new EVMInputError("Testing EVMInputError")
-    }).toThrow("Testing EVMInputError")
+      throw new DELTAInputError("Testing DELTAInputError")
+    }).toThrow("Testing DELTAInputError")
     expect((): void => {
-      throw new EVMInputError("Testing EVMInputError")
+      throw new DELTAInputError("Testing DELTAInputError")
     }).toThrowError()
   })
 
-  test("EVMOutputError", (): void => {
+  test("DELTAOutputError", (): void => {
     try {
-      throw new EVMOutputError("Testing EVMOutputError")
+      throw new DELTAOutputError("Testing DELTAOutputError")
     } catch (error: any) {
       expect(error.getCode()).toBe("1021")
     }
     expect((): void => {
-      throw new EVMOutputError("Testing EVMOutputError")
-    }).toThrow("Testing EVMOutputError")
+      throw new DELTAOutputError("Testing DELTAOutputError")
+    }).toThrow("Testing DELTAOutputError")
     expect((): void => {
-      throw new EVMOutputError("Testing EVMOutputError")
+      throw new DELTAOutputError("Testing DELTAOutputError")
     }).toThrowError()
   })
 
@@ -607,17 +607,17 @@ describe("Errors", (): void => {
     }).toThrowError()
   })
 
-  test("EVMFeeError", (): void => {
+  test("DELTAFeeError", (): void => {
     try {
-      throw new EVMFeeError("Testing EVMFeeError")
+      throw new DELTAFeeError("Testing DELTAFeeError")
     } catch (error: any) {
       expect(error.getCode()).toBe("1038")
     }
     expect((): void => {
-      throw new EVMFeeError("Testing EVMFeeError")
-    }).toThrow("Testing EVMFeeError")
+      throw new DELTAFeeError("Testing DELTAFeeError")
+    }).toThrow("Testing DELTAFeeError")
     expect((): void => {
-      throw new EVMFeeError("Testing EVMFeeError")
+      throw new DELTAFeeError("Testing DELTAFeeError")
     }).toThrowError()
   })
 

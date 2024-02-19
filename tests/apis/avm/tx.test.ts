@@ -1,12 +1,12 @@
 import mockAxios from "jest-mock-axios"
-import { UTXOSet, UTXO } from "../../../src/apis/avm/utxos"
-import { AVMAPI } from "../../../src/apis/avm/api"
-import { UnsignedTx, Tx } from "../../../src/apis/avm/tx"
-import { KeyChain } from "../../../src/apis/avm/keychain"
+import { UTXOSet, UTXO } from "../../../src/apis/alpha/utxos"
+import { ALPHAAPI } from "../../../src/apis/alpha/api"
+import { UnsignedTx, Tx } from "../../../src/apis/alpha/tx"
+import { KeyChain } from "../../../src/apis/alpha/keychain"
 import {
   SECPTransferInput,
   TransferableInput
-} from "../../../src/apis/avm/inputs"
+} from "../../../src/apis/alpha/inputs"
 import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
 import BN from "bn.js"
@@ -15,22 +15,22 @@ import {
   SECPTransferOutput,
   NFTTransferOutput,
   TransferableOutput
-} from "../../../src/apis/avm/outputs"
-import { AVMConstants } from "../../../src/apis/avm/constants"
+} from "../../../src/apis/alpha/outputs"
+import { ALPHAConstants } from "../../../src/apis/alpha/constants"
 import {
   TransferableOperation,
   NFTTransferOperation
-} from "../../../src/apis/avm/ops"
+} from "../../../src/apis/alpha/ops"
 import { Odyssey } from "../../../src/index"
 import { UTF8Payload } from "../../../src/utils/payload"
-import { InitialStates } from "../../../src/apis/avm/initialstates"
+import { InitialStates } from "../../../src/apis/alpha/initialstates"
 import { UnixNow } from "../../../src/utils/helperfunctions"
-import { BaseTx } from "../../../src/apis/avm/basetx"
-import { CreateAssetTx } from "../../../src/apis/avm/createassettx"
-import { OperationTx } from "../../../src/apis/avm/operationtx"
-import { ImportTx } from "../../../src/apis/avm/importtx"
-import { ExportTx } from "../../../src/apis/avm/exporttx"
-import { PlatformChainID } from "../../../src/utils/constants"
+import { BaseTx } from "../../../src/apis/alpha/basetx"
+import { CreateAssetTx } from "../../../src/apis/alpha/createassettx"
+import { OperationTx } from "../../../src/apis/alpha/operationtx"
+import { ImportTx } from "../../../src/apis/alpha/importtx"
+import { ExportTx } from "../../../src/apis/alpha/exporttx"
+import { OmegaChainID } from "../../../src/utils/constants"
 import { Defaults } from "../../../src/utils/constants"
 import { ONEDIONE } from "../../../src/utils/constants"
 import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
@@ -56,11 +56,11 @@ describe("Transactions", (): void => {
   let exportOuts: TransferableOutput[]
   let fungutxos: UTXO[]
   let exportUTXOIDS: string[]
-  let api: AVMAPI
+  let api: ALPHAAPI
   const amnt: number = 10000
   const netid: number = 12345
-  const bID: string = Defaults.network[netid].X.blockchainID
-  const alias: string = "X"
+  const bID: string = Defaults.network[netid].A.blockchainID
+  const alias: string = "A"
   const assetID: Buffer = Buffer.from(
     createHash("sha256")
       .update(
@@ -106,7 +106,7 @@ describe("Transactions", (): void => {
       undefined,
       true
     )
-    api = new AVMAPI(odyssey, "/ext/bc/avm", bID)
+    api = new ALPHAAPI(odyssey, "/ext/bc/alpha", bID)
 
     const result: Promise<Buffer> = api.getDIONEAssetID()
     const payload: object = {
@@ -180,7 +180,7 @@ describe("Transactions", (): void => {
       outputs.push(xferout)
 
       const u: UTXO = new UTXO(
-        AVMConstants.LATESTCODEC,
+        ALPHAConstants.LATESTCODEC,
         txid,
         txidx,
         assetID,
@@ -216,7 +216,7 @@ describe("Transactions", (): void => {
           .digest()
       )
       const nftutxo: UTXO = new UTXO(
-        AVMConstants.LATESTCODEC,
+        ALPHAConstants.LATESTCODEC,
         nfttxid,
         1000 + i,
         NFTassetID,
@@ -242,13 +242,13 @@ describe("Transactions", (): void => {
   test("BaseTx codecIDs", (): void => {
     const baseTx: BaseTx = new BaseTx()
     expect(baseTx.getCodecID()).toBe(codecID_zero)
-    expect(baseTx.getTypeID()).toBe(AVMConstants.BASETX)
+    expect(baseTx.getTypeID()).toBe(ALPHAConstants.BASETX)
     baseTx.setCodecID(codecID_one)
     expect(baseTx.getCodecID()).toBe(codecID_one)
-    expect(baseTx.getTypeID()).toBe(AVMConstants.BASETX_CODECONE)
+    expect(baseTx.getTypeID()).toBe(ALPHAConstants.BASETX_CODECONE)
     baseTx.setCodecID(codecID_zero)
     expect(baseTx.getCodecID()).toBe(codecID_zero)
-    expect(baseTx.getTypeID()).toBe(AVMConstants.BASETX)
+    expect(baseTx.getTypeID()).toBe(ALPHAConstants.BASETX)
   })
 
   test("Invalid BaseTx codecID", (): void => {
@@ -263,13 +263,13 @@ describe("Transactions", (): void => {
   test("CreateAssetTx codecIDs", (): void => {
     const createAssetTx: CreateAssetTx = new CreateAssetTx()
     expect(createAssetTx.getCodecID()).toBe(codecID_zero)
-    expect(createAssetTx.getTypeID()).toBe(AVMConstants.CREATEASSETTX)
+    expect(createAssetTx.getTypeID()).toBe(ALPHAConstants.CREATEASSETTX)
     createAssetTx.setCodecID(codecID_one)
     expect(createAssetTx.getCodecID()).toBe(codecID_one)
-    expect(createAssetTx.getTypeID()).toBe(AVMConstants.CREATEASSETTX_CODECONE)
+    expect(createAssetTx.getTypeID()).toBe(ALPHAConstants.CREATEASSETTX_CODECONE)
     createAssetTx.setCodecID(codecID_zero)
     expect(createAssetTx.getCodecID()).toBe(codecID_zero)
-    expect(createAssetTx.getTypeID()).toBe(AVMConstants.CREATEASSETTX)
+    expect(createAssetTx.getTypeID()).toBe(ALPHAConstants.CREATEASSETTX)
   })
 
   test("Invalid CreateAssetTx codecID", (): void => {
@@ -284,13 +284,13 @@ describe("Transactions", (): void => {
   test("OperationTx codecIDs", (): void => {
     const operationTx: OperationTx = new OperationTx()
     expect(operationTx.getCodecID()).toBe(codecID_zero)
-    expect(operationTx.getTypeID()).toBe(AVMConstants.OPERATIONTX)
+    expect(operationTx.getTypeID()).toBe(ALPHAConstants.OPERATIONTX)
     operationTx.setCodecID(codecID_one)
     expect(operationTx.getCodecID()).toBe(codecID_one)
-    expect(operationTx.getTypeID()).toBe(AVMConstants.OPERATIONTX_CODECONE)
+    expect(operationTx.getTypeID()).toBe(ALPHAConstants.OPERATIONTX_CODECONE)
     operationTx.setCodecID(codecID_zero)
     expect(operationTx.getCodecID()).toBe(codecID_zero)
-    expect(operationTx.getTypeID()).toBe(AVMConstants.OPERATIONTX)
+    expect(operationTx.getTypeID()).toBe(ALPHAConstants.OPERATIONTX)
   })
 
   test("Invalid OperationTx codecID", (): void => {
@@ -305,13 +305,13 @@ describe("Transactions", (): void => {
   test("ImportTx codecIDs", (): void => {
     const importTx: ImportTx = new ImportTx()
     expect(importTx.getCodecID()).toBe(codecID_zero)
-    expect(importTx.getTypeID()).toBe(AVMConstants.IMPORTTX)
+    expect(importTx.getTypeID()).toBe(ALPHAConstants.IMPORTTX)
     importTx.setCodecID(codecID_one)
     expect(importTx.getCodecID()).toBe(codecID_one)
-    expect(importTx.getTypeID()).toBe(AVMConstants.IMPORTTX_CODECONE)
+    expect(importTx.getTypeID()).toBe(ALPHAConstants.IMPORTTX_CODECONE)
     importTx.setCodecID(codecID_zero)
     expect(importTx.getCodecID()).toBe(codecID_zero)
-    expect(importTx.getTypeID()).toBe(AVMConstants.IMPORTTX)
+    expect(importTx.getTypeID()).toBe(ALPHAConstants.IMPORTTX)
   })
 
   test("Invalid ImportTx codecID", (): void => {
@@ -326,13 +326,13 @@ describe("Transactions", (): void => {
   test("ExportTx codecIDs", (): void => {
     const exportTx: ExportTx = new ExportTx()
     expect(exportTx.getCodecID()).toBe(codecID_zero)
-    expect(exportTx.getTypeID()).toBe(AVMConstants.EXPORTTX)
+    expect(exportTx.getTypeID()).toBe(ALPHAConstants.EXPORTTX)
     exportTx.setCodecID(codecID_one)
     expect(exportTx.getCodecID()).toBe(codecID_one)
-    expect(exportTx.getTypeID()).toBe(AVMConstants.EXPORTTX_CODECONE)
+    expect(exportTx.getTypeID()).toBe(ALPHAConstants.EXPORTTX_CODECONE)
     exportTx.setCodecID(codecID_zero)
     expect(exportTx.getCodecID()).toBe(codecID_zero)
-    expect(exportTx.getTypeID()).toBe(AVMConstants.EXPORTTX)
+    expect(exportTx.getTypeID()).toBe(ALPHAConstants.EXPORTTX)
   })
 
   test("Invalid ExportTx codecID", (): void => {
@@ -639,9 +639,9 @@ describe("Transactions", (): void => {
       1
     )
     const initialState: InitialStates = new InitialStates()
-    initialState.addOutput(secpbase1, AVMConstants.SECPFXID)
-    initialState.addOutput(secpbase2, AVMConstants.SECPFXID)
-    initialState.addOutput(secpbase3, AVMConstants.SECPFXID)
+    initialState.addOutput(secpbase1, ALPHAConstants.SECPFXID)
+    initialState.addOutput(secpbase2, ALPHAConstants.SECPFXID)
+    initialState.addOutput(secpbase3, ALPHAConstants.SECPFXID)
     const name: string = "Rickcoin is the most intelligent coin"
     const symbol: string = "RICK"
     const denomination: number = 9
@@ -665,7 +665,7 @@ describe("Transactions", (): void => {
       initialState.toBuffer().toString("hex")
     )
 
-    expect(txu.getTxType()).toBe(AVMConstants.CREATEASSETTX)
+    expect(txu.getTxType()).toBe(ALPHAConstants.CREATEASSETTX)
     expect(txu.getNetworkID()).toBe(12345)
     expect(txu.getBlockchainID().toString("hex")).toBe(
       blockchainID.toString("hex")
@@ -739,7 +739,7 @@ describe("Transactions", (): void => {
       outputs,
       inputs,
       new UTF8Payload("hello world").getPayload(),
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       importIns
     )
     const txunew: ImportTx = new ImportTx()
@@ -748,7 +748,7 @@ describe("Transactions", (): void => {
 
     expect(importTx).toBeInstanceOf(ImportTx)
     expect(importTx.getSourceChain().toString("hex")).toBe(
-      bintools.cb58Decode(PlatformChainID).toString("hex")
+      bintools.cb58Decode(OmegaChainID).toString("hex")
     )
     expect(txunew.toBuffer().toString("hex")).toBe(importbuff.toString("hex"))
     expect(txunew.toString()).toBe(importTx.toString())
@@ -776,7 +776,7 @@ describe("Transactions", (): void => {
       outputs,
       inputs,
       undefined,
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       exportOuts
     )
     const txunew: ExportTx = new ExportTx()
@@ -785,7 +785,7 @@ describe("Transactions", (): void => {
 
     expect(exportTx).toBeInstanceOf(ExportTx)
     expect(exportTx.getDestinationChain().toString("hex")).toBe(
-      bintools.cb58Decode(PlatformChainID).toString("hex")
+      bintools.cb58Decode(OmegaChainID).toString("hex")
     )
     expect(txunew.toBuffer().toString("hex")).toBe(exportbuff.toString("hex"))
     expect(txunew.toString()).toBe(exportTx.toString())
@@ -861,7 +861,7 @@ describe("Transactions", (): void => {
       addrs1,
       addrs2,
       importUTXOs,
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       new BN(90),
       assetID,
       new UTF8Payload("hello world").getPayload(),
@@ -882,7 +882,7 @@ describe("Transactions", (): void => {
       addrs3,
       addrs1,
       addrs2,
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       undefined,
       undefined,
       new UTF8Payload("hello world").getPayload(),

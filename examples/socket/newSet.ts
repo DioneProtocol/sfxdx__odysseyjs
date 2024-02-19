@@ -4,14 +4,14 @@ import { PubSub, Socket } from "../../src"
 const protocol = process.env.PROTOCOL_WS
 const host = process.env.LOCALHOST
 const port = Number(process.env.PORT)
-const addresses: string[] = ["X-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"]
+const addresses: string[] = ["A-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"]
 
 const main = async (): Promise<any> => {
   const pubsub: PubSub = new PubSub()
   const newSet: string = pubsub.newSet()
   const addAddresses: string = pubsub.addAddresses(addresses)
   const socket: Socket = new Socket(
-    `${protocol}://${host}:${port}/ext/bc/X/events`
+    `${protocol}://${host}:${port}/ext/bc/A/events`
   )
   socket.onopen = () => {
     console.log("Socket Connected")

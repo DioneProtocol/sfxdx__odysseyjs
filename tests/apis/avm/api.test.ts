@@ -1,38 +1,38 @@
 import mockAxios from "jest-mock-axios"
 import { Odyssey } from "src"
-import { AVMAPI } from "../../../src/apis/avm/api"
-import { KeyPair, KeyChain } from "../../../src/apis/avm/keychain"
+import { ALPHAAPI } from "../../../src/apis/alpha/api"
+import { KeyPair, KeyChain } from "../../../src/apis/alpha/keychain"
 import { Buffer } from "buffer/"
 import BN from "bn.js"
 import BinTools from "../../../src/utils/bintools"
-import { UTXOSet, UTXO } from "../../../src/apis/avm/utxos"
+import { UTXOSet, UTXO } from "../../../src/apis/alpha/utxos"
 import {
   TransferableInput,
   SECPTransferInput
-} from "../../../src/apis/avm/inputs"
+} from "../../../src/apis/alpha/inputs"
 import createHash from "create-hash"
-import { UnsignedTx, Tx } from "../../../src/apis/avm/tx"
-import { AVMConstants } from "../../../src/apis/avm/constants"
+import { UnsignedTx, Tx } from "../../../src/apis/alpha/tx"
+import { ALPHAConstants } from "../../../src/apis/alpha/constants"
 import {
   TransferableOutput,
   SECPTransferOutput,
   NFTMintOutput,
   NFTTransferOutput,
   SECPMintOutput
-} from "../../../src/apis/avm/outputs"
+} from "../../../src/apis/alpha/outputs"
 import {
   NFTTransferOperation,
   TransferableOperation,
   SECPMintOperation
-} from "../../../src/apis/avm/ops"
+} from "../../../src/apis/alpha/ops"
 import * as bech32 from "bech32"
 import { UTF8Payload } from "../../../src/utils/payload"
-import { InitialStates } from "../../../src/apis/avm/initialstates"
+import { InitialStates } from "../../../src/apis/alpha/initialstates"
 import { Defaults } from "../../../src/utils/constants"
 import { UnixNow } from "../../../src/utils/helperfunctions"
 import { OutputOwners } from "../../../src/common/output"
-import { MinterSet } from "../../../src/apis/avm/minterset"
-import { PlatformChainID } from "../../../src/utils/constants"
+import { MinterSet } from "../../../src/apis/alpha/minterset"
+import { OmegaChainID } from "../../../src/utils/constants"
 import { PersistanceOptions } from "../../../src/utils/persistenceoptions"
 import { ONEDIONE } from "../../../src/utils/constants"
 import {
@@ -46,7 +46,7 @@ import {
   GetBalanceResponse,
   SendMultipleResponse,
   SendResponse
-} from "src/apis/avm/interfaces"
+} from "src/apis/alpha/interfaces"
 import { CENTIDIONE } from "src/utils"
 import { MILLIDIONE } from "src/utils"
 
@@ -62,14 +62,14 @@ const serialzeit = (aThing: Serializable, name: string): void => {
   if (dumpSerailization) {
     console.log(
       JSON.stringify(
-        serialization.serialize(aThing, "avm", "hex", name + " -- Hex Encoded")
+        serialization.serialize(aThing, "alpha", "hex", name + " -- Hex Encoded")
       )
     )
     console.log(
       JSON.stringify(
         serialization.serialize(
           aThing,
-          "avm",
+          "alpha",
           "display",
           name + " -- Human-Readable"
         )
@@ -78,9 +78,9 @@ const serialzeit = (aThing: Serializable, name: string): void => {
   }
 }
 
-describe("AVMAPI", (): void => {
+describe("ALPHAAPI", (): void => {
   const networkID: number = 1337
-  const blockchainID: string = Defaults.network[networkID].X.blockchainID
+  const blockchainID: string = Defaults.network[networkID].A.blockchainID
   const ip: string = "127.0.0.1"
   const port: number = 9650
   const protocol: string = "https"
@@ -98,22 +98,22 @@ describe("AVMAPI", (): void => {
     undefined,
     true
   )
-  let api: AVMAPI
+  let api: ALPHAAPI
   let alias: string
 
-  const addrA: string = `X-${bech32.bech32.encode(
+  const addrA: string = `A-${bech32.bech32.encode(
     odyssey.getHRP(),
     bech32.bech32.toWords(
       bintools.cb58Decode("B6D4v1VtPYLbiUvYXtW4Px8oE9imC2vGW")
     )
   )}`
-  const addrB: string = `X-${bech32.bech32.encode(
+  const addrB: string = `A-${bech32.bech32.encode(
     odyssey.getHRP(),
     bech32.bech32.toWords(
       bintools.cb58Decode("P5wdRuZeaDt28eHMP5S3w9ZdoBfo7wuzF")
     )
   )}`
-  const addrC: string = `X-${bech32.bech32.encode(
+  const addrC: string = `A-${bech32.bech32.encode(
     odyssey.getHRP(),
     bech32.bech32.toWords(
       bintools.cb58Decode("6Y3kysjF9jnHnYkdS9yGAuoHyae2eNmeV")
@@ -121,7 +121,7 @@ describe("AVMAPI", (): void => {
   )}`
 
   beforeAll((): void => {
-    api = new AVMAPI(odyssey, "/ext/bc/X", blockchainID)
+    api = new ALPHAAPI(odyssey, "/ext/bc/A", blockchainID)
     alias = api.getBlockchainAlias()
   })
 
@@ -200,7 +200,7 @@ describe("AVMAPI", (): void => {
   test("can Send 1", async (): Promise<void> => {
     const txId: string = "asdfhvl234"
     const memo: string = "hello world"
-    const changeAddr: string = "X-local1"
+    const changeAddr: string = "A-local1"
     const result: Promise<SendResponse> = api.send(
       username,
       password,
@@ -232,7 +232,7 @@ describe("AVMAPI", (): void => {
   test("can Send 2", async (): Promise<void> => {
     const txId: string = "asdfhvl234"
     const memo: Buffer = Buffer.from("hello world")
-    const changeAddr: string = "X-local1"
+    const changeAddr: string = "A-local1"
     const result: Promise<SendResponse> = api.send(
       username,
       password,
@@ -264,7 +264,7 @@ describe("AVMAPI", (): void => {
   test("can Send Multiple", async (): Promise<void> => {
     const txId: string = "asdfhvl234"
     const memo: string = "hello world"
-    const changeAddr: string = "X-local1"
+    const changeAddr: string = "A-local1"
     const result: Promise<SendMultipleResponse> = api.sendMultiple(
       username,
       password,
@@ -292,9 +292,9 @@ describe("AVMAPI", (): void => {
   })
 
   test("refreshBlockchainID", async (): Promise<void> => {
-    const n3bcID: string = Defaults.network[3].X["blockchainID"]
-    const n1337bcID: string = Defaults.network[1337].X["blockchainID"]
-    const testAPI: AVMAPI = new AVMAPI(odyssey, "/ext/bc/avm", n3bcID)
+    const n3bcID: string = Defaults.network[3].A["blockchainID"]
+    const n1337bcID: string = Defaults.network[1337].A["blockchainID"]
+    const testAPI: ALPHAAPI = new ALPHAAPI(odyssey, "/ext/bc/alpha", n3bcID)
     const bc1: string = testAPI.getBlockchainID()
     expect(bc1).toBe(n3bcID)
 
@@ -398,7 +398,7 @@ describe("AVMAPI", (): void => {
 
     const expectedRequestPayload = {
       id: 1,
-      method: "avm.getBalance",
+      method: "alpha.getBalance",
       params: {
         address: addrA,
         assetID: "ATH",
@@ -411,14 +411,14 @@ describe("AVMAPI", (): void => {
     const response: object = await result
     const calledWith: object = {
       baseURL: "https://127.0.0.1:9650",
-      data: '{"id":9,"method":"avm.getBalance","params":{"address":"X-custom1d6kkj0qh4wcmus3tk59npwt3rluc6en755a58g","assetID":"ATH","includePartial":true},"jsonrpc":"2.0"}',
+      data: '{"id":9,"method":"alpha.getBalance","params":{"address":"A-custom1d6kkj0qh4wcmus3tk59npwt3rluc6en755a58g","assetID":"ATH","includePartial":true},"jsonrpc":"2.0"}',
       headers: {
         "Content-Type": "application/json;charset=UTF-8"
       },
       method: "POST",
       params: {},
       responseType: "json",
-      url: "/ext/bc/X"
+      url: "/ext/bc/A"
     }
 
     expect(mockAxios.request).toBeCalledWith(calledWith)
@@ -918,7 +918,7 @@ describe("AVMAPI", (): void => {
     let nftInitialState: InitialStates
     let nftutxoids: string[] = []
     let fungutxoids: string[] = []
-    let avm: AVMAPI
+    let alpha: ALPHAAPI
     const fee: number = 10
     const name: string = "Mortycoin is the dumb as a sack of hammers."
     const symbol: string = "morT"
@@ -935,9 +935,9 @@ describe("AVMAPI", (): void => {
     let xfersecpmintop: TransferableOperation
 
     beforeEach(async (): Promise<void> => {
-      avm = new AVMAPI(odyssey, "/ext/bc/X", blockchainID)
+      alpha = new ALPHAAPI(odyssey, "/ext/bc/A", blockchainID)
 
-      const result: Promise<Buffer> = avm.getDIONEAssetID(true)
+      const result: Promise<Buffer> = alpha.getDIONEAssetID(true)
       const payload: object = {
         result: {
           name,
@@ -953,7 +953,7 @@ describe("AVMAPI", (): void => {
       mockAxios.mockResponse(responseObj)
       await result
       set = new UTXOSet()
-      avm.newKeyChain()
+      alpha.newKeyChain()
       keymgr2 = new KeyChain(odyssey.getHRP(), alias)
       keymgr3 = new KeyChain(odyssey.getHRP(), alias)
       addrs1 = []
@@ -975,14 +975,14 @@ describe("AVMAPI", (): void => {
 
       for (let i: number = 0; i < 3; i++) {
         addrs1.push(
-          avm.addressFromBuffer(avm.keyChain().makeKey().getAddress())
+          alpha.addressFromBuffer(alpha.keyChain().makeKey().getAddress())
         )
-        addrs2.push(avm.addressFromBuffer(keymgr2.makeKey().getAddress()))
-        addrs3.push(avm.addressFromBuffer(keymgr3.makeKey().getAddress()))
+        addrs2.push(alpha.addressFromBuffer(keymgr2.makeKey().getAddress()))
+        addrs3.push(alpha.addressFromBuffer(keymgr3.makeKey().getAddress()))
       }
       const amount: BN = ONEDIONE.mul(new BN(amnt))
-      addressbuffs = avm.keyChain().getAddresses()
-      addresses = addressbuffs.map((a) => avm.addressFromBuffer(a))
+      addressbuffs = alpha.keyChain().getAddresses()
+      addresses = addressbuffs.map((a) => alpha.addressFromBuffer(a))
       const locktime: BN = new BN(54321)
       const threshold: number = 3
       for (let i: number = 0; i < 5; i++) {
@@ -1037,7 +1037,7 @@ describe("AVMAPI", (): void => {
             .digest()
         )
         const nftutxo: UTXO = new UTXO(
-          AVMConstants.LATESTCODEC,
+          ALPHAConstants.LATESTCODEC,
           nfttxid,
           1000 + i,
           NFTassetID,
@@ -1056,26 +1056,26 @@ describe("AVMAPI", (): void => {
 
       secpbase1 = new SECPTransferOutput(
         new BN(777),
-        addrs3.map((a) => avm.parseAddress(a)),
+        addrs3.map((a) => alpha.parseAddress(a)),
         UnixNow(),
         1
       )
       secpbase2 = new SECPTransferOutput(
         new BN(888),
-        addrs2.map((a) => avm.parseAddress(a)),
+        addrs2.map((a) => alpha.parseAddress(a)),
         UnixNow(),
         1
       )
       secpbase3 = new SECPTransferOutput(
         new BN(999),
-        addrs2.map((a) => avm.parseAddress(a)),
+        addrs2.map((a) => alpha.parseAddress(a)),
         UnixNow(),
         1
       )
       initialState = new InitialStates()
-      initialState.addOutput(secpbase1, AVMConstants.SECPFXID)
-      initialState.addOutput(secpbase2, AVMConstants.SECPFXID)
-      initialState.addOutput(secpbase3, AVMConstants.SECPFXID)
+      initialState.addOutput(secpbase1, ALPHAConstants.SECPFXID)
+      initialState.addOutput(secpbase2, ALPHAConstants.SECPFXID)
+      initialState.addOutput(secpbase3, ALPHAConstants.SECPFXID)
 
       nftpbase1 = new NFTMintOutput(
         0,
@@ -1096,9 +1096,9 @@ describe("AVMAPI", (): void => {
         1
       )
       nftInitialState = new InitialStates()
-      nftInitialState.addOutput(nftpbase1, AVMConstants.NFTFXID)
-      nftInitialState.addOutput(nftpbase2, AVMConstants.NFTFXID)
-      nftInitialState.addOutput(nftpbase3, AVMConstants.NFTFXID)
+      nftInitialState.addOutput(nftpbase1, ALPHAConstants.NFTFXID)
+      nftInitialState.addOutput(nftpbase2, ALPHAConstants.NFTFXID)
+      nftInitialState.addOutput(nftpbase3, ALPHAConstants.NFTFXID)
 
       secpMintOut1 = new SECPMintOutput(addressbuffs, new BN(0), 1)
       secpMintOut2 = new SECPMintOutput(addressbuffs, new BN(0), 1)
@@ -1108,7 +1108,7 @@ describe("AVMAPI", (): void => {
           .digest()
       )
       secpMintUTXO = new UTXO(
-        AVMConstants.LATESTCODEC,
+        ALPHAConstants.LATESTCODEC,
         secpMintTXID,
         0,
         assetID,
@@ -1116,13 +1116,13 @@ describe("AVMAPI", (): void => {
       )
       secpMintXferOut1 = new SECPTransferOutput(
         new BN(123),
-        addrs3.map((a) => avm.parseAddress(a)),
+        addrs3.map((a) => alpha.parseAddress(a)),
         UnixNow(),
         2
       )
       secpMintXferOut2 = new SECPTransferOutput(
         new BN(456),
-        [avm.parseAddress(addrs2[0])],
+        [alpha.parseAddress(addrs2[0])],
         UnixNow(),
         1
       )
@@ -1138,11 +1138,11 @@ describe("AVMAPI", (): void => {
     })
 
     test("getDefaultMintTxFee", (): void => {
-      expect(avm.getDefaultMintTxFee().toString()).toBe("1000000")
+      expect(alpha.getDefaultMintTxFee().toString()).toBe("1000000")
     })
 
     test("signTx", async (): Promise<void> => {
-      const txu1: UnsignedTx = await avm.buildBaseTx(
+      const txu1: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1155,10 +1155,10 @@ describe("AVMAPI", (): void => {
         bintools.cb58Decode(blockchainID),
         new BN(amnt),
         assetID,
-        addrs3.map((a) => avm.parseAddress(a)),
-        addrs1.map((a) => avm.parseAddress(a)),
-        addrs1.map((a) => avm.parseAddress(a)),
-        avm.getTxFee(),
+        addrs3.map((a) => alpha.parseAddress(a)),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        alpha.getTxFee(),
         assetID,
         undefined,
         UnixNow(),
@@ -1166,8 +1166,8 @@ describe("AVMAPI", (): void => {
         1
       )
 
-      const tx1: Tx = avm.signTx(txu1)
-      const tx2: Tx = avm.signTx(txu2)
+      const tx1: Tx = alpha.signTx(txu1)
+      const tx2: Tx = alpha.signTx(txu2)
 
       expect(tx2.toBuffer().toString("hex")).toBe(
         tx1.toBuffer().toString("hex")
@@ -1176,7 +1176,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildBaseTx1", async (): Promise<void> => {
-      const txu1: UnsignedTx = await avm.buildBaseTx(
+      const txu1: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1191,10 +1191,10 @@ describe("AVMAPI", (): void => {
         bintools.cb58Decode(blockchainID),
         new BN(amnt),
         assetID,
-        addrs3.map((a) => avm.parseAddress(a)),
-        addrs1.map((a) => avm.parseAddress(a)),
-        addrs1.map((a) => avm.parseAddress(a)),
-        avm.getTxFee(),
+        addrs3.map((a) => alpha.parseAddress(a)),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        alpha.getTxFee(),
         assetID,
         memobuf,
         UnixNow(),
@@ -1206,7 +1206,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1220,7 +1220,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1235,7 +1235,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("xssPreventionObject", async (): Promise<void> => {
-      const txu1: UnsignedTx = await avm.buildBaseTx(
+      const txu1: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1244,7 +1244,7 @@ describe("AVMAPI", (): void => {
         addrs1
       )
 
-      const tx1: Tx = avm.signTx(txu1)
+      const tx1: Tx = alpha.signTx(txu1)
       const tx1obj: object = tx1.serialize("hex")
       const sanitized: object = tx1.sanitizeObject(tx1obj)
       expect(tx1obj).toStrictEqual(sanitized)
@@ -1254,7 +1254,7 @@ describe("AVMAPI", (): void => {
       const dirtyDom: string = "<img src='https://x' onerror=alert(1)//>"
       const sanitizedString: string = `<img src="https://x" />`
 
-      const txu1: UnsignedTx = await avm.buildBaseTx(
+      const txu1: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1263,7 +1263,7 @@ describe("AVMAPI", (): void => {
         addrs1
       )
 
-      const tx1: Tx = avm.signTx(txu1)
+      const tx1: Tx = alpha.signTx(txu1)
       const tx1obj: object = tx1.serialize("hex")
       const dirtyObj: object = {
         ...tx1obj,
@@ -1274,7 +1274,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildBaseTx2", async (): Promise<void> => {
-      const txu1: UnsignedTx = await avm.buildBaseTx(
+      const txu1: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt).sub(new BN(100)),
         bintools.cb58Encode(assetID),
@@ -1288,10 +1288,10 @@ describe("AVMAPI", (): void => {
         bintools.cb58Decode(blockchainID),
         new BN(amnt).sub(new BN(100)),
         assetID,
-        addrs3.map((a): Buffer => avm.parseAddress(a)),
-        addrs1.map((a): Buffer => avm.parseAddress(a)),
-        addrs2.map((a): Buffer => avm.parseAddress(a)),
-        avm.getTxFee(),
+        addrs3.map((a): Buffer => alpha.parseAddress(a)),
+        addrs1.map((a): Buffer => alpha.parseAddress(a)),
+        addrs2.map((a): Buffer => alpha.parseAddress(a)),
+        alpha.getTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow(),
@@ -1313,11 +1313,11 @@ describe("AVMAPI", (): void => {
       const outaddr0 = outies[0]
         .getOutput()
         .getAddresses()
-        .map((a) => avm.addressFromBuffer(a))
+        .map((a) => alpha.addressFromBuffer(a))
       const outaddr1 = outies[1]
         .getOutput()
         .getAddresses()
-        .map((a) => avm.addressFromBuffer(a))
+        .map((a) => alpha.addressFromBuffer(a))
 
       const testaddr2 = JSON.stringify(addrs2.sort())
       const testaddr3 = JSON.stringify(addrs3.sort())
@@ -1329,7 +1329,7 @@ describe("AVMAPI", (): void => {
           (testaddr3 == testout0 && testaddr2 == testout1)
       ).toBe(true)
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1343,7 +1343,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1360,7 +1360,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("issueTx Serialized", async (): Promise<void> => {
-      const txu: UnsignedTx = await avm.buildBaseTx(
+      const txu: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1368,11 +1368,11 @@ describe("AVMAPI", (): void => {
         addrs1,
         addrs1
       )
-      const tx = avm.signTx(txu)
+      const tx = alpha.signTx(txu)
       const txid: string =
         "f966750f438867c3c9828ddcdbe660e21ccdbb36a9276958f011ba472f75d4e7"
 
-      const result: Promise<string> = avm.issueTx(tx.toString())
+      const result: Promise<string> = alpha.issueTx(tx.toString())
       const payload: object = {
         result: {
           txID: txid
@@ -1388,7 +1388,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("issueTx Buffer", async (): Promise<void> => {
-      const txu: UnsignedTx = await avm.buildBaseTx(
+      const txu: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1396,11 +1396,11 @@ describe("AVMAPI", (): void => {
         addrs1,
         addrs1
       )
-      const tx = avm.signTx(txu)
+      const tx = alpha.signTx(txu)
 
       const txid: string =
         "f966750f438867c3c9828ddcdbe660e21ccdbb36a9276958f011ba472f75d4e7"
-      const result: Promise<string> = avm.issueTx(tx.toBuffer())
+      const result: Promise<string> = alpha.issueTx(tx.toBuffer())
       const payload: object = {
         result: {
           txID: txid
@@ -1416,7 +1416,7 @@ describe("AVMAPI", (): void => {
       expect(response).toBe(txid)
     })
     test("issueTx Class Tx", async (): Promise<void> => {
-      const txu: UnsignedTx = await avm.buildBaseTx(
+      const txu: UnsignedTx = await alpha.buildBaseTx(
         set,
         new BN(amnt),
         bintools.cb58Encode(assetID),
@@ -1424,12 +1424,12 @@ describe("AVMAPI", (): void => {
         addrs1,
         addrs1
       )
-      const tx = avm.signTx(txu)
+      const tx = alpha.signTx(txu)
 
       const txid: string =
         "f966750f438867c3c9828ddcdbe660e21ccdbb36a9276958f011ba472f75d4e7"
 
-      const result: Promise<string> = avm.issueTx(tx)
+      const result: Promise<string> = alpha.issueTx(tx)
       const payload: object = {
         result: {
           txID: txid
@@ -1445,8 +1445,8 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildCreateAssetTx - Fixed Cap", async (): Promise<void> => {
-      avm.setCreationTxFee(new BN(fee))
-      const txu1: UnsignedTx = await avm.buildCreateAssetTx(
+      alpha.setCreationTxFee(new BN(fee))
+      const txu1: UnsignedTx = await alpha.buildCreateAssetTx(
         set,
         addrs1,
         addrs2,
@@ -1458,9 +1458,9 @@ describe("AVMAPI", (): void => {
 
       const txu2: UnsignedTx = set.buildCreateAssetTx(
         odyssey.getNetworkID(),
-        bintools.cb58Decode(avm.getBlockchainID()),
-        addrs1.map((a) => avm.parseAddress(a)),
-        addrs2.map((a) => avm.parseAddress(a)),
+        bintools.cb58Decode(alpha.getBlockchainID()),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        addrs2.map((a) => alpha.parseAddress(a)),
         initialState,
         name,
         symbol,
@@ -1475,7 +1475,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1489,7 +1489,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1505,9 +1505,9 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildCreateAssetTx - Variable Cap", async (): Promise<void> => {
-      avm.setCreationTxFee(new BN(Defaults.network[12345].P["creationTxFee"]))
+      alpha.setCreationTxFee(new BN(Defaults.network[12345].O["creationTxFee"]))
       const mintOutputs: SECPMintOutput[] = [secpMintOut1, secpMintOut2]
-      const txu1: UnsignedTx = await avm.buildCreateAssetTx(
+      const txu1: UnsignedTx = await alpha.buildCreateAssetTx(
         set,
         addrs1,
         addrs2,
@@ -1520,15 +1520,15 @@ describe("AVMAPI", (): void => {
 
       const txu2: UnsignedTx = set.buildCreateAssetTx(
         odyssey.getNetworkID(),
-        bintools.cb58Decode(avm.getBlockchainID()),
-        addrs1.map((a) => avm.parseAddress(a)),
-        addrs2.map((a) => avm.parseAddress(a)),
+        bintools.cb58Decode(alpha.getBlockchainID()),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        addrs2.map((a) => alpha.parseAddress(a)),
         initialState,
         name,
         symbol,
         denomination,
         mintOutputs,
-        avm.getCreationTxFee(),
+        alpha.getCreationTxFee(),
         assetID
       )
 
@@ -1537,7 +1537,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1551,7 +1551,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1566,13 +1566,13 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildSECPMintTx", async (): Promise<void> => {
-      avm.setTxFee(new BN(fee))
+      alpha.setTxFee(new BN(fee))
       const newMinter: SECPMintOutput = new SECPMintOutput(
-        addrs3.map((a) => avm.parseAddress(a)),
+        addrs3.map((a) => alpha.parseAddress(a)),
         new BN(0),
         1
       )
-      const txu1: UnsignedTx = await avm.buildSECPMintTx(
+      const txu1: UnsignedTx = await alpha.buildSECPMintTx(
         set,
         newMinter,
         secpMintXferOut1,
@@ -1583,11 +1583,11 @@ describe("AVMAPI", (): void => {
 
       const txu2: UnsignedTx = set.buildSECPMintTx(
         odyssey.getNetworkID(),
-        bintools.cb58Decode(avm.getBlockchainID()),
+        bintools.cb58Decode(alpha.getBlockchainID()),
         newMinter,
         secpMintXferOut1,
-        addrs1.map((a) => avm.parseAddress(a)),
-        addrs2.map((a) => avm.parseAddress(a)),
+        addrs1.map((a) => alpha.parseAddress(a)),
+        addrs2.map((a) => alpha.parseAddress(a)),
         secpMintUTXO.getUTXOID(),
         MILLIDIONE,
         assetID
@@ -1598,7 +1598,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1612,7 +1612,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1628,11 +1628,11 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildCreateNFTAssetTx", async (): Promise<void> => {
-      avm.setCreationTxFee(new BN(Defaults.network[12345].P["creationTxFee"]))
+      alpha.setCreationTxFee(new BN(Defaults.network[12345].O["creationTxFee"]))
       const minterSets: MinterSet[] = [new MinterSet(1, addrs1)]
       const locktime: BN = new BN(0)
 
-      const txu1: UnsignedTx = await avm.buildCreateNFTAssetTx(
+      const txu1: UnsignedTx = await alpha.buildCreateNFTAssetTx(
         set,
         addrs1,
         addrs2,
@@ -1646,13 +1646,13 @@ describe("AVMAPI", (): void => {
 
       const txu2: UnsignedTx = set.buildCreateNFTAssetTx(
         odyssey.getNetworkID(),
-        bintools.cb58Decode(avm.getBlockchainID()),
-        addrs1.map((a: string): Buffer => avm.parseAddress(a)),
-        addrs2.map((a: string): Buffer => avm.parseAddress(a)),
+        bintools.cb58Decode(alpha.getBlockchainID()),
+        addrs1.map((a: string): Buffer => alpha.parseAddress(a)),
+        addrs2.map((a: string): Buffer => alpha.parseAddress(a)),
         minterSets,
         name,
         symbol,
-        avm.getCreationTxFee(),
+        alpha.getCreationTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow(),
@@ -1664,7 +1664,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1678,7 +1678,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1694,25 +1694,25 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildCreateNFTMintTx", async (): Promise<void> => {
-      avm.setTxFee(new BN(fee))
+      alpha.setTxFee(new BN(fee))
       const groupID: number = 0
       const locktime: BN = new BN(0)
       const threshold: number = 1
       const payload: Buffer = Buffer.from("Odyssey")
       const addrbuff1: Buffer[] = addrs1.map(
-        (a: string): Buffer => avm.parseAddress(a)
+        (a: string): Buffer => alpha.parseAddress(a)
       )
       const addrbuff2: Buffer[] = addrs2.map(
-        (a: string): Buffer => avm.parseAddress(a)
+        (a: string): Buffer => alpha.parseAddress(a)
       )
       const addrbuff3: Buffer[] = addrs3.map(
-        (a: string): Buffer => avm.parseAddress(a)
+        (a: string): Buffer => alpha.parseAddress(a)
       )
       const outputOwners: OutputOwners[] = []
       const oo: OutputOwners = new OutputOwners(addrbuff3, locktime, threshold)
       outputOwners.push()
 
-      const txu1: UnsignedTx = await avm.buildCreateNFTMintTx(
+      const txu1: UnsignedTx = await alpha.buildCreateNFTMintTx(
         set,
         oo,
         addrs1,
@@ -1726,14 +1726,14 @@ describe("AVMAPI", (): void => {
 
       const txu2: UnsignedTx = set.buildCreateNFTMintTx(
         odyssey.getNetworkID(),
-        bintools.cb58Decode(avm.getBlockchainID()),
+        bintools.cb58Decode(alpha.getBlockchainID()),
         [oo],
         addrbuff1,
         addrbuff2,
         nftutxoids,
         groupID,
         payload,
-        avm.getTxFee(),
+        alpha.getTxFee(),
         assetID,
         undefined,
         UnixNow()
@@ -1747,7 +1747,7 @@ describe("AVMAPI", (): void => {
       outputOwners.push(oo)
       outputOwners.push(new OutputOwners(addrbuff3, locktime, threshold + 1))
 
-      const txu3: UnsignedTx = await avm.buildCreateNFTMintTx(
+      const txu3: UnsignedTx = await alpha.buildCreateNFTMintTx(
         set,
         outputOwners,
         addrs1,
@@ -1761,14 +1761,14 @@ describe("AVMAPI", (): void => {
 
       const txu4: UnsignedTx = set.buildCreateNFTMintTx(
         odyssey.getNetworkID(),
-        bintools.cb58Decode(avm.getBlockchainID()),
+        bintools.cb58Decode(alpha.getBlockchainID()),
         outputOwners,
         addrbuff1,
         addrbuff2,
         nftutxoids,
         groupID,
         payload,
-        avm.getTxFee(),
+        alpha.getTxFee(),
         assetID,
         undefined,
         UnixNow()
@@ -1779,7 +1779,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu4.toString()).toBe(txu3.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1793,7 +1793,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1809,7 +1809,7 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildNFTTransferTx", async (): Promise<void> => {
-      avm.setTxFee(new BN(fee))
+      alpha.setTxFee(new BN(fee))
       const pload: Buffer = Buffer.alloc(1024)
       pload.write(
         "All you Trekkies and TV addicts, Don't mean to diss don't mean to bring static.",
@@ -1817,10 +1817,10 @@ describe("AVMAPI", (): void => {
         1024,
         "utf8"
       )
-      const addrbuff1 = addrs1.map((a: string): Buffer => avm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a: string): Buffer => avm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a: string): Buffer => avm.parseAddress(a))
-      const txu1: UnsignedTx = await avm.buildNFTTransferTx(
+      const addrbuff1 = addrs1.map((a: string): Buffer => alpha.parseAddress(a))
+      const addrbuff2 = addrs2.map((a: string): Buffer => alpha.parseAddress(a))
+      const addrbuff3 = addrs3.map((a: string): Buffer => alpha.parseAddress(a))
+      const txu1: UnsignedTx = await alpha.buildNFTTransferTx(
         set,
         addrs3,
         addrs1,
@@ -1839,7 +1839,7 @@ describe("AVMAPI", (): void => {
         addrbuff1,
         addrbuff2,
         [nftutxoids[1]],
-        avm.getTxFee(),
+        alpha.getTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow(),
@@ -1852,7 +1852,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1866,7 +1866,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1884,17 +1884,17 @@ describe("AVMAPI", (): void => {
     test("buildImportTx", async (): Promise<void> => {
       const locktime: BN = new BN(0)
       const threshold: number = 1
-      avm.setTxFee(new BN(fee))
-      const addrbuff1 = addrs1.map((a) => avm.parseAddress(a))
-      const addrbuff2 = addrs2.map((a) => avm.parseAddress(a))
-      const addrbuff3 = addrs3.map((a) => avm.parseAddress(a))
+      alpha.setTxFee(new BN(fee))
+      const addrbuff1 = addrs1.map((a) => alpha.parseAddress(a))
+      const addrbuff2 = addrs2.map((a) => alpha.parseAddress(a))
+      const addrbuff3 = addrs3.map((a) => alpha.parseAddress(a))
       const fungutxo: UTXO = set.getUTXO(fungutxoids[1])
       const fungutxostr: string = fungutxo.toString()
 
-      const result: Promise<UnsignedTx> = avm.buildImportTx(
+      const result: Promise<UnsignedTx> = alpha.buildImportTx(
         set,
         addrs1,
-        PlatformChainID,
+        OmegaChainID,
         addrs3,
         addrs1,
         addrs2,
@@ -1922,9 +1922,9 @@ describe("AVMAPI", (): void => {
         addrbuff1,
         addrbuff2,
         [fungutxo],
-        bintools.cb58Decode(PlatformChainID),
-        avm.getTxFee(),
-        await avm.getDIONEAssetID(),
+        bintools.cb58Decode(OmegaChainID),
+        alpha.getTxFee(),
+        await alpha.getDIONEAssetID(),
         new UTF8Payload("hello world").getPayload(),
         UnixNow(),
         locktime,
@@ -1936,7 +1936,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -1950,7 +1950,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -1966,24 +1966,24 @@ describe("AVMAPI", (): void => {
     })
 
     test("buildExportTx", async (): Promise<void> => {
-      avm.setTxFee(new BN(fee))
+      alpha.setTxFee(new BN(fee))
       const addrbuff1: Buffer[] = addrs1.map(
-        (a: string): Buffer => avm.parseAddress(a)
+        (a: string): Buffer => alpha.parseAddress(a)
       )
       const addrbuff2: Buffer[] = addrs2.map(
-        (a: string): Buffer => avm.parseAddress(a)
+        (a: string): Buffer => alpha.parseAddress(a)
       )
       const addrbuff3: Buffer[] = addrs3.map(
-        (a: string): Buffer => avm.parseAddress(a)
+        (a: string): Buffer => alpha.parseAddress(a)
       )
       const amount: BN = new BN(90)
       const type: SerializedType = "bech32"
-      const txu1: UnsignedTx = await avm.buildExportTx(
+      const txu1: UnsignedTx = await alpha.buildExportTx(
         set,
         amount,
-        bintools.cb58Decode(PlatformChainID),
+        bintools.cb58Decode(OmegaChainID),
         addrbuff3.map((a: Buffer): any =>
-          serialization.bufferToType(a, type, odyssey.getHRP(), "P")
+          serialization.bufferToType(a, type, odyssey.getHRP(), "O")
         ),
         addrs1,
         addrs2,
@@ -1999,8 +1999,8 @@ describe("AVMAPI", (): void => {
         addrbuff3,
         addrbuff1,
         addrbuff2,
-        bintools.cb58Decode(PlatformChainID),
-        avm.getTxFee(),
+        bintools.cb58Decode(OmegaChainID),
+        alpha.getTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()
@@ -2011,10 +2011,10 @@ describe("AVMAPI", (): void => {
       )
       expect(txu2.toString()).toBe(txu1.toString())
 
-      const txu3: UnsignedTx = await avm.buildExportTx(
+      const txu3: UnsignedTx = await alpha.buildExportTx(
         set,
         amount,
-        PlatformChainID,
+        OmegaChainID,
         addrs3,
         addrs1,
         addrs2,
@@ -2031,7 +2031,7 @@ describe("AVMAPI", (): void => {
         addrbuff1,
         addrbuff2,
         undefined,
-        avm.getTxFee(),
+        alpha.getTxFee(),
         assetID,
         new UTF8Payload("hello world").getPayload(),
         UnixNow()
@@ -2042,7 +2042,7 @@ describe("AVMAPI", (): void => {
       )
       expect(txu4.toString()).toBe(txu3.toString())
 
-      const tx1: Tx = txu1.sign(avm.keyChain())
+      const tx1: Tx = txu1.sign(alpha.keyChain())
       const checkTx: string = tx1.toBuffer().toString("hex")
       const tx1obj: object = tx1.serialize("hex")
       const tx1str: string = JSON.stringify(tx1obj)
@@ -2056,7 +2056,7 @@ describe("AVMAPI", (): void => {
       expect(tx1str).toStrictEqual(tx2str)
       expect(tx2.toBuffer().toString("hex")).toBe(checkTx)
 
-      const tx3: Tx = txu1.sign(avm.keyChain())
+      const tx3: Tx = txu1.sign(alpha.keyChain())
       const tx3obj: object = tx3.serialize(display)
       const tx3str: string = JSON.stringify(tx3obj)
       const tx4newobj: object = JSON.parse(tx3str)
@@ -2100,7 +2100,7 @@ describe("AVMAPI", (): void => {
                   threshold: 1
                 },
                 {
-                  minters: ["A", "B", "C"],
+                  minters: ["A", "B", "D"],
                   threshold: 2
                 }
               ]

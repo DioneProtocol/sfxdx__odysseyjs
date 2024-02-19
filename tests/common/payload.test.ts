@@ -84,9 +84,9 @@ describe("Payload", (): void => {
     ["B58STR", utf8b58, utf8b58],
     ["B64STR", utf8b64, utf8b58],
     ["BIGNUM", bnhex, bintools.bufferToB58(Buffer.from(bnhex, "hex"))],
-    ["XCHAINADDR", "X-" + bech, cb58buf],
-    ["PCHAINADDR", "P-" + bech, cb58buf],
-    ["CCHAINADDR", "C-" + bech, cb58buf],
+    ["XCHAINADDR", "A-" + bech, cb58buf],
+    ["PCHAINADDR", "O-" + bech, cb58buf],
+    ["CCHAINADDR", "D-" + bech, cb58buf],
     ["TXID", cb58str, cb58buf],
     ["ASSETID", cb58str, cb58buf],
     ["UTXOID", cb58str, cb58buf],
@@ -174,24 +174,24 @@ describe("Payload", (): void => {
   })
 
   test("XCHAINADDRPayload special cases", (): void => {
-    const addr: string = `X-${bech}`
+    const addr: string = `A-${bech}`
     const pl: XCHAINADDRPayload = new XCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
-    expect(pl.returnChainID()).toBe("X")
+    expect(pl.returnChainID()).toBe("A")
   })
 
   test("PCHAINADDRPayload special cases", (): void => {
-    const addr: string = `P-${bech}`
+    const addr: string = `O-${bech}`
     const pl: PCHAINADDRPayload = new PCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
-    expect(pl.returnChainID()).toBe("P")
+    expect(pl.returnChainID()).toBe("O")
   })
 
   test("CCHAINADDRPayload special cases", (): void => {
-    const addr: string = `C-${bech}`
+    const addr: string = `D-${bech}`
     const pl: CCHAINADDRPayload = new CCHAINADDRPayload(addr, hrp)
     expect(pl.returnType(hrp)).toBe(addr)
-    expect(pl.returnChainID()).toBe("C")
+    expect(pl.returnChainID()).toBe("D")
   })
 
   // handles all of cb58EncodedPayload

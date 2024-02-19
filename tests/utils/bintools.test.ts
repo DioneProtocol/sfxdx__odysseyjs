@@ -266,25 +266,25 @@ describe("BinTools", (): void => {
     }).toThrow("Error - Valid address should include -")
 
     // Missing seperator (1)
-    addr = "X-dione3a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
+    addr = "A-dione3a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - Valid address must include separator (1)")
 
     // Missing HRP
-    addr = "X-13a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
+    addr = "A-13a4ye34zdfa33zeg3udnz533d6msfuqkds9hq7"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - HRP should be at least 1 character")
 
     // Invalid HRP
-    addr = "X-dione11ycxp65vz60m87mkm2hsw3m5fadjlpldzntvr33"
+    addr = "A-dione11ycxp65vz60m87mkm2hsw3m5fadjlpldzntvr33"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Error - Invalid HRP")
 
     // Extra character in data bytes
-    addr = "X-local1dcfyuug87xqayl4fpp02z9dvknwhafdswtvnucd"
+    addr = "A-local1dcfyuug87xqayl4fpp02z9dvknwhafdswtvnucd"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow(
@@ -292,7 +292,7 @@ describe("BinTools", (): void => {
     )
 
     // Change character in data bytes
-    addr = "X-local1dcfyuug8fxqayl4fpp02z9dvknwhafdstvnucd"
+    addr = "A-local1dcfyuug8fxqayl4fpp02z9dvknwhafdstvnucd"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow(
@@ -300,13 +300,13 @@ describe("BinTools", (): void => {
     )
 
     // Invalid character in data bytes
-    addr = "X-local1dcfyuug87xqbyl4fpp02z9dvknwhafdstvnucd"
+    addr = "A-local1dcfyuug87xqbyl4fpp02z9dvknwhafdstvnucd"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow("Unknown character b")
 
     // Change character in checksum
-    addr = "X-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnuce"
+    addr = "A-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnuce"
     expect((): void => {
       bintools.stringToAddress(addr)
     }).toThrow(
@@ -320,85 +320,85 @@ describe("BinTools", (): void => {
     }).toThrow("Error - Invalid address")
 
     let addrs: string[] = [
-      "X-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnucd",
-      "X-local1ltghj033re64920k786uprcp82p9e36j7hzc5x",
-      "X-local1dq4q9seql2spxrkd7rl82uck5ej3nvlhrluh4u"
+      "A-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnucd",
+      "A-local1ltghj033re64920k786uprcp82p9e36j7hzc5x",
+      "A-local1dq4q9seql2spxrkd7rl82uck5ej3nvlhrluh4u"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "X-fuji1dcfyuug87xqayl4fpp02z9dvknwhafds7d29h6",
-      "X-fuji1ltghj033re64920k786uprcp82p9e36jtkmpm3",
-      "X-fuji1dq4q9seql2spxrkd7rl82uck5ej3nvlhk79w6t"
+      "A-fuji1dcfyuug87xqayl4fpp02z9dvknwhafds7d29h6",
+      "A-fuji1ltghj033re64920k786uprcp82p9e36jtkmpm3",
+      "A-fuji1dq4q9seql2spxrkd7rl82uck5ej3nvlhk79w6t"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "X-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
-      "X-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
-      "X-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
+      "A-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
+      "A-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
+      "A-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "P-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnucd",
-      "P-local1ltghj033re64920k786uprcp82p9e36j7hzc5x",
-      "P-local1dq4q9seql2spxrkd7rl82uck5ej3nvlhrluh4u"
+      "O-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnucd",
+      "O-local1ltghj033re64920k786uprcp82p9e36j7hzc5x",
+      "O-local1dq4q9seql2spxrkd7rl82uck5ej3nvlhrluh4u"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "P-fuji1dcfyuug87xqayl4fpp02z9dvknwhafds7d29h6",
-      "P-fuji1ltghj033re64920k786uprcp82p9e36jtkmpm3",
-      "P-fuji1dq4q9seql2spxrkd7rl82uck5ej3nvlhk79w6t"
+      "O-fuji1dcfyuug87xqayl4fpp02z9dvknwhafds7d29h6",
+      "O-fuji1ltghj033re64920k786uprcp82p9e36jtkmpm3",
+      "O-fuji1dq4q9seql2spxrkd7rl82uck5ej3nvlhk79w6t"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
     addrs = [
-      "P-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
-      "P-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
-      "P-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
-    ]
-    addrs.forEach((address: string): void => {
-      bintools.stringToAddress(address)
-    })
-
-    addrs = [
-      "C-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnucd",
-      "C-local1ltghj033re64920k786uprcp82p9e36j7hzc5x",
-      "C-local1dq4q9seql2spxrkd7rl82uck5ej3nvlhrluh4u"
+      "O-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
+      "O-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
+      "O-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
 
     addrs = [
-      "C-fuji1dcfyuug87xqayl4fpp02z9dvknwhafds7d29h6",
-      "C-fuji1ltghj033re64920k786uprcp82p9e36jtkmpm3",
-      "C-fuji1dq4q9seql2spxrkd7rl82uck5ej3nvlhk79w6t"
+      "D-local1dcfyuug87xqayl4fpp02z9dvknwhafdstvnucd",
+      "D-local1ltghj033re64920k786uprcp82p9e36j7hzc5x",
+      "D-local1dq4q9seql2spxrkd7rl82uck5ej3nvlhrluh4u"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
 
     addrs = [
-      "C-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
-      "C-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
-      "C-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
+      "D-fuji1dcfyuug87xqayl4fpp02z9dvknwhafds7d29h6",
+      "D-fuji1ltghj033re64920k786uprcp82p9e36jtkmpm3",
+      "D-fuji1dq4q9seql2spxrkd7rl82uck5ej3nvlhk79w6t"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address)
     })
 
     addrs = [
-      "X-foo1dcfyuug87xqayl4fpp02z9dvknwhafds4k3km3",
-      "X-foo1ltghj033re64920k786uprcp82p9e36jqdqjh6",
-      "X-foo1dq4q9seql2spxrkd7rl82uck5ej3nvlha97akq"
+      "D-dione1dcfyuug87xqayl4fpp02z9dvknwhafdsjlw6m9",
+      "D-dione1ltghj033re64920k786uprcp82p9e36j8yl7hw",
+      "D-dione1dq4q9seql2spxrkd7rl82uck5ej3nvlh6vp3k5"
+    ]
+    addrs.forEach((address: string): void => {
+      bintools.stringToAddress(address)
+    })
+
+    addrs = [
+      "A-foo1dcfyuug87xqayl4fpp02z9dvknwhafds4k3km3",
+      "A-foo1ltghj033re64920k786uprcp82p9e36jqdqjh6",
+      "A-foo1dq4q9seql2spxrkd7rl82uck5ej3nvlha97akq"
     ]
     addrs.forEach((address: string): void => {
       bintools.stringToAddress(address, "foo")

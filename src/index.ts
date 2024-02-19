@@ -5,16 +5,16 @@
 import OdysseyCore from "./odyssey"
 import { AdminAPI } from "./apis/admin/api"
 import { AuthAPI } from "./apis/auth/api"
-import { AVMAPI } from "./apis/avm/api"
-import { EVMAPI } from "./apis/evm/api"
-import { GenesisAsset } from "./apis/avm/genesisasset"
-import { GenesisData } from "./apis/avm/genesisdata"
+import { ALPHAAPI } from "./apis/alpha/api"
+import { DELTAAPI } from "./apis/delta/api"
+import { GenesisAsset } from "./apis/alpha/genesisasset"
+import { GenesisData } from "./apis/alpha/genesisdata"
 import { HealthAPI } from "./apis/health/api"
 import { IndexAPI } from "./apis/index/api"
 import { InfoAPI } from "./apis/info/api"
 import { KeystoreAPI } from "./apis/keystore/api"
 import { MetricsAPI } from "./apis/metrics/api"
-import { PlatformVMAPI } from "./apis/platformvm/api"
+import { OmegaVMAPI } from "./apis/omegavm/api"
 import { Socket } from "./apis/socket/socket"
 import { DefaultNetworkID, Defaults } from "./utils/constants"
 import { getPreferredHRP } from "./utils/helperfunctions"
@@ -47,14 +47,14 @@ export default class Odyssey extends OdysseyCore {
   Auth = () => this.apis.auth as AuthAPI
 
   /**
-   * Returns a reference to the EVMAPI RPC pointed at the C-Chain.
+   * Returns a reference to the DELTAAPI RPC pointed at the D-Chain.
    */
-  CChain = () => this.apis.cchain as EVMAPI
+  DChain = () => this.apis.dchain as DELTAAPI
 
   /**
-   * Returns a reference to the AVM RPC pointed at the X-Chain.
+   * Returns a reference to the ALPHA RPC pointed at the A-Chain.
    */
-  XChain = () => this.apis.xchain as AVMAPI
+  AChain = () => this.apis.achain as ALPHAAPI
 
   /**
    * Returns a reference to the Health RPC for a node.
@@ -83,9 +83,9 @@ export default class Odyssey extends OdysseyCore {
   NodeKeys = () => this.apis.keystore as KeystoreAPI
 
   /**
-   * Returns a reference to the PlatformVM RPC pointed at the P-Chain.
+   * Returns a reference to the OmegaVM RPC pointed at the O-Chain.
    */
-  PChain = () => this.apis.pchain as PlatformVMAPI
+  OChain = () => this.apis.ochain as OmegaVMAPI
 
   /**
    * Creates a new Odyssey instance. Sets the address and port of the main Odyssey Client.
@@ -95,9 +95,9 @@ export default class Odyssey extends OdysseyCore {
    * @param protocol The protocol string to use before a "://" in a request,
    * ex: "http", "https", "git", "ws", etc. Defaults to http
    * @param networkID Sets the NetworkID of the class. Default [[DefaultNetworkID]]
-   * @param XChainID Sets the blockchainID for the AVM. Will try to auto-detect,
+   * @param AChainID Sets the blockchainID for the ALPHA. Will try to auto-detect,
    * otherwise default "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
-   * @param CChainID Sets the blockchainID for the EVM. Will try to auto-detect,
+   * @param DChainID Sets the blockchainID for the DELTA. Will try to auto-detect,
    * otherwise default "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
    * @param hrp The human-readable part of the bech32 addresses
    * @param skipinit Skips creating the APIs. Defaults to false
@@ -107,35 +107,35 @@ export default class Odyssey extends OdysseyCore {
     port?: number,
     protocol: string = "http",
     networkID: number = DefaultNetworkID,
-    XChainID: string = undefined,
-    CChainID: string = undefined,
+    AChainID: string = undefined,
+    DChainID: string = undefined,
     hrp: string = undefined,
     skipinit: boolean = false
   ) {
     super(host, port, protocol)
-    let xchainid: string = XChainID
-    let cchainid: string = CChainID
+    let achainid: string = AChainID
+    let dchainid: string = DChainID
 
     if (
-      typeof XChainID === "undefined" ||
-      !XChainID ||
-      XChainID.toLowerCase() === "x"
+      typeof AChainID === "undefined" ||
+      !AChainID ||
+      AChainID.toLowerCase() === "x"
     ) {
       if (networkID.toString() in Defaults.network) {
-        xchainid = Defaults.network[`${networkID}`].X.blockchainID
+        achainid = Defaults.network[`${networkID}`].A.blockchainID
       } else {
-        xchainid = Defaults.network[12345].X.blockchainID
+        achainid = Defaults.network[12345].A.blockchainID
       }
     }
     if (
-      typeof CChainID === "undefined" ||
-      !CChainID ||
-      CChainID.toLowerCase() === "c"
+      typeof DChainID === "undefined" ||
+      !DChainID ||
+      DChainID.toLowerCase() === "c"
     ) {
       if (networkID.toString() in Defaults.network) {
-        cchainid = Defaults.network[`${networkID}`].C.blockchainID
+        dchainid = Defaults.network[`${networkID}`].D.blockchainID
       } else {
-        cchainid = Defaults.network[12345].C.blockchainID
+        dchainid = Defaults.network[12345].D.blockchainID
       }
     }
     if (typeof networkID === "number" && networkID >= 0) {
@@ -152,14 +152,14 @@ export default class Odyssey extends OdysseyCore {
     if (!skipinit) {
       this.addAPI("admin", AdminAPI)
       this.addAPI("auth", AuthAPI)
-      this.addAPI("xchain", AVMAPI, "/ext/bc/X", xchainid)
-      this.addAPI("cchain", EVMAPI, "/ext/bc/C/dione", cchainid)
+      this.addAPI("achain", ALPHAAPI, "/ext/bc/A", achainid)
+      this.addAPI("dchain", DELTAAPI, "/ext/bc/D/dione", dchainid)
       this.addAPI("health", HealthAPI)
       this.addAPI("info", InfoAPI)
       this.addAPI("index", IndexAPI)
       this.addAPI("keystore", KeystoreAPI)
       this.addAPI("metrics", MetricsAPI)
-      this.addAPI("pchain", PlatformVMAPI)
+      this.addAPI("ochain", OmegaVMAPI)
     }
   }
 }
@@ -179,13 +179,13 @@ export { Socket }
 
 export * as admin from "./apis/admin"
 export * as auth from "./apis/auth"
-export * as avm from "./apis/avm"
+export * as alpha from "./apis/alpha"
 export * as common from "./common"
-export * as evm from "./apis/evm"
+export * as delta from "./apis/delta"
 export * as health from "./apis/health"
 export * as index from "./apis/index"
 export * as info from "./apis/info"
 export * as keystore from "./apis/keystore"
 export * as metrics from "./apis/metrics"
-export * as platformvm from "./apis/platformvm"
+export * as omegavm from "./apis/omegavm"
 export * as utils from "./utils"

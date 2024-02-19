@@ -1,5 +1,5 @@
 import { Buffer } from "buffer/"
-import { SubnetAuth } from "src/apis/platformvm"
+import { SubnetAuth } from "src/apis/omegavm"
 import BinTools from "src/utils/bintools"
 
 /**

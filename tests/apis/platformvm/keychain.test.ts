@@ -1,13 +1,13 @@
-import { KeyChain, KeyPair } from "../../../src/apis/platformvm/keychain"
+import { KeyChain, KeyPair } from "../../../src/apis/omegavm/keychain"
 import { Odyssey } from "../../../src/index"
 import { Buffer } from "buffer/"
 import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
 
 const bintools: BinTools = BinTools.getInstance()
-const alias: string = "P"
+const alias: string = "O"
 const hrp: string = "tests"
-describe("PlatformVMKeyPair", (): void => {
+describe("OmegaVMKeyPair", (): void => {
   const networkID: number = 1337
   const ip: string = "127.0.0.1"
   const port: number = 9650
@@ -346,7 +346,7 @@ describe("PlatformVMKeyPair", (): void => {
   })
 })
 
-describe("PlatformVMKeyChain", (): void => {
+describe("OmegaVMKeyChain", (): void => {
   test("importKey from Buffer", (): void => {
     const keybuff: Buffer = Buffer.from(
       "d0e17d4b31380f96a42b3e9ffc4c1b2a93589a1e51d86d7edc107f602fbc7475",

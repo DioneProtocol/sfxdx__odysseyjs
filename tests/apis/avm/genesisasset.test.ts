@@ -3,9 +3,9 @@ import { Buffer } from "buffer/"
 import {
   SECPTransferOutput,
   TransferableOutput
-} from "../../../src/apis/avm/outputs"
-import { InitialStates } from "../../../src/apis/avm/initialstates"
-import { GenesisAsset, TransferableInput } from "../../../src/apis/avm"
+} from "../../../src/apis/alpha/outputs"
+import { InitialStates } from "../../../src/apis/alpha/initialstates"
+import { GenesisAsset, TransferableInput } from "../../../src/apis/alpha"
 import {
   DefaultNetworkID,
   Serialization,
@@ -17,7 +17,7 @@ import {
  * @ignore
  */
 const serialization: Serialization = Serialization.getInstance()
-describe("AVM", (): void => {
+describe("ALPHA", (): void => {
   test("GenesisAsset", (): void => {
     const m: string = "2Zc54v4ek37TEwu4LiV3j41PUMRd6acDDU3ZCVSxE7X"
     const mHex: string =
@@ -29,7 +29,7 @@ describe("AVM", (): void => {
     const bech32: SerializedType = "bech32"
     const memo: Buffer = serialization.typeToBuffer(m, cb58)
     const amount: BN = new BN(0)
-    const address: string = "X-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
+    const address: string = "A-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
     const addressBuf: Buffer = serialization.typeToBuffer(address, bech32)
     const threshold: number = 1
     const locktime: BN = new BN(0)

@@ -1,6 +1,6 @@
 import { Buffer } from "buffer/"
 import BinTools from "../../src/utils/bintools"
-import { KeyPair } from "src/apis/evm"
+import { KeyPair } from "src/apis/delta"
 
 const bintools: BinTools = BinTools.getInstance()
 

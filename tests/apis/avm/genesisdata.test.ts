@@ -1,22 +1,22 @@
 import BN from "bn.js"
 import { Buffer } from "buffer/"
-import { SECPTransferOutput } from "../../../src/apis/avm/outputs"
-import { InitialStates } from "../../../src/apis/avm/initialstates"
-import { GenesisData, GenesisAsset, AVMConstants } from "../../../src/apis/avm"
+import { SECPTransferOutput } from "../../../src/apis/alpha/outputs"
+import { InitialStates } from "../../../src/apis/alpha/initialstates"
+import { GenesisData, GenesisAsset, ALPHAConstants } from "../../../src/apis/alpha"
 import { Serialization, SerializedType } from "../../../src/utils"
 
 /**
  * @ignore
  */
 const serialization: Serialization = Serialization.getInstance()
-describe("AVM", (): void => {
+describe("ALPHA", (): void => {
   test("GenesisData", (): void => {
     const networkID: number = 1337
     const m: string = "2Zc54v4ek37TEwu4LiV3j41PUMRd6acDDU3ZCVSxE7X"
     const cb58: SerializedType = "cb58"
     const memo: Buffer = serialization.typeToBuffer(m, cb58)
     const amount: BN = new BN(100000)
-    const address: string = "X-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
+    const address: string = "A-local18jma8ppw3nhx5r4ap8clazz0dps7rv5u00z96u"
     const bech32: SerializedType = "bech32"
     const addressBuf: Buffer = serialization.typeToBuffer(address, bech32)
     const threshold: number = 1
@@ -50,7 +50,7 @@ describe("AVM", (): void => {
     )
     expect(genesisData.getTypeName()).toBe("GenesisData")
     expect(genesisData.getTypeID()).toBeUndefined()
-    expect(genesisData.getCodecID()).toBe(AVMConstants.LATESTCODEC)
+    expect(genesisData.getCodecID()).toBe(ALPHAConstants.LATESTCODEC)
     expect(genesisData.getNetworkID()).toBe(networkID)
     expect(genesisData.getGenesisAssets()).toStrictEqual(genesisAssets)
   })

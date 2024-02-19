@@ -11,7 +11,7 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const admin: AdminAPI = odyssey.Admin()
 
 const main = async (): Promise<any> => {
-  const blockchain: string = Defaults.network[networkID].X.blockchainID
+  const blockchain: string = Defaults.network[networkID].A.blockchainID
   const aliases: string[] = await admin.getChainAliases(blockchain)
   console.log(aliases)
 }

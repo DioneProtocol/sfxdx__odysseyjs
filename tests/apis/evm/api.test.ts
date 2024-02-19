@@ -1,6 +1,6 @@
 import mockAxios from "jest-mock-axios"
 import { Odyssey, BN } from "src"
-import { EVMAPI } from "../../../src/apis/evm/api"
+import { DELTAAPI } from "../../../src/apis/delta/api"
 import BinTools from "../../../src/utils/bintools"
 import * as bech32 from "bech32"
 import { Defaults } from "../../../src/utils/constants"
@@ -11,9 +11,9 @@ import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
  */
 const bintools: BinTools = BinTools.getInstance()
 
-describe("EVMAPI", (): void => {
+describe("DELTAAPI", (): void => {
   const networkID: number = 1337
-  const blockchainID: string = Defaults.network[networkID].C.blockchainID
+  const blockchainID: string = Defaults.network[networkID].D.blockchainID
   const ip: string = "127.0.0.1"
   const port: number = 9650
   const protocol: string = "https"
@@ -30,10 +30,10 @@ describe("EVMAPI", (): void => {
     undefined,
     true
   )
-  let api: EVMAPI
+  let api: DELTAAPI
 
   const addrA: string =
-    "C-" +
+    "D-" +
     bech32.bech32.encode(
       odyssey.getHRP(),
       bech32.bech32.toWords(
@@ -41,7 +41,7 @@ describe("EVMAPI", (): void => {
       )
     )
   const addrC: string =
-    "C-" +
+    "D-" +
     bech32.bech32.encode(
       odyssey.getHRP(),
       bech32.bech32.toWords(
@@ -50,7 +50,7 @@ describe("EVMAPI", (): void => {
     )
 
   beforeAll((): void => {
-    api = new EVMAPI(odyssey, "/ext/bc/C/dione", blockchainID)
+    api = new DELTAAPI(odyssey, "/ext/bc/D/dione", blockchainID)
   })
 
   afterEach((): void => {
@@ -234,9 +234,9 @@ describe("EVMAPI", (): void => {
   })
 
   test("refreshBlockchainID", async (): Promise<void> => {
-    const n5bcID: string = Defaults.network[5].C["blockchainID"]
-    const n1337bcID: string = Defaults.network[1337].C["blockchainID"]
-    const testAPI: EVMAPI = new EVMAPI(odyssey, "/ext/bc/C/dione", n5bcID)
+    const n5bcID: string = Defaults.network[5].D["blockchainID"]
+    const n1337bcID: string = Defaults.network[1337].D["blockchainID"]
+    const testAPI: DELTAAPI = new DELTAAPI(odyssey, "/ext/bc/D/dione", n5bcID)
     const bc1: string = testAPI.getBlockchainID()
     expect(bc1).toBe(n5bcID)
 

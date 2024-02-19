@@ -1,12 +1,12 @@
 import mockAxios from "jest-mock-axios"
-import { UTXOSet, UTXO } from "../../../src/apis/platformvm/utxos"
-import { PlatformVMAPI } from "../../../src/apis/platformvm/api"
-import { UnsignedTx, Tx } from "../../../src/apis/platformvm/tx"
-import { KeyChain } from "../../../src/apis/platformvm/keychain"
+import { UTXOSet, UTXO } from "../../../src/apis/omegavm/utxos"
+import { OmegaVMAPI } from "../../../src/apis/omegavm/api"
+import { UnsignedTx, Tx } from "../../../src/apis/omegavm/tx"
+import { KeyChain } from "../../../src/apis/omegavm/keychain"
 import {
   SECPTransferInput,
   TransferableInput
-} from "../../../src/apis/platformvm/inputs"
+} from "../../../src/apis/omegavm/inputs"
 import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
 import BN from "bn.js"
@@ -14,18 +14,18 @@ import { Buffer } from "buffer/"
 import {
   SECPTransferOutput,
   TransferableOutput
-} from "../../../src/apis/platformvm/outputs"
-import { PlatformVMConstants } from "../../../src/apis/platformvm/constants"
+} from "../../../src/apis/omegavm/outputs"
+import { OmegaVMConstants } from "../../../src/apis/omegavm/constants"
 import { Odyssey, GenesisData } from "../../../src/index"
 import { UTF8Payload } from "../../../src/utils/payload"
 import {
   NodeIDStringToBuffer,
   UnixNow
 } from "../../../src/utils/helperfunctions"
-import { BaseTx } from "../../../src/apis/platformvm/basetx"
-import { ImportTx } from "../../../src/apis/platformvm/importtx"
-import { ExportTx } from "../../../src/apis/platformvm/exporttx"
-import { PlatformChainID } from "../../../src/utils/constants"
+import { BaseTx } from "../../../src/apis/omegavm/basetx"
+import { ImportTx } from "../../../src/apis/omegavm/importtx"
+import { ExportTx } from "../../../src/apis/omegavm/exporttx"
+import { OmegaChainID } from "../../../src/utils/constants"
 import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
 
 describe("Transactions", (): void => {
@@ -50,11 +50,11 @@ describe("Transactions", (): void => {
   let exportOuts: TransferableOutput[]
   let fungutxos: UTXO[]
   let exportUTXOIDS: string[]
-  let api: PlatformVMAPI
+  let api: OmegaVMAPI
   const amnt: number = 10000
   const netid: number = 12345
-  const blockchainID: Buffer = bintools.cb58Decode(PlatformChainID)
-  const alias: string = "X"
+  const blockchainID: Buffer = bintools.cb58Decode(OmegaChainID)
+  const alias: string = "A"
   const assetID: Buffer = Buffer.from(
     createHash("sha256")
       .update(
@@ -95,7 +95,7 @@ describe("Transactions", (): void => {
       undefined,
       true
     )
-    api = new PlatformVMAPI(odyssey, "/ext/bc/P")
+    api = new OmegaVMAPI(odyssey, "/ext/bc/O")
     const result: Promise<Buffer> = api.getDIONEAssetID()
     const payload: object = {
       result: {
@@ -167,7 +167,7 @@ describe("Transactions", (): void => {
       outputs.push(xferout)
 
       const u: UTXO = new UTXO(
-        PlatformVMConstants.LATESTCODEC,
+        OmegaVMConstants.LATESTCODEC,
         txid,
         txidx,
         assetID,
@@ -235,7 +235,7 @@ describe("Transactions", (): void => {
 
   test("confirm inputTotal, outputTotal and fee are correct", async (): Promise<void> => {
     const bintools: BinTools = BinTools.getInstance()
-    // local network P Chain ID
+    // local network O Chain ID
     // DIONE assetID
     const assetID: Buffer = bintools.cb58Decode(
       "n8XH5JY1EX5VYqDeAhB4Zd4GKxi9UNQy6oPpMsCAj1Q6xkiiL"
@@ -281,7 +281,7 @@ describe("Transactions", (): void => {
   })
 
   test("Create small BaseTx that isn't Goose Egg Tx", async (): Promise<void> => {
-    // local network X Chain ID
+    // local network A Chain ID
     const outs: TransferableOutput[] = []
     const ins: TransferableInput[] = []
     const outputAmt: BN = new BN("267")
@@ -318,7 +318,7 @@ describe("Transactions", (): void => {
   })
 
   test("Create large BaseTx that is Goose Egg Tx", async (): Promise<void> => {
-    // local network P Chain ID
+    // local network O Chain ID
     const outs: TransferableOutput[] = []
     const ins: TransferableInput[] = []
     const outputAmt: BN = new BN("609555500000")
@@ -355,7 +355,7 @@ describe("Transactions", (): void => {
   })
 
   test("Create large BaseTx that isn't Goose Egg Tx", async (): Promise<void> => {
-    // local network P Chain ID
+    // local network O Chain ID
     const outs: TransferableOutput[] = []
     const ins: TransferableInput[] = []
     const outputAmt: BN = new BN("44995609555500000")
@@ -465,7 +465,7 @@ describe("Transactions", (): void => {
       outputs,
       inputs,
       new UTF8Payload("hello world").getPayload(),
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       importIns
     )
     const txunew: ImportTx = new ImportTx()
@@ -474,7 +474,7 @@ describe("Transactions", (): void => {
 
     expect(importTx).toBeInstanceOf(ImportTx)
     expect(importTx.getSourceChain().toString("hex")).toBe(
-      bintools.cb58Decode(PlatformChainID).toString("hex")
+      bintools.cb58Decode(OmegaChainID).toString("hex")
     )
     expect(txunew.toBuffer().toString("hex")).toBe(importbuff.toString("hex"))
     expect(txunew.toString()).toBe(importTx.toString())
@@ -502,7 +502,7 @@ describe("Transactions", (): void => {
       outputs,
       inputs,
       undefined,
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       exportOuts
     )
     const txunew: ExportTx = new ExportTx()
@@ -511,7 +511,7 @@ describe("Transactions", (): void => {
 
     expect(exportTx).toBeInstanceOf(ExportTx)
     expect(exportTx.getDestinationChain().toString("hex")).toBe(
-      bintools.cb58Decode(PlatformChainID).toString("hex")
+      bintools.cb58Decode(OmegaChainID).toString("hex")
     )
     expect(txunew.toBuffer().toString("hex")).toBe(exportbuff.toString("hex"))
     expect(txunew.toString()).toBe(exportTx.toString())
@@ -566,7 +566,7 @@ describe("Transactions", (): void => {
       addrs1,
       addrs2,
       importUTXOs,
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       new BN(90),
       assetID,
       new UTF8Payload("hello world").getPayload(),
@@ -587,7 +587,7 @@ describe("Transactions", (): void => {
       addrs3,
       addrs1,
       addrs2,
-      bintools.cb58Decode(PlatformChainID),
+      bintools.cb58Decode(OmegaChainID),
       undefined,
       undefined,
       new UTF8Payload("hello world").getPayload(),

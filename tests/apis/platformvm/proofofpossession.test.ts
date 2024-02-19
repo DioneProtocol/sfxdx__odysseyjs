@@ -1,5 +1,5 @@
 import { Buffer } from "buffer/"
-import { ProofOfPossession } from "../../../src/apis/platformvm"
+import { ProofOfPossession } from "../../../src/apis/omegavm"
 
 describe("ProofOfPossession", (): void => {
   // publicKey and signature generated with: https://www.npmjs.com/package/@noble/bls12-381

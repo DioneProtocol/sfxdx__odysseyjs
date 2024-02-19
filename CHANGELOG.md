@@ -9,47 +9,47 @@
 
 ### Method Signature Changes
 
-* `avm.makeUnsignedTx`
-  * Renamed to `avm.makeBaseTx`
+* `alpha.makeUnsignedTx`
+  * Renamed to `alpha.makeBaseTx`
   * Now returns `UnsignedTx` instead of `TxUnsigned`
-* `avm.makeCreateAssetTx`
+* `alpha.makeCreateAssetTx`
   * 4th parameter has been renamed `initialStates` from `initialState`
   * Now returns `UnsignedTx` instead of `TxCreateAsset`
-* `avm.signTx` 
+* `alpha.signTx` 
   * Now accepts `UnsignedTx` instead of `TxUnsigned`
 * `SelectInputClass`
   * Now accepts a `number` instead of a `Buffer`
-* `avm.getInputID`
-  * Has been renamed to `avm.getInput` and now returns an `Input` instead of a `number`
+* `alpha.getInputID`
+  * Has been renamed to `alpha.getInput` and now returns an `Input` instead of a `number`
 
 ### New Methods
 
-* `avm.makeNFTTransferTx`
+* `alpha.makeNFTTransferTx`
 
 ### New Classes
 
-* avm credentials
+* alpha credentials
   * Credential
   * SecpCredential is a superset of Credential
   * NFTCredential is a superset of Credential
-* avm inputs
+* alpha inputs
   * TransferableInput
   * AmountInput
-* avm ops
+* alpha ops
   * Operation
   * TransferableOperation
   * NFTTransferOperation
-* avm outputs
+* alpha outputs
   * TransferableOutput
   * AmountOutput
   * SecpOutput
   * NFTOutBase
-* avm tx
+* alpha tx
   * BaseTx
   * CreateAssetTx
   * OperationTx
   * UnsignedTx
-* avm types
+* alpha types
   * UTXOID
 
 ### New Types
@@ -62,26 +62,26 @@
 
 ### Deleted Classes
 
-* avm utxos
+* alpha utxos
   * SecpUTXO
-* avm outputs
+* alpha outputs
   * SecpOutBase
-* avm tx
+* alpha tx
   * TxUnsigned
   * TxCreateAsset
 
 ### New consts
 
-* avm credentials
+* alpha credentials
   * SelectCredentialClass
 
 ### Deleted consts
 
-* avm utxos
+* alpha utxos
   * SelectUTXOClass
 
 ### New RPC Calls
 
-* `platform.getSubnets`
-* `avm.buildGenesis`
+* `omega.getSubnets`
+* `alpha.buildGenesis`
 * `keystore.deleteUser`

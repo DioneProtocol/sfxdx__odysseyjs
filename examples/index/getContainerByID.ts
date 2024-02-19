@@ -13,7 +13,7 @@ const index: IndexAPI = odyssey.Index()
 const main = async (): Promise<any> => {
   const id: string = "eLXEKFFMgGmK7ZLokCFjppdBfGy5hDuRqh5uJVyXXPaRErpAX"
   const encoding: string = "hex"
-  const baseurl: string = "/ext/index/X/tx"
+  const baseurl: string = "/ext/index/A/tx"
   const containerByIndex: GetContainerByIDResponse =
     await index.getContainerByID(id, encoding, baseurl)
   console.log(containerByIndex)

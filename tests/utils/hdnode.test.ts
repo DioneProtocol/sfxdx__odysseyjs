@@ -1,6 +1,6 @@
 import Odyssey, { HDNode, Mnemonic } from "src"
 import { Buffer } from "buffer/"
-import { AVMAPI, KeyChain } from "src/apis/avm"
+import { ALPHAAPI, KeyChain } from "src/apis/alpha"
 
 const ip: string = "localhost"
 const port: number = 9650
@@ -8,8 +8,8 @@ const protocol: string = "http"
 const networkID: number = 1
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const mnemonic: Mnemonic = Mnemonic.getInstance()
-const xchain: AVMAPI = odyssey.XChain()
-const xKeychain: KeyChain = xchain.keyChain()
+const achain: ALPHAAPI = odyssey.AChain()
+const xKeychain: KeyChain = achain.keyChain()
 
 describe("HDNode", (): void => {
   const xPriv: string =
@@ -24,16 +24,16 @@ describe("HDNode", (): void => {
   const m: string =
     "immune year obscure laptop wage diamond join glue ecology envelope box fade mixed cradle athlete absorb stick rival punch dinosaur skin blind benefit pretty"
   const addrs: string[] = [
-    "X-dione15qwuklmrfcmfw78yvka9pjsukjeevl4aveehq0",
-    "X-dione13wqaxm6zgjq5qwzuyyxyl9yrz3edcgwgfht6gt",
-    "X-dione1z3dn3vczxttts8dsdjfgtnkekf8nvqhhsj5stl",
-    "X-dione1j6kze9n7r3e8wq6jta5mf6pd3fwnu0v9wygc8p",
-    "X-dione1ngasfmvl8g63lzwznp0374myz7ajt4746g750m",
-    "X-dione1pr7pzcggtrk6uap58sfsrlnhqhayly2gtlux9l",
-    "X-dione1wwtn3gx7ke4ge2c29eg5sun36nyj55u4dle9gn",
-    "X-dione13527pvlnxa4wrfgt0h8ya7nkjawqq29sv5s89x",
-    "X-dione1gw6agtcsz969ugpqh2zx2lmjchg6npklvp43qq",
-    "X-dione10agjetvj0a0vf6wtlh7s6ctr8ha8ch8km8z567"
+    "A-dione15qwuklmrfcmfw78yvka9pjsukjeevl4aveehq0",
+    "A-dione13wqaxm6zgjq5qwzuyyxyl9yrz3edcgwgfht6gt",
+    "A-dione1z3dn3vczxttts8dsdjfgtnkekf8nvqhhsj5stl",
+    "A-dione1j6kze9n7r3e8wq6jta5mf6pd3fwnu0v9wygc8p",
+    "A-dione1ngasfmvl8g63lzwznp0374myz7ajt4746g750m",
+    "A-dione1pr7pzcggtrk6uap58sfsrlnhqhayly2gtlux9l",
+    "A-dione1wwtn3gx7ke4ge2c29eg5sun36nyj55u4dle9gn",
+    "A-dione13527pvlnxa4wrfgt0h8ya7nkjawqq29sv5s89x",
+    "A-dione1gw6agtcsz969ugpqh2zx2lmjchg6npklvp43qq",
+    "A-dione10agjetvj0a0vf6wtlh7s6ctr8ha8ch8km8z567"
   ]
 
   test("derive", (): void => {
@@ -89,7 +89,7 @@ describe("HDNode", (): void => {
       const child: HDNode = hdnode.derive(`m/44'/9000'/0'/0/${i}`)
       xKeychain.importKey(child.privateKeyCB58)
     }
-    const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
+    const xAddressStrings: string[] = achain.keyChain().getAddressStrings()
     expect(xAddressStrings).toStrictEqual(addrs)
   })
 })

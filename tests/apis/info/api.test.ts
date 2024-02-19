@@ -34,10 +34,10 @@ describe("Info", (): void => {
   })
 
   test("getBlockchainID", async (): Promise<void> => {
-    const result: Promise<string> = info.getBlockchainID("X")
+    const result: Promise<string> = info.getBlockchainID("A")
     const payload: object = {
       result: {
-        blockchainID: odyssey.XChain().getBlockchainID()
+        blockchainID: odyssey.AChain().getBlockchainID()
       }
     }
     const responseObj: HttpResponse = {
@@ -144,7 +144,7 @@ describe("Info", (): void => {
   })
 
   test("isBootstrapped false", async (): Promise<void> => {
-    const result: Promise<boolean> = info.isBootstrapped("X")
+    const result: Promise<boolean> = info.isBootstrapped("A")
     const payload: object = {
       result: {
         isBootstrapped: false
@@ -162,7 +162,7 @@ describe("Info", (): void => {
   })
 
   test("isBootstrapped true", async (): Promise<void> => {
-    const result: Promise<boolean> = info.isBootstrapped("P")
+    const result: Promise<boolean> = info.isBootstrapped("O")
     const payload: object = {
       result: {
         isBootstrapped: true

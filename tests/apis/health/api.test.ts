@@ -34,21 +34,21 @@ describe("Health", (): void => {
     const payload: any = {
       result: {
         checks: {
-          C: {
+          D: {
             message: [Object],
             timestamp: "2021-09-29T15:31:20.274427-07:00",
             duration: 275539,
             contiguousFailures: 0,
             timeOfFirstFailure: null
           },
-          P: {
+          O: {
             message: [Object],
             timestamp: "2021-09-29T15:31:20.274508-07:00",
             duration: 14576,
             contiguousFailures: 0,
             timeOfFirstFailure: null
           },
-          X: {
+          A: {
             message: [Object],
             timestamp: "2021-09-29T15:31:20.274529-07:00",
             duration: 4563,

@@ -13,7 +13,7 @@ import BN from "bn.js"
 import { Buffer } from "buffer/"
 import BinTools from "../utils/bintools"
 import { PrivateKeyError, NodeIdError } from "../utils/errors"
-import { ExportTx, ImportTx, TransferableInput, UnsignedTx } from "../apis/evm"
+import { ExportTx, ImportTx, TransferableInput, UnsignedTx } from "../apis/delta"
 
 /**
  * @ignore
@@ -100,14 +100,14 @@ export function costImportTx(tx: UnsignedTx): number {
 }
 
 export function calcBytesCost(len: number): number {
-  return len * Defaults.network[1].C.txBytesGas
+  return len * Defaults.network[1].D.txBytesGas
 }
 
 export function costExportTx(tx: UnsignedTx): number {
   const bytesCost: number = calcBytesCost(tx.toBuffer().byteLength)
   const exportTx = tx.getTransaction() as ExportTx
   const numSigs: number = exportTx.getInputs().length
-  const sigCost: number = numSigs * Defaults.network[1].C.costPerSignature
+  const sigCost: number = numSigs * Defaults.network[1].D.costPerSignature
   const fixedFee: number = 10000
   return bytesCost + sigCost + fixedFee
 }

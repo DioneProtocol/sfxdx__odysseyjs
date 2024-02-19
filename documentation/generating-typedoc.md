@@ -47,7 +47,7 @@ First, if any new files were generated in `README.md` then rename the newly gene
 
 * Remove the generated headers and replace them w/ API and OdysseyJS w/ a link to the current build
 * Nest the list items per their parent category
-* Clean up the body copy. Ex: `API-AVM` -> `AVM` and `API-AVM-Credentials` -> `Credentials`
+* Clean up the body copy. Ex: `API-ALPHA` -> `ALPHA` and `API-ALPHA-Credentials` -> `Credentials`
 
 ## Copy to Docs Repo
 

@@ -2,9 +2,9 @@ import BN from "bn.js"
 import { Buffer } from "buffer/"
 import {
   AddSubnetValidatorTx,
-  PlatformVMConstants,
+  OmegaVMConstants,
   SubnetAuth
-} from "src/apis/platformvm"
+} from "src/apis/omegavm"
 import { bufferToNodeIDString } from "src/utils"
 
 describe("AddSubnetValidatorTx", (): void => {
@@ -26,7 +26,7 @@ describe("AddSubnetValidatorTx", (): void => {
   test("getTypeID", async (): Promise<void> => {
     const addSubnetValidatorTxTypeID: number = addSubnetValidatorTx.getTypeID()
     expect(addSubnetValidatorTxTypeID).toBe(
-      PlatformVMConstants.ADDSUBNETVALIDATORTX
+      OmegaVMConstants.ADDSUBNETVALIDATORTX
     )
   })
 
@@ -79,7 +79,7 @@ describe("AddSubnetValidatorTx", (): void => {
 
     test("getTypeID", async (): Promise<void> => {
       const subnetAuthTypeID: number = sa.getTypeID()
-      expect(subnetAuthTypeID).toBe(PlatformVMConstants.SUBNETAUTH)
+      expect(subnetAuthTypeID).toBe(OmegaVMConstants.SUBNETAUTH)
     })
 
     test("getNumAddressIndices", async (): Promise<void> => {

@@ -1,8 +1,8 @@
 import BinTools from "../../../src/utils/bintools"
 import { Buffer } from "buffer/"
-import { PlatformVMConstants } from "../../../src/apis/platformvm/constants"
+import { OmegaVMConstants } from "../../../src/apis/omegavm/constants"
 import { GenesisAsset, GenesisData } from "../../../src/index"
-import { CreateChainTx, SubnetAuth } from "src/apis/platformvm"
+import { CreateChainTx, SubnetAuth } from "src/apis/omegavm"
 
 describe("CreateChainTx", (): void => {
   /**
@@ -23,7 +23,7 @@ describe("CreateChainTx", (): void => {
 
   test("getTypeID", async (): Promise<void> => {
     const createChainTxTypeID: number = createChainTx.getTypeID()
-    expect(createChainTxTypeID).toBe(PlatformVMConstants.CREATECHAINTX)
+    expect(createChainTxTypeID).toBe(OmegaVMConstants.CREATECHAINTX)
   })
 
   test("toBuffer and fromBuffer", async (): Promise<void> => {
@@ -41,7 +41,7 @@ describe("CreateChainTx", (): void => {
   })
 
   test("getChainName", (): void => {
-    const cn: string = "EPIC AVM"
+    const cn: string = "EPIC ALPHA"
     const chainName: string = createChainTx.getChainName()
     expect(chainName).toBe(cn)
   })
@@ -97,7 +97,7 @@ describe("CreateChainTx", (): void => {
 
     test("getTypeID", async (): Promise<void> => {
       const subnetAuthTypeID: number = sa.getTypeID()
-      expect(subnetAuthTypeID).toBe(PlatformVMConstants.SUBNETAUTH)
+      expect(subnetAuthTypeID).toBe(OmegaVMConstants.SUBNETAUTH)
     })
 
     test("getNumAddressIndices", async (): Promise<void> => {

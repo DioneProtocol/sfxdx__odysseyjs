@@ -1,9 +1,9 @@
-import { UTXOSet, UTXO } from "../../../src/apis/platformvm/utxos"
-import { KeyChain } from "../../../src/apis/platformvm/keychain"
+import { UTXOSet, UTXO } from "../../../src/apis/omegavm/utxos"
+import { KeyChain } from "../../../src/apis/omegavm/keychain"
 import {
   SECPTransferInput,
   TransferableInput
-} from "../../../src/apis/platformvm/inputs"
+} from "../../../src/apis/omegavm/inputs"
 import createHash from "create-hash"
 import BinTools from "../../../src/utils/bintools"
 import BN from "bn.js"
@@ -12,8 +12,8 @@ import {
   SECPTransferOutput,
   AmountOutput,
   TransferableOutput
-} from "../../../src/apis/platformvm/outputs"
-import { PlatformVMConstants } from "../../../src/apis/platformvm/constants"
+} from "../../../src/apis/omegavm/outputs"
+import { OmegaVMConstants } from "../../../src/apis/omegavm/constants"
 import { Input } from "../../../src/common/input"
 import { Output } from "../../../src/common/output"
 
@@ -32,8 +32,8 @@ describe("Inputs", (): void => {
   const amnt: number = 10000
   beforeEach((): void => {
     set = new UTXOSet()
-    keymgr1 = new KeyChain(hrp, "X")
-    keymgr2 = new KeyChain(hrp, "X")
+    keymgr1 = new KeyChain(hrp, "A")
+    keymgr2 = new KeyChain(hrp, "A")
     addrs1 = []
     addrs2 = []
     utxos = []
@@ -64,7 +64,7 @@ describe("Inputs", (): void => {
       )
       const xferout: TransferableOutput = new TransferableOutput(assetID, out)
       const u: UTXO = new UTXO(
-        PlatformVMConstants.LATESTCODEC,
+        OmegaVMConstants.LATESTCODEC,
         txid,
         txidx,
         assetID,
@@ -93,7 +93,7 @@ describe("Inputs", (): void => {
     input = new SECPTransferInput(amount)
     xferinput = new TransferableInput(txid, txidx, asset, input)
     expect(xferinput.getUTXOID()).toBe(u.getUTXOID())
-    expect(input.getInputID()).toBe(PlatformVMConstants.SECPINPUTID)
+    expect(input.getInputID()).toBe(OmegaVMConstants.SECPINPUTID)
 
     input.addSignatureIdx(0, addrs2[0])
     input.addSignatureIdx(1, addrs2[1])

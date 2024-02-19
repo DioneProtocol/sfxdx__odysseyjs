@@ -11,7 +11,7 @@ export const PrimaryAssetAlias: string = "DIONE"
 export const MainnetAPI: string = "api.dione.network"
 export const FujiAPI: string = "api.dione-test.network"
 
-export interface C {
+export interface D {
   blockchainID: string
   alias: string
   vm: string
@@ -25,7 +25,7 @@ export interface C {
   txFee?: BN
   dioneAssetID?: string
 }
-export interface X {
+export interface A {
   blockchainID: string
   alias: string
   vm: string
@@ -35,7 +35,7 @@ export interface X {
   txFee?: BN | number
   fee?: BN
 }
-export interface P {
+export interface O {
   blockchainID: string
   alias: string
   vm: string
@@ -54,11 +54,11 @@ export interface P {
   fee?: BN
 }
 export interface Network {
-  C: C
+  D: D
   hrp: string
-  X: X
-  P: P
-  [key: string]: C | X | P | string
+  A: A
+  O: O
+  [key: string]: D | A | O | string
 }
 export interface Networks {
   [key: number]: Network
@@ -97,26 +97,26 @@ export const NetworkNameToNetworkID: object = {
 
 export const FallbackHRP: string = "custom"
 export const FallbackNetworkName: string = "Custom Network"
-export const FallbackEVMChainID: number = 43112
+export const FallbackDELTAChainID: number = 43112
 
 export const DefaultNetworkID: number = 1
 
-export const PlatformChainID: string = "11111111111111111111111111111111LpoYY"
+export const OmegaChainID: string = "11111111111111111111111111111111LpoYY"
 export const PrimaryNetworkID: string = "11111111111111111111111111111111LpoYY"
-export const XChainAlias: string = "X"
-export const CChainAlias: string = "C"
-export const PChainAlias: string = "P"
-export const XChainVMName: string = "avm"
-export const CChainVMName: string = "evm"
-export const PChainVMName: string = "platformvm"
+export const AChainAlias: string = "A"
+export const DChainAlias: string = "D"
+export const OChainAlias: string = "O"
+export const AChainVMName: string = "alpha"
+export const DChainVMName: string = "delta"
+export const OChainVMName: string = "omegavm"
 
 // DO NOT use the following private keys and/or mnemonic on Fuji or Testnet
 // This address/account is for testing on the local avash network
 export const DefaultLocalGenesisPrivateKey: string =
   "ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
-export const DefaultEVMLocalGenesisPrivateKey: string =
+export const DefaultDELTALocalGenesisPrivateKey: string =
   "0x56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027"
-export const DefaultEVMLocalGenesisAddress: string =
+export const DefaultDELTALocalGenesisAddress: string =
   "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 export const mnemonic: string =
   "output tooth keep tooth bracket fox city sustain blood raise install pond stem reject long scene clap gloom purpose mean music piece unknown light"
@@ -142,22 +142,22 @@ export const DIONEGWEI: BN = NANODIONE.clone()
 export const DIONESTAKECAP: BN = ONEDIONE.mul(new BN(3000000))
 
 // Start mainnet
-let dioneAssetID: string = "2bQKRoEpE62R58KWwSNhGPfmYbEw1dAFVFtQHNA7iQpwkp7JBd"
-const n1X: X = {
-  blockchainID: "2sf39qr8dm81fQ5mfizWfFBe65TkVU6AqjYx9x7PQ61pDYNr1b",
+let dioneAssetID: string = "2jgmdB7VbihDhwW1z4XwZ9reY6wSbZgRJs3Yp7YkkXoZmpVe4E"
+const n1A: A = {
+  blockchainID: "YT3V2LWXBFSaqViCfLuL4KCpSxMy4M516NYBdfq8nuNpcNEdd",
   dioneAssetID: dioneAssetID,
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AChainAlias,
+  vm: AChainVMName,
   txFee: MILLIDIONE.mul(new BN(50)),
   creationTxFee: DECIDIONE,
   mintTxFee: MILLIDIONE.mul(new BN(50))
 }
 
-const n1P: P = {
-  blockchainID: PlatformChainID,
+const n1O: O = {
+  blockchainID: OmegaChainID,
   dioneAssetID: dioneAssetID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: OChainAlias,
+  vm: OChainVMName,
   txFee: MILLIDIONE.mul(new BN(50)),
   createSubnetTx: ONEDIONE,
   createChainTx: ONEDIONE,
@@ -171,10 +171,10 @@ const n1P: P = {
   maxStakeDuration: 365 * 24 * 60 * 60, // one year
 }
 
-const n1C: C = {
-  blockchainID: "2ApPXu7izxqD47cGEKd29LEoAMerxKR3bcz8TtMuftrCusc3rA",
-  alias: CChainAlias,
-  vm: CChainVMName,
+const n1D: D = {
+  blockchainID: "2Hxk7eM8VprbCKwv3gZw9GebajFExRMcJKPCwvysmnUNFwP8Ng",
+  alias: DChainAlias,
+  vm: DChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
@@ -191,21 +191,21 @@ const n1C: C = {
 
 // Start Testnet
 dioneAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
-const n5X: X = {
+const n5A: A = {
   blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
   dioneAssetID: dioneAssetID,
-  alias: XChainAlias,
-  vm: XChainVMName,
+  alias: AChainAlias,
+  vm: AChainVMName,
   txFee: MILLIDIONE,
   creationTxFee: CENTIDIONE,
   mintTxFee: MILLIDIONE
 }
 
-const n5P: P = {
-  blockchainID: PlatformChainID,
+const n5O: O = {
+  blockchainID: OmegaChainID,
   dioneAssetID: dioneAssetID,
-  alias: PChainAlias,
-  vm: PChainVMName,
+  alias: OChainAlias,
+  vm: OChainVMName,
   txFee: MILLIDIONE,
   creationTxFee: CENTIDIONE,
   createSubnetTx: ONEDIONE,
@@ -219,10 +219,10 @@ const n5P: P = {
   maxStakeDuration: 365 * 24 * 60 * 60, // one year
 }
 
-const n5C: C = {
+const n5D: D = {
   blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
-  alias: CChainAlias,
-  vm: CChainVMName,
+  alias: DChainAlias,
+  vm: DChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
@@ -239,67 +239,67 @@ const n5C: C = {
 
 // Start custom network
 dioneAssetID = "BUuypiq2wyuLMvyhzFXcPyxPMCgSp7eeDohhQRqTChoBjKziC"
-const n1337X: X = { ...n5X }
-n1337X.blockchainID = "qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7"
-n1337X.dioneAssetID = dioneAssetID
-const n1337P: P = { ...n5P }
-n1337P.blockchainID = PlatformChainID
-const n1337C: C = { ...n5C }
-n1337C.blockchainID = "BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88"
-n1337C.dioneAssetID = dioneAssetID
-n1337C.chainID = 43112
+const n1337A: A = { ...n5A }
+n1337A.blockchainID = "qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7"
+n1337A.dioneAssetID = dioneAssetID
+const n1337O: O = { ...n5O }
+n1337O.blockchainID = OmegaChainID
+const n1337D: D = { ...n5D }
+n1337D.blockchainID = "BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88"
+n1337D.dioneAssetID = dioneAssetID
+n1337D.chainID = 43112
 // End custom network
 
 // Start local network
 dioneAssetID = "2fombhL7aGPwj3KH4bfrmJwW6PVnMobf9Y2fn9GwxiAAJyFDbe"
-const n12345X: X = { ...n5X }
-n12345X.blockchainID = "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
-n12345X.dioneAssetID = dioneAssetID
-const n12345P: P = { ...n5P }
-n12345P.blockchainID = PlatformChainID
-const n12345C: C = { ...n5C }
-n12345C.blockchainID = "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
-n12345C.dioneAssetID = dioneAssetID
-n12345C.chainID = 43112
+const n12345A: A = { ...n5A }
+n12345A.blockchainID = "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed"
+n12345A.dioneAssetID = dioneAssetID
+const n12345O: O = { ...n5O }
+n12345O.blockchainID = OmegaChainID
+const n12345D: D = { ...n5D }
+n12345D.blockchainID = "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU"
+n12345D.dioneAssetID = dioneAssetID
+n12345D.chainID = 43112
 // End local network
 
 export class Defaults {
   static network: Networks = {
     1: {
       hrp: NetworkIDToHRP[1],
-      X: n1X,
-      "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": n1X,
-      P: n1P,
-      "11111111111111111111111111111111LpoYY": n1P,
-      C: n1C,
-      "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5": n1C
+      A: n1A,
+      "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": n1A,
+      O: n1O,
+      "11111111111111111111111111111111LpoYY": n1O,
+      D: n1D,
+      "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5": n1D
     },
     5: {
       hrp: NetworkIDToHRP[5],
-      X: n5X,
-      "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5X,
-      P: n5P,
-      "11111111111111111111111111111111LpoYY": n5P,
-      C: n5C,
-      yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5C
+      A: n5A,
+      "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5A,
+      O: n5O,
+      "11111111111111111111111111111111LpoYY": n5O,
+      D: n5D,
+      yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5D
     },
     1337: {
       hrp: NetworkIDToHRP[1337],
-      X: n1337X,
-      qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7: n1337X,
-      P: n1337P,
-      "11111111111111111111111111111111LpoYY": n1337P,
-      C: n1337C,
-      BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88: n1337C
+      A: n1337A,
+      qzfF3A11KzpcHkkqznEyQgupQrCNS6WV6fTUTwZpEKqhj1QE7: n1337A,
+      O: n1337O,
+      "11111111111111111111111111111111LpoYY": n1337O,
+      D: n1337D,
+      BR28ypgLATNS6PbtHMiJ7NQ61vfpT27Hj8tAcZ1AHsfU5cz88: n1337D
     },
     12345: {
       hrp: NetworkIDToHRP[12345],
-      X: n12345X,
-      "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed": n12345X,
-      P: n12345P,
-      "11111111111111111111111111111111LpoYY": n12345P,
-      C: n12345C,
-      "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU": n12345C
+      A: n12345A,
+      "2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed": n12345A,
+      O: n12345O,
+      "11111111111111111111111111111111LpoYY": n12345O,
+      D: n12345D,
+      "2CA6j5zYzasynPsFeNoqWkmTCt3VScMvXUZHbfDJ8k3oGzAPtU": n12345D
     }
   }
 }

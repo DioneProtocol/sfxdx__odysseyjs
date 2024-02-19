@@ -10,8 +10,8 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const admin: AdminAPI = odyssey.Admin()
 
 const main = async (): Promise<any> => {
-  const endpoint: string = "/ext/bc/X"
-  const alias: string = "xchain"
+  const endpoint: string = "/ext/bc/A"
+  const alias: string = "achain"
   const successful: boolean = await admin.alias(endpoint, alias)
   console.log(successful)
 }

@@ -26,11 +26,11 @@ const serializer: Serialization = Serialization.getInstance()
 /**
  * Class representing a base for all transactions.
  */
-export abstract class EVMStandardBaseTx<
+export abstract class DELTAStandardBaseTx<
   KPClass extends StandardKeyPair,
   KCClass extends StandardKeyChain<KPClass>
 > extends Serializable {
-  protected _typeName = "EVMStandardBaseTx"
+  protected _typeName = "DELTAStandardBaseTx"
   protected _typeID = undefined
 
   serialize(encoding: SerializedEncoding = "hex"): object {
@@ -136,10 +136,10 @@ export abstract class EVMStandardBaseTx<
 /**
  * Class representing an unsigned transaction.
  */
-export abstract class EVMStandardUnsignedTx<
+export abstract class DELTAStandardUnsignedTx<
   KPClass extends StandardKeyPair,
   KCClass extends StandardKeyChain<KPClass>,
-  SBTx extends EVMStandardBaseTx<KPClass, KCClass>
+  SBTx extends DELTAStandardBaseTx<KPClass, KCClass>
 > extends Serializable {
   protected _typeName = "StandardUnsignedTx"
   protected _typeID = undefined
@@ -264,10 +264,10 @@ export abstract class EVMStandardUnsignedTx<
    */
   abstract sign(
     kc: KCClass
-  ): EVMStandardTx<
+  ): DELTAStandardTx<
     KPClass,
     KCClass,
-    EVMStandardUnsignedTx<KPClass, KCClass, SBTx>
+    DELTAStandardUnsignedTx<KPClass, KCClass, SBTx>
   >
 
   constructor(transaction: SBTx = undefined, codecID: number = 0) {
@@ -280,13 +280,13 @@ export abstract class EVMStandardUnsignedTx<
 /**
  * Class representing a signed transaction.
  */
-export abstract class EVMStandardTx<
+export abstract class DELTAStandardTx<
   KPClass extends StandardKeyPair,
   KCClass extends StandardKeyChain<KPClass>,
-  SUBTx extends EVMStandardUnsignedTx<
+  SUBTx extends DELTAStandardUnsignedTx<
     KPClass,
     KCClass,
-    EVMStandardBaseTx<KPClass, KCClass>
+    DELTAStandardBaseTx<KPClass, KCClass>
   >
 > extends Serializable {
   protected _typeName = "StandardTx"

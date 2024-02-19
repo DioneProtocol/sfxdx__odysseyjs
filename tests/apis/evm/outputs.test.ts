@@ -1,8 +1,8 @@
-import { EVMOutput } from "../../../src/apis/evm"
+import { DELTAOutput } from "../../../src/apis/delta"
 
 describe("Inputs", () => {
-  test("EVMOutput comparator", () => {
-    let outs: EVMOutput[] = []
+  test("DELTAOutput comparator", () => {
+    let outs: DELTAOutput[] = []
     const address1: string = "0x55ee05dF718f1a5C1441e76190EB1a19eE2C9430"
     const address3: string = "0x9632a79656af553F58738B0FB750320158495942"
     const address4: string = "0x4Cf2eD3665F6bFA95cE6A11CFDb7A2EF5FC1C7E4"
@@ -26,23 +26,23 @@ describe("Inputs", () => {
     const assetID7: string = "FHfS61NfF5XdZU62bcXp9yRfgrZeiQC7VNJWKcpdb9QMLHs4L" // 2070e77e34941439dc7bcf502dcf555c6ef0e3cc46bbac8a03b22e15c84a81f1
     const assetID8: string = "ZL6NeWgcnxR2zhhKDx7h9Kg2mZgScC5N4RG5FCDayWY7W3whZ" // 496849239bb1541e97fa8f89256965bf7e657f3bb530cad820dd41706c5e3836
 
-    const output1: EVMOutput = new EVMOutput(address1, amount1, assetID1)
+    const output1: DELTAOutput = new DELTAOutput(address1, amount1, assetID1)
     outs.push(output1)
-    const output2: EVMOutput = new EVMOutput(address1, amount2, assetID2)
+    const output2: DELTAOutput = new DELTAOutput(address1, amount2, assetID2)
     outs.push(output2)
-    const output3: EVMOutput = new EVMOutput(address3, amount3, assetID2)
+    const output3: DELTAOutput = new DELTAOutput(address3, amount3, assetID2)
     outs.push(output3)
-    const output4: EVMOutput = new EVMOutput(address4, amount4, assetID3)
+    const output4: DELTAOutput = new DELTAOutput(address4, amount4, assetID3)
     outs.push(output4)
-    const output5: EVMOutput = new EVMOutput(address1, amount5, assetID5)
+    const output5: DELTAOutput = new DELTAOutput(address1, amount5, assetID5)
     outs.push(output5)
-    const output6: EVMOutput = new EVMOutput(address6, amount6, assetID6)
+    const output6: DELTAOutput = new DELTAOutput(address6, amount6, assetID6)
     outs.push(output6)
-    const output7: EVMOutput = new EVMOutput(address1, amount7, assetID7)
+    const output7: DELTAOutput = new DELTAOutput(address1, amount7, assetID7)
     outs.push(output7)
-    const output8: EVMOutput = new EVMOutput(address8, amount8, assetID8)
+    const output8: DELTAOutput = new DELTAOutput(address8, amount8, assetID8)
     outs.push(output8)
-    outs = outs.sort(EVMOutput.comparator())
+    outs = outs.sort(DELTAOutput.comparator())
     expect(outs[0].getAmount().toString()).toBe("8")
     expect(outs[1].getAmount().toString()).toBe("6")
     expect(outs[2].getAmount().toString()).toBe("4")
@@ -52,7 +52,7 @@ describe("Inputs", () => {
     expect(outs[6].getAmount().toString()).toBe("1")
     expect(outs[7].getAmount().toString()).toBe("3")
 
-    const cmp = EVMOutput.comparator()
+    const cmp = DELTAOutput.comparator()
     expect(cmp(output2, output1)).toBe(-1)
     expect(cmp(output1, output3)).toBe(-1)
     expect(cmp(output2, output3)).toBe(-1)
@@ -64,14 +64,14 @@ describe("Inputs", () => {
     expect(cmp(output3, output2)).toBe(1)
   })
 
-  test("EVMOutput from buffer should return amount", () => {
+  test("DELTAOutput from buffer should return amount", () => {
     const address: string = "0x55ee05dF718f1a5C1441e76190EB1a19eE2C9430"
     const amount: number = 1
     const assetID: string = "2fombhL7aGPwj3KH4bfrmJwW6PVnMobf9Y2fn9GwxiAAJyFDbe"
-    const output: EVMOutput = new EVMOutput(address, amount, assetID)
+    const output: DELTAOutput = new DELTAOutput(address, amount, assetID)
     expect(output.getAmount().toString()).toBe("1")
 
-    const outputBuffer = new EVMOutput()
+    const outputBuffer = new DELTAOutput()
     outputBuffer.fromBuffer(output.toBuffer())
     expect(outputBuffer.getAmount().toString()).toBe("1")
   })

@@ -1,11 +1,11 @@
-import { ExportTx, ImportTx, UnsignedTx } from "src/apis/evm"
+import { ExportTx, ImportTx, UnsignedTx } from "src/apis/delta"
 import { calcBytesCost, costExportTx, costImportTx } from "src/utils"
 import { Buffer } from "buffer/"
 
 describe("HelperFunctions", (): void => {
   test("calcBytesCost", (): void => {
     const importTx: ImportTx = new ImportTx()
-    // an empty EVM ImportTx is 76 bytes
+    // an empty DELTA ImportTx is 76 bytes
     let cost: number = 76
     let bytesCost: number = calcBytesCost(importTx.toBuffer().byteLength)
     expect(cost).toEqual(bytesCost)

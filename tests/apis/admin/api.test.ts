@@ -116,7 +116,7 @@ describe("Admin", (): void => {
     const result: Promise<GetLoggerLevelResponse> = admin.getLoggerLevel()
     const payload: object = {
       result: {
-        loggerLevels: { C: { logLevel: "DEBUG", displayLevel: "ERROR" } }
+        loggerLevels: { D: { logLevel: "DEBUG", displayLevel: "ERROR" } }
       }
     }
     const responseObj: HttpResponse = {
@@ -185,7 +185,7 @@ describe("Admin", (): void => {
   })
 
   test("setLoggerLevel", async (): Promise<void> => {
-    const loggerName: string = "C"
+    const loggerName: string = "D"
     const logLevel: string = "DEBUG"
     const displayLevel: string = "INFO"
     const result: Promise<SetLoggerLevelResponse> = admin.setLoggerLevel(

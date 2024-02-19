@@ -79,7 +79,7 @@ export class JRPCAPI extends APIBase {
   /**
    *
    * @param core Reference to the Odyssey instance using this endpoint
-   * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/avm"
+   * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/alpha"
    * @param jrpcVersion The jrpc version to use, default "2.0".
    */
   constructor(

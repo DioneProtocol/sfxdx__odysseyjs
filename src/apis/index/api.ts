@@ -217,9 +217,9 @@ export class IndexAPI extends JRPCAPI {
    * This class should not be instantiated directly. Instead use the [[Odyssey.addAPI]] method.
    *
    * @param core A reference to the Odyssey class
-   * @param baseURL Defaults to the string "/ext/index/X/tx" as the path to rpc's baseURL
+   * @param baseURL Defaults to the string "/ext/index/A/tx" as the path to rpc's baseURL
    */
-  constructor(core: OdysseyCore, baseURL: string = "/ext/index/X/tx") {
+  constructor(core: OdysseyCore, baseURL: string = "/ext/index/A/tx") {
     super(core, baseURL)
   }
 }

@@ -1,12 +1,12 @@
 import mockAxios from "jest-mock-axios"
 import { Odyssey, OdysseyCore } from "../src"
-import { AVMAPI } from "../src/apis/avm/api"
+import { ALPHAAPI } from "../src/apis/alpha/api"
 import { AdminAPI } from "../src/apis/admin/api"
 import { HealthAPI } from "../src/apis/health/api"
 import { InfoAPI } from "../src/apis/info/api"
 import { KeystoreAPI } from "../src/apis/keystore/api"
 import { MetricsAPI } from "../src/apis/metrics/api"
-import { PlatformVMAPI } from "../src/apis/platformvm/api"
+import { OmegaVMAPI } from "../src/apis/omegavm/api"
 import { TestAPI } from "./testlib"
 import { AxiosRequestConfig } from "axios"
 import { HttpResponse } from "jest-mock-axios/dist/lib/mock-axios-types"
@@ -36,12 +36,12 @@ describe("Odyssey", (): void => {
       skipinit
     )
     odyssey.addAPI("admin", AdminAPI)
-    odyssey.addAPI("xchain", AVMAPI, "/ext/subnet/avm", blockchainID)
+    odyssey.addAPI("achain", ALPHAAPI, "/ext/subnet/alpha", blockchainID)
     odyssey.addAPI("health", HealthAPI)
     odyssey.addAPI("info", InfoAPI)
     odyssey.addAPI("keystore", KeystoreAPI)
     odyssey.addAPI("metrics", MetricsAPI)
-    odyssey.addAPI("pchain", PlatformVMAPI)
+    odyssey.addAPI("ochain", OmegaVMAPI)
   })
   test("Remove special characters", (): void => {
     host = "a&&&&p#i,.@a+v(a)x$.~n%e't:w*o?r<k>"
@@ -93,11 +93,11 @@ describe("Odyssey", (): void => {
   })
 
   test("Endpoints correct", (): void => {
-    expect(odyssey.Admin()).not.toBeInstanceOf(AVMAPI)
+    expect(odyssey.Admin()).not.toBeInstanceOf(ALPHAAPI)
     expect(odyssey.Admin()).toBeInstanceOf(AdminAPI)
 
-    expect(odyssey.XChain()).not.toBeInstanceOf(AdminAPI)
-    expect(odyssey.XChain()).toBeInstanceOf(AVMAPI)
+    expect(odyssey.AChain()).not.toBeInstanceOf(AdminAPI)
+    expect(odyssey.AChain()).toBeInstanceOf(ALPHAAPI)
 
     expect(odyssey.Health()).not.toBeInstanceOf(KeystoreAPI)
     expect(odyssey.Health()).toBeInstanceOf(HealthAPI)
@@ -105,24 +105,24 @@ describe("Odyssey", (): void => {
     expect(odyssey.Info()).not.toBeInstanceOf(KeystoreAPI)
     expect(odyssey.Info()).toBeInstanceOf(InfoAPI)
 
-    expect(odyssey.PChain()).not.toBeInstanceOf(KeystoreAPI)
-    expect(odyssey.PChain()).toBeInstanceOf(PlatformVMAPI)
+    expect(odyssey.OChain()).not.toBeInstanceOf(KeystoreAPI)
+    expect(odyssey.OChain()).toBeInstanceOf(OmegaVMAPI)
 
-    expect(odyssey.NodeKeys()).not.toBeInstanceOf(PlatformVMAPI)
+    expect(odyssey.NodeKeys()).not.toBeInstanceOf(OmegaVMAPI)
     expect(odyssey.NodeKeys()).toBeInstanceOf(KeystoreAPI)
 
     expect(odyssey.Metrics()).not.toBeInstanceOf(KeystoreAPI)
     expect(odyssey.Metrics()).toBeInstanceOf(MetricsAPI)
 
     expect(odyssey.Admin().getRPCID()).toBe(1)
-    expect(odyssey.XChain().getRPCID()).toBe(1)
-    expect(odyssey.PChain().getRPCID()).toBe(1)
+    expect(odyssey.AChain().getRPCID()).toBe(1)
+    expect(odyssey.OChain().getRPCID()).toBe(1)
     expect(odyssey.NodeKeys().getRPCID()).toBe(1)
   })
 
   test("Create new API", (): void => {
-    odyssey.addAPI("avm2", AVMAPI)
-    expect(odyssey.api("avm2")).toBeInstanceOf(AVMAPI)
+    odyssey.addAPI("alpha2", ALPHAAPI)
+    expect(odyssey.api("alpha2")).toBeInstanceOf(ALPHAAPI)
 
     odyssey.addAPI("keystore2", KeystoreAPI, "/ext/keystore2")
     expect(odyssey.api("keystore2")).toBeInstanceOf(KeystoreAPI)
@@ -134,18 +134,18 @@ describe("Odyssey", (): void => {
   })
 
   test("Customize headers", (): void => {
-    odyssey.setHeader("X-Custom-Header", "example")
-    odyssey.setHeader("X-Foo", "Foo")
-    odyssey.setHeader("X-Bar", "Bar")
+    odyssey.setHeader("A-Custom-Header", "example")
+    odyssey.setHeader("A-Foo", "Foo")
+    odyssey.setHeader("A-Bar", "Bar")
     expect(odyssey.getHeaders()).toStrictEqual({
-      "X-Custom-Header": "example",
-      "X-Foo": "Foo",
-      "X-Bar": "Bar"
+      "A-Custom-Header": "example",
+      "A-Foo": "Foo",
+      "A-Bar": "Bar"
     })
-    odyssey.removeHeader("X-Foo")
+    odyssey.removeHeader("A-Foo")
     expect(odyssey.getHeaders()).toStrictEqual({
-      "X-Custom-Header": "example",
-      "X-Bar": "Bar"
+      "A-Custom-Header": "example",
+      "A-Bar": "Bar"
     })
     odyssey.removeAllHeaders()
     expect(odyssey.getHeaders()).toStrictEqual({})

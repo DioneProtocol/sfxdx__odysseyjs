@@ -18,8 +18,8 @@ const UTXO_ERROR_CODE: string = "1016"
 const INSUFFICIENT_FUNDS_ERROR_CODE: string = "1017"
 const THRESHOLD_ERROR_CODE: string = "1018"
 const SECP_MINT_OUTPUT_ERROR_CODE: string = "1019"
-const EVM_INPUT_ERROR_CODE: string = "1020"
-const EVM_OUTPUT_ERROR_CODE: string = "1021"
+const DELTA_INPUT_ERROR_CODE: string = "1020"
+const DELTA_OUTPUT_ERROR_CODE: string = "1021"
 const FEE_ASSET_ERROR_CODE: string = "1022"
 const STAKE_ERROR_CODE: string = "1023"
 const TIME_ERROR_CODE: string = "1024"
@@ -36,7 +36,7 @@ const HEX_ERROR_CODE: string = "1034"
 const TYPE_ID_ERROR_CODE: string = "1035"
 const UNKNOWN_TYPE_ERROR_CODE: string = "1036"
 const BECH32_ERROR_CODE: string = "1037"
-const EVM_FEE_ERROR_CODE: string = "1038"
+const DELTA_FEE_ERROR_CODE: string = "1038"
 const INVALID_ENTROPY: string = "1039"
 const PROTOCOL_ERROR_CODE: string = "1040"
 const SUBNET_ID_ERROR_CODE: string = "1041"
@@ -198,17 +198,17 @@ export class SECPMintOutputError extends OdysseyError {
   }
 }
 
-export class EVMInputError extends OdysseyError {
+export class DELTAInputError extends OdysseyError {
   constructor(m: string) {
-    super(m, EVM_INPUT_ERROR_CODE)
-    Object.setPrototypeOf(this, EVMInputError.prototype)
+    super(m, DELTA_INPUT_ERROR_CODE)
+    Object.setPrototypeOf(this, DELTAInputError.prototype)
   }
 }
 
-export class EVMOutputError extends OdysseyError {
+export class DELTAOutputError extends OdysseyError {
   constructor(m: string) {
-    super(m, EVM_OUTPUT_ERROR_CODE)
-    Object.setPrototypeOf(this, EVMOutputError.prototype)
+    super(m, DELTA_OUTPUT_ERROR_CODE)
+    Object.setPrototypeOf(this, DELTAOutputError.prototype)
   }
 }
 
@@ -331,10 +331,10 @@ export class Bech32Error extends OdysseyError {
   }
 }
 
-export class EVMFeeError extends OdysseyError {
+export class DELTAFeeError extends OdysseyError {
   constructor(m: string) {
-    super(m, EVM_FEE_ERROR_CODE)
-    Object.setPrototypeOf(this, EVMFeeError.prototype)
+    super(m, DELTA_FEE_ERROR_CODE)
+    Object.setPrototypeOf(this, DELTAFeeError.prototype)
   }
 }
 

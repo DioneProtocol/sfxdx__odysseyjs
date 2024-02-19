@@ -1,9 +1,9 @@
 import { Buffer } from "buffer/"
 import {
   RemoveSubnetValidatorTx,
-  PlatformVMConstants,
+  OmegaVMConstants,
   SubnetAuth
-} from "src/apis/platformvm"
+} from "src/apis/omegavm"
 import { bufferToNodeIDString } from "src/utils"
 
 describe("RemoveSubnetValidatorTx", (): void => {
@@ -25,7 +25,7 @@ describe("RemoveSubnetValidatorTx", (): void => {
   test("getTypeID", async (): Promise<void> => {
     const removeSubnetValidatorTxTypeID: number = removeSubnetValidatorTx.getTypeID()
     expect(removeSubnetValidatorTxTypeID).toBe(
-      PlatformVMConstants.REMOVESUBNETVALIDATORTX
+      OmegaVMConstants.REMOVESUBNETVALIDATORTX
     )
   })
 
@@ -60,7 +60,7 @@ describe("RemoveSubnetValidatorTx", (): void => {
 
     test("getTypeID", async (): Promise<void> => {
       const subnetAuthTypeID: number = sa.getTypeID()
-      expect(subnetAuthTypeID).toBe(PlatformVMConstants.SUBNETAUTH)
+      expect(subnetAuthTypeID).toBe(OmegaVMConstants.SUBNETAUTH)
     })
 
     test("getNumAddressIndices", async (): Promise<void> => {

@@ -4,7 +4,7 @@ import BinTools from "../../../src/utils/bintools"
 import {
   SECPTransferOutput,
   SelectOutputClass
-} from "../../../src/apis/platformvm/outputs"
+} from "../../../src/apis/omegavm/outputs"
 import { Output } from "../../../src/common/output"
 
 const bintools: BinTools = BinTools.getInstance()

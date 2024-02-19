@@ -11,7 +11,7 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const admin: AdminAPI = odyssey.Admin()
 
 const main = async (): Promise<any> => {
-  const loggerName: string = "C"
+  const loggerName: string = "D"
   const logLevel: string = "DEBUG"
   const displayLevel: string = "INFO"
   const loggerLevel: SetLoggerLevelResponse = await admin.setLoggerLevel(

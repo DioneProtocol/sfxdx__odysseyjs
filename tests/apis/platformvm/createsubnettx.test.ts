@@ -1,8 +1,8 @@
 import BN from "bn.js"
 import { Buffer } from "buffer/"
-import { SECPOwnerOutput } from "../../../src/apis/platformvm/outputs"
-import { PlatformVMConstants } from "../../../src/apis/platformvm/constants"
-import { CreateSubnetTx } from "src/apis/platformvm"
+import { SECPOwnerOutput } from "../../../src/apis/omegavm/outputs"
+import { OmegaVMConstants } from "../../../src/apis/omegavm/constants"
+import { CreateSubnetTx } from "src/apis/omegavm"
 
 describe("CreateSubnetTx", (): void => {
   const createSubnetTxHex: string =
@@ -18,7 +18,7 @@ describe("CreateSubnetTx", (): void => {
 
   test("getTypeID", async (): Promise<void> => {
     const createSubnetTxTypeID: number = createSubnetTx.getTypeID()
-    expect(createSubnetTxTypeID).toBe(PlatformVMConstants.CREATESUBNETTX)
+    expect(createSubnetTxTypeID).toBe(OmegaVMConstants.CREATESUBNETTX)
   })
 
   test("toBuffer and fromBuffer", async (): Promise<void> => {
@@ -39,12 +39,12 @@ describe("CreateSubnetTx", (): void => {
 
     test("getTypeID", async (): Promise<void> => {
       const subnetOwnersTypeID: number = subnetOwners.getTypeID()
-      expect(subnetOwnersTypeID).toBe(PlatformVMConstants.SECPOWNEROUTPUTID)
+      expect(subnetOwnersTypeID).toBe(OmegaVMConstants.SECPOWNEROUTPUTID)
     })
 
     test("getOutputID", async (): Promise<void> => {
       const outputID: number = subnetOwners.getOutputID()
-      expect(outputID).toBe(PlatformVMConstants.SECPOWNEROUTPUTID)
+      expect(outputID).toBe(OmegaVMConstants.SECPOWNEROUTPUTID)
     })
 
     test("get addresses", async (): Promise<void> => {
