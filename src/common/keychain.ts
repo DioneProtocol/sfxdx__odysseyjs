@@ -75,7 +75,7 @@ export abstract class StandardKeyPair {
    *
    * @returns A {@link https://github.com/feross/buffer|Buffer} containing the public key
    */
-  getPublicKey(): Buffer {
+  getPublidKey(): Buffer {
     return this.pubk
   }
 
@@ -91,7 +91,7 @@ export abstract class StandardKeyPair {
    *
    * @returns A string representation of the public key
    */
-  abstract getPublicKeyString(): string
+  abstract getPublidKeyString(): string
 
   /**
    * Returns the address.

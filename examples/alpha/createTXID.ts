@@ -29,13 +29,13 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 const ochain: OmegaVMAPI = odyssey.OChain()
-const xKeychain: ALPHAKeyChain = achain.keyChain()
-const pKeychain: OmegaVMKeyChain = ochain.keyChain()
+const aKeychain: ALPHAKeyChain = achain.keyChain()
+const oKeychain: OmegaVMKeyChain = ochain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-pKeychain.importKey(privKey)
-const xAddressStrings: string[] = achain.keyChain().getAddressStrings()
-const pAddressStrings: string[] = ochain.keyChain().getAddressStrings()
+aKeychain.importKey(privKey)
+oKeychain.importKey(privKey)
+const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
+const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const oChainBlockchainID: string = Defaults.network[networkID].O.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const locktime: BN = new BN(0)
@@ -47,10 +47,10 @@ const fee: BN = achain.getDefaultTxFee()
 const cb58: SerializedType = "cb58"
 
 const main = async (): Promise<any> => {
-  const alphaUTXOResponse: any = await achain.getUTXOs(xAddressStrings)
+  const alphaUTXOResponse: any = await achain.getUTXOs(aAddressStrings)
   const utxoSet: UTXOSet = alphaUTXOResponse.utxos
   const getBalanceResponse: any = await achain.getBalance(
-    xAddressStrings[0],
+    aAddressStrings[0],
     dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
@@ -60,15 +60,15 @@ const main = async (): Promise<any> => {
     utxoSet,
     amount,
     oChainBlockchainID,
-    pAddressStrings,
-    xAddressStrings,
-    xAddressStrings,
+    oAddressStrings,
+    aAddressStrings,
+    aAddressStrings,
     memo,
     asOf,
     locktime
   )
 
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(aKeychain)
   const buffer: Buffer = Buffer.from(
     createHash("sha256").update(tx.toBuffer()).digest().buffer
   )

@@ -54,11 +54,11 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = achain.keyChain()
+const aKeychain: KeyChain = achain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = achain.keyChain().getAddresses()
-const xAddressStrings: string[] = achain.keyChain().getAddressStrings()
+aKeychain.importKey(privKey)
+const aAddresses: Buffer[] = achain.keyChain().getAddresses()
+const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].A.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
@@ -73,7 +73,7 @@ const memo: Buffer = Buffer.from("ALPHA manual OperationTx to mint an ANT")
 // const codecID: number = 1
 
 const main = async (): Promise<any> => {
-  const alphaUTXOResponse: any = await achain.getUTXOs(xAddressStrings)
+  const alphaUTXOResponse: any = await achain.getUTXOs(aAddressStrings)
   const utxoSet: UTXOSet = alphaUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO): void => {
@@ -87,7 +87,7 @@ const main = async (): Promise<any> => {
       if (assetID.toString("hex") === dioneAssetIDBuf.toString("hex")) {
         const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
           amt.sub(fee),
-          xAddresses,
+          aAddresses,
           locktime,
           threshold
         )
@@ -102,7 +102,7 @@ const main = async (): Promise<any> => {
         const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
         // Uncomment for codecID 00 01
         // secpTransferInput.setCodecID(codecID)
-        secpTransferInput.addSignatureIdx(0, xAddresses[0])
+        secpTransferInput.addSignatureIdx(0, aAddresses[0])
         const input: TransferableInput = new TransferableInput(
           txid,
           outputidx,
@@ -113,7 +113,7 @@ const main = async (): Promise<any> => {
       } else {
         const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
           amt,
-          xAddresses,
+          aAddresses,
           locktime,
           threshold
         )
@@ -128,7 +128,7 @@ const main = async (): Promise<any> => {
         const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
         // Uncomment for codecID 00 01
         // secpTransferInput.setCodecID(codecID)
-        secpTransferInput.addSignatureIdx(0, xAddresses[0])
+        secpTransferInput.addSignatureIdx(0, aAddresses[0])
         const input: TransferableInput = new TransferableInput(
           txid,
           outputidx,
@@ -141,7 +141,7 @@ const main = async (): Promise<any> => {
       const vcapAmount: BN = new BN(507)
       const vcapSecpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
         vcapAmount,
-        xAddresses,
+        aAddresses,
         locktime,
         threshold
       )
@@ -162,7 +162,7 @@ const main = async (): Promise<any> => {
       )
       // Uncomment for codecID 00 01
       // secpMintOperation.setCodecID(codecID)
-      const spenders: Buffer[] = mintOwner.getSpenders(xAddresses)
+      const spenders: Buffer[] = mintOwner.getSpenders(aAddresses)
 
       spenders.forEach((spender: Buffer) => {
         const idx: number = mintOwner.getAddressIdx(spender)
@@ -190,7 +190,7 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   // operationTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(operationTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(aKeychain)
   const txid: string = await achain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

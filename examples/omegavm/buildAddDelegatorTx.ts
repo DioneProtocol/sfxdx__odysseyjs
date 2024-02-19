@@ -19,10 +19,10 @@ const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
-const pKeychain: KeyChain = ochain.keyChain()
+const oKeychain: KeyChain = ochain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-pKeychain.importKey(privKey)
-const pAddressStrings: string[] = ochain.keyChain().getAddressStrings()
+oKeychain.importKey(privKey)
+const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
@@ -35,26 +35,26 @@ const endTime: BN = startTime.add(new BN(2630000))
 
 const main = async (): Promise<any> => {
   const stakeAmount: any = await ochain.getMinStake()
-  const omegaVMUTXOResponse: any = await ochain.getUTXOs(pAddressStrings)
+  const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
 
   const unsignedTx: UnsignedTx = await ochain.buildAddDelegatorTx(
     utxoSet,
-    pAddressStrings,
-    pAddressStrings,
-    pAddressStrings,
+    oAddressStrings,
+    oAddressStrings,
+    oAddressStrings,
     nodeID,
     startTime,
     endTime,
     stakeAmount.minDelegatorStake,
-    pAddressStrings,
+    oAddressStrings,
     locktime,
     threshold,
     memo,
     asOf
   )
 
-  const tx: Tx = unsignedTx.sign(pKeychain)
+  const tx: Tx = unsignedTx.sign(oKeychain)
   const txid: string = await ochain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

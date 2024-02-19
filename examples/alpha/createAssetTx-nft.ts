@@ -31,11 +31,11 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = achain.keyChain()
+const aKeychain: KeyChain = achain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = achain.keyChain().getAddresses()
-const xAddressStrings: string[] = achain.keyChain().getAddressStrings()
+aKeychain.importKey(privKey)
+const aAddresses: Buffer[] = achain.keyChain().getAddresses()
+const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const blockchainID: string = Defaults.network[networkID].A.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
@@ -54,13 +54,13 @@ const groupID: number = 0
 
 const main = async (): Promise<any> => {
   const getBalanceResponse: any = await achain.getBalance(
-    xAddressStrings[0],
+    aAddressStrings[0],
     dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     balance.sub(fee),
-    xAddresses,
+    aAddresses,
     locktime,
     threshold
   )
@@ -72,7 +72,7 @@ const main = async (): Promise<any> => {
   )
   outputs.push(transferableOutput)
 
-  const alphaUTXOResponse: any = await achain.getUTXOs(xAddressStrings)
+  const alphaUTXOResponse: any = await achain.getUTXOs(aAddressStrings)
   const utxoSet: UTXOSet = alphaUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO): void => {
@@ -90,7 +90,7 @@ const main = async (): Promise<any> => {
       const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
       // Uncomment for codecID 00 01
       // secpTransferInput.setCodecID(codecID)
-      secpTransferInput.addSignatureIdx(0, xAddresses[0])
+      secpTransferInput.addSignatureIdx(0, aAddresses[0])
 
       const input: TransferableInput = new TransferableInput(
         txid,
@@ -103,7 +103,7 @@ const main = async (): Promise<any> => {
   })
 
   const initialStates: InitialStates = new InitialStates()
-  const minterSets: MinterSet[] = [new MinterSet(threshold, xAddresses)]
+  const minterSets: MinterSet[] = [new MinterSet(threshold, aAddresses)]
   for (let i: number = 0; i <= 5; i++) {
     const nftMintOutput: NFTMintOutput = new NFTMintOutput(
       groupID,
@@ -130,7 +130,7 @@ const main = async (): Promise<any> => {
   // Uncomment for codecID 00 01
   // createAssetTx.setCodecID(codecID)
   const unsignedTx: UnsignedTx = new UnsignedTx(createAssetTx)
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(aKeychain)
   const txid: string = await achain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

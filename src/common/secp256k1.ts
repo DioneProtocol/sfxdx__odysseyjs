@@ -7,7 +7,7 @@ import * as elliptic from "elliptic"
 import createHash from "create-hash"
 import BinTools from "../utils/bintools"
 import { StandardKeyPair, StandardKeyChain } from "./keychain"
-import { PublicKeyError } from "../utils/errors"
+import { PublidKeyError } from "../utils/errors"
 import { BNInput } from "elliptic"
 import { Serialization, SerializedType } from "../utils"
 
@@ -110,7 +110,7 @@ export abstract class SECP256k1KeyPair extends StandardKeyPair {
    * @returns A {@link https://github.com/feross/buffer|Buffer} representation of the address
    */
   getAddress(): Buffer {
-    return SECP256k1KeyPair.addressFromPublicKey(this.pubk)
+    return SECP256k1KeyPair.addressFromPublidKey(this.pubk)
   }
 
   /**
@@ -119,7 +119,7 @@ export abstract class SECP256k1KeyPair extends StandardKeyPair {
    * @returns A string representation of the address
    */
   getAddressString(): string {
-    const addr: Buffer = SECP256k1KeyPair.addressFromPublicKey(this.pubk)
+    const addr: Buffer = SECP256k1KeyPair.addressFromPublidKey(this.pubk)
     const type: SerializedType = "bech32"
     return serialization.bufferToType(addr, type, this.hrp, this.chainID)
   }
@@ -131,7 +131,7 @@ export abstract class SECP256k1KeyPair extends StandardKeyPair {
    *
    * @returns A {@link https://github.com/feross/buffer|Buffer} for the address of the public key.
    */
-  static addressFromPublicKey(pubk: Buffer): Buffer {
+  static addressFromPublidKey(pubk: Buffer): Buffer {
     if (pubk.length === 65) {
       /* istanbul ignore next */
       pubk = Buffer.from(
@@ -149,7 +149,7 @@ export abstract class SECP256k1KeyPair extends StandardKeyPair {
       return ripesha
     }
     /* istanbul ignore next */
-    throw new PublicKeyError("Unable to make address.")
+    throw new PublidKeyError("Unable to make address.")
   }
 
   /**
@@ -166,7 +166,7 @@ export abstract class SECP256k1KeyPair extends StandardKeyPair {
    *
    * @returns A cb58 serialized string representation of the public key
    */
-  getPublicKeyString(): string {
+  getPublidKeyString(): string {
     return bintools.cb58Encode(this.pubk)
   }
 

@@ -1,5 +1,5 @@
 // using https://www.npmjs.com/package/@noble/bls12-381
-// import { getPublicKey, sign, verify } from "@noble/bls12-381"
+// import { getPublidKey, sign, verify } from "@noble/bls12-381"
 import "dotenv/config"
 import { Odyssey, Buffer } from "../../src"
 import {
@@ -10,13 +10,13 @@ import {
 } from "../../src/apis/omegavm"
 
 // start placeholder functions
-const getPublicKey = (privateKey): Buffer => {
+const getPublidKey = (privateKey): Buffer => {
   return new Buffer("00")
 }
-const sign = (publicKey, privateKey): Buffer => {
+const sign = (publidKey, privateKey): Buffer => {
   return new Buffer("00")
 }
-const verify = (signature, message, publicKey): boolean => {
+const verify = (signature, message, publidKey): boolean => {
   return true
 }
 // end placeholder functions
@@ -33,18 +33,18 @@ const keypair: KeyPair = keychain.makeKey()
 const main = async (): Promise<any> => {
   const privateKey: string = keypair.getPrivateKey().toString("hex")
   // 48 byte public key
-  const publicKey = getPublicKey(privateKey) as Buffer
+  const publidKey = getPublidKey(privateKey) as Buffer
   // 96 byte signature
-  const signature = (await sign(publicKey, privateKey)) as Buffer
+  const signature = (await sign(publidKey, privateKey)) as Buffer
   const proofOfPossession: ProofOfPossession = new ProofOfPossession(
-    publicKey,
+    publidKey,
     signature
   )
-  const isValid: boolean = await verify(signature, publicKey, publicKey)
+  const isValid: boolean = await verify(signature, publidKey, publidKey)
   console.log(isValid)
-  const pubKey: Buffer = proofOfPossession.getPublicKey()
+  const pubKey: Buffer = proofOfPossession.getPublidKey()
   const sig: Buffer = proofOfPossession.getSignature()
-  console.log(`Public Key:`, pubKey === publicKey)
+  console.log(`Public Key:`, pubKey === publidKey)
   console.log(`Signature:`, sig === signature)
 }
 

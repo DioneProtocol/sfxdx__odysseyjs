@@ -44,10 +44,10 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 const bintools: BinTools = BinTools.getInstance()
-const xKeychain: KeyChain = achain.keyChain()
+const aKeychain: KeyChain = achain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-const xAddressStrings: string[] = achain.keyChain().getAddressStrings()
+aKeychain.importKey(privKey)
+const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
@@ -57,7 +57,7 @@ const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
   const alphaUTXOResponse: GetUTXOsResponse = await achain.getUTXOs(
-    xAddressStrings
+    aAddressStrings
   )
   const utxoSet: UTXOSet = alphaUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
@@ -79,9 +79,9 @@ const main = async (): Promise<any> => {
 
   const unsignedTx: UnsignedTx = await achain.buildNFTTransferTx(
     utxoSet,
-    xAddressStrings,
-    xAddressStrings,
-    xAddressStrings,
+    aAddressStrings,
+    aAddressStrings,
+    aAddressStrings,
     nftTransferOutputUTXOID,
     memo,
     asOf,
@@ -89,7 +89,7 @@ const main = async (): Promise<any> => {
     threshold
   )
 
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(aKeychain)
   const id: string = await achain.issueTx(tx)
   console.log(`Success! TXID: ${id}`)
 }

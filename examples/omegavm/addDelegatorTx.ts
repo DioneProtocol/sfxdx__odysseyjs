@@ -32,11 +32,11 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const bintools: BinTools = BinTools.getInstance()
-const pKeychain: KeyChain = ochain.keyChain()
+const oKeychain: KeyChain = ochain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-pKeychain.importKey(privKey)
-const pAddresses: Buffer[] = ochain.keyChain().getAddresses()
-const pAddressStrings: string[] = ochain.keyChain().getAddressStrings()
+oKeychain.importKey(privKey)
+const oAddresses: Buffer[] = ochain.keyChain().getAddresses()
+const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const oChainBlockchainID: string = Defaults.network[networkID].O.blockchainID
 const outputs: TransferableOutput[] = []
 const inputs: TransferableInput[] = []
@@ -54,11 +54,11 @@ const endTime: BN = startTime.add(new BN(2630000))
 const main = async (): Promise<any> => {
   const stakeAmount: any = await ochain.getMinStake()
   const dioneAssetID: Buffer = await ochain.getDIONEAssetID()
-  const getBalanceResponse: any = await ochain.getBalance(pAddressStrings[0])
+  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings[0])
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee).sub(stakeAmount.minValidatorStake),
-    pAddresses,
+    oAddresses,
     locktime,
     threshold
   )
@@ -70,7 +70,7 @@ const main = async (): Promise<any> => {
 
   const stakeSECPTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     stakeAmount.minValidatorStake,
-    pAddresses,
+    oAddresses,
     locktime,
     threshold
   )
@@ -81,13 +81,13 @@ const main = async (): Promise<any> => {
   stakeOuts.push(stakeTransferableOutput)
 
   const rewardOutputOwners: SECPOwnerOutput = new SECPOwnerOutput(
-    pAddresses,
+    oAddresses,
     locktime,
     threshold
   )
   const rewardOwners: ParseableOutput = new ParseableOutput(rewardOutputOwners)
 
-  const omegaVMUTXOResponse: any = await ochain.getUTXOs(pAddressStrings)
+  const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
   const utxos: UTXO[] = utxoSet.getAllUTXOs()
   utxos.forEach((utxo: UTXO) => {
@@ -99,7 +99,7 @@ const main = async (): Promise<any> => {
       const outputidx: Buffer = utxo.getOutputIdx()
 
       const secpTransferInput: SECPTransferInput = new SECPTransferInput(amt)
-      secpTransferInput.addSignatureIdx(0, pAddresses[0])
+      secpTransferInput.addSignatureIdx(0, oAddresses[0])
 
       const input: TransferableInput = new TransferableInput(
         txid,
@@ -126,7 +126,7 @@ const main = async (): Promise<any> => {
   )
 
   const unsignedTx: UnsignedTx = new UnsignedTx(addDelegatorTx)
-  const tx: Tx = unsignedTx.sign(pKeychain)
+  const tx: Tx = unsignedTx.sign(oKeychain)
   const txid: string = await ochain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

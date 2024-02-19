@@ -13,42 +13,43 @@ import {
   UnixNow
 } from "../../src/utils"
 
-const ip = process.env.IP
-const port = Number(process.env.PORT)
-const protocol = process.env.PROTOCOL
-const networkID = Number(process.env.NETWORK_ID)
+const ip = "localhost"
+const port = Number("9650")
+const protocol = "http"
+const networkID = Number("1")
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
-const pKeychain: KeyChain = ochain.keyChain()
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-pKeychain.importKey(privKey)
-const pAddressStrings: string[] = ochain.keyChain().getAddressStrings()
+const oKeychain: KeyChain = ochain.keyChain()
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
+oKeychain.importKey(privKey)
+const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
   "OmegaVM utility method buildAddValidatorTx to add a validator to the primary subnet"
 )
 const asOf: BN = UnixNow()
-const nodeID: string = "NodeID-DueWyGi3B9jtKfa9mPoecd4YSDJ1ftF69"
+const nodeID: string = "NodeID-3hwBts7XQCan5bmsXkMvhvp9PKmYU3Vew"
 const startTime: BN = UnixNow().add(new BN(60 * 1))
 const endTime: BN = startTime.add(new BN(26300000))
 const delegationFee: number = 10
 
 const main = async (): Promise<any> => {
   const stakeAmount: any = await ochain.getMinStake()
-  const omegaVMUTXOResponse: any = await ochain.getUTXOs(pAddressStrings)
+  const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
 
   const unsignedTx: UnsignedTx = await ochain.buildAddValidatorTx(
     utxoSet,
-    pAddressStrings,
-    pAddressStrings,
-    pAddressStrings,
+    oAddressStrings,
+    oAddressStrings,
+    oAddressStrings,
     nodeID,
     startTime,
     endTime,
     stakeAmount.minValidatorStake,
-    pAddressStrings,
+    oAddressStrings,
     delegationFee,
     locktime,
     threshold,
@@ -56,7 +57,7 @@ const main = async (): Promise<any> => {
     asOf
   )
 
-  const tx: Tx = unsignedTx.sign(pKeychain)
+  const tx: Tx = unsignedTx.sign(oKeychain)
   const txid: string = await ochain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

@@ -22,11 +22,11 @@ const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
-const xKeychain: KeyChain = achain.keyChain()
+const aKeychain: KeyChain = achain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = achain.keyChain().getAddresses()
-const xAddressStrings: string[] = achain.keyChain().getAddressStrings()
+aKeychain.importKey(privKey)
+const aAddresses: Buffer[] = achain.keyChain().getAddresses()
+const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const outputs: SECPMintOutput[] = []
 const threshold: number = 1
 const locktime: BN = new BN(0)
@@ -39,14 +39,14 @@ const denomination: number = 3
 
 const main = async (): Promise<any> => {
   const alphaUTXOResponse: GetUTXOsResponse = await achain.getUTXOs(
-    xAddressStrings
+    aAddressStrings
   )
   const utxoSet: UTXOSet = alphaUTXOResponse.utxos
 
   const amount: BN = new BN(507)
   const vcapSecpOutput = new SECPTransferOutput(
     amount,
-    xAddresses,
+    aAddresses,
     locktime,
     threshold
   )
@@ -54,7 +54,7 @@ const main = async (): Promise<any> => {
   initialStates.addOutput(vcapSecpOutput)
 
   const secpMintOutput: SECPMintOutput = new SECPMintOutput(
-    xAddresses,
+    aAddresses,
     locktime,
     threshold
   )
@@ -62,8 +62,8 @@ const main = async (): Promise<any> => {
 
   const unsignedTx: UnsignedTx = await achain.buildCreateAssetTx(
     utxoSet,
-    xAddressStrings,
-    xAddressStrings,
+    aAddressStrings,
+    aAddressStrings,
     initialStates,
     name,
     symbol,
@@ -71,7 +71,7 @@ const main = async (): Promise<any> => {
     outputs,
     memo
   )
-  const tx: Tx = unsignedTx.sign(xKeychain)
+  const tx: Tx = unsignedTx.sign(aKeychain)
   const txid: string = await achain.issueTx(tx)
   console.log(`Success! TXID: ${txid}`)
 }

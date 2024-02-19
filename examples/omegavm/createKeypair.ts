@@ -14,11 +14,11 @@ const main = async (): Promise<any> => {
   const keypair: KeyPair = keychain.makeKey()
   const response: {
     address: string
-    publicKey: string
+    publidKey: string
     privateKey: string
   } = {
     address: keypair.getAddressString(),
-    publicKey: keypair.getPublicKeyString(),
+    publidKey: keypair.getPublidKeyString(),
     privateKey: keypair.getPrivateKeyString()
   }
   console.log(response)

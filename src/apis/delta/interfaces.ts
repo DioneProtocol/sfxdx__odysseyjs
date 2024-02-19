@@ -52,6 +52,6 @@ export interface ExportKeyParams extends CredsInterface {
 
 export interface CreateKeyPairResponse {
   address: string
-  publicKey: string
+  publidKey: string
   privateKey: string
 }

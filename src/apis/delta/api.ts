@@ -244,18 +244,18 @@ export class DELTAAPI extends JRPCAPI {
    * returns the amount of [assetID] for the given address in the state of the given block number.
    * "latest", "pending", and "accepted" meta block numbers are also allowed.
    *
-   * @param hexAddress The hex representation of the address
+   * @param heaAddress The hex representation of the address
    * @param blockHeight The block height
    * @param assetID The asset ID
    *
    * @returns Returns a Promise object containing the balance
    */
   getAssetBalance = async (
-    hexAddress: string,
+    heaAddress: string,
     blockHeight: string,
     assetID: string
   ): Promise<object> => {
-    const params: string[] = [hexAddress, blockHeight, assetID]
+    const params: string[] = [heaAddress, blockHeight, assetID]
 
     const method: string = "eth_getAssetBalance"
     const path: string = "ext/bc/D/rpc"

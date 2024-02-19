@@ -22,10 +22,10 @@ const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
-const xKeychain: KeyChain = achain.keyChain()
+const aKeychain: KeyChain = achain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-xKeychain.importKey(privKey)
-const xAddresses: Buffer[] = achain.keyChain().getAddresses()
+aKeychain.importKey(privKey)
+const aAddresses: Buffer[] = achain.keyChain().getAddresses()
 const cb58: SerializedType = "cb58"
 const threshold: number = 1
 const locktime: BN = new BN(0)
@@ -42,7 +42,7 @@ const main = async (): Promise<any> => {
   const amount: BN = new BN(1000000000000)
   const vcapSecpOutput = new SECPTransferOutput(
     amount,
-    xAddresses,
+    aAddresses,
     locktime,
     threshold
   )
@@ -64,7 +64,7 @@ const main = async (): Promise<any> => {
   denomination = 2
   initialStates = new InitialStates()
   const secpMintOutput: SECPMintOutput = new SECPMintOutput(
-    xAddresses,
+    aAddresses,
     locktime,
     threshold
   )

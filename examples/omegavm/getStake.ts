@@ -13,15 +13,15 @@ const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
-const pKeychain: KeyChain = ochain.keyChain()
+const oKeychain: KeyChain = ochain.keyChain()
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
-pKeychain.importKey(privKey)
-const pAddressStrings: string[] = ochain.keyChain().getAddressStrings()
+oKeychain.importKey(privKey)
+const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const encoding: string = "hex"
 
 const main = async (): Promise<any> => {
   const getStakeResponse: GetStakeResponse = await ochain.getStake(
-    pAddressStrings,
+    oAddressStrings,
     encoding
   )
   console.log(getStakeResponse)
