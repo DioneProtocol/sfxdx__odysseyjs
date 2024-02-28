@@ -148,9 +148,9 @@ const n1A: A = {
   dioneAssetID: dioneAssetID,
   alias: AChainAlias,
   vm: AChainVMName,
-  txFee: MILLIDIONE.mul(new BN(50)),
-  creationTxFee: DECIDIONE,
-  mintTxFee: MILLIDIONE.mul(new BN(50))
+  txFee: ONEDIONE.mul(new BN(50)),
+  creationTxFee: ONEDIONE.mul(new BN(100)),
+  mintTxFee: ONEDIONE.mul(new BN(50))
 }
 
 const n1O: O = {
@@ -158,9 +158,9 @@ const n1O: O = {
   dioneAssetID: dioneAssetID,
   alias: OChainAlias,
   vm: OChainVMName,
-  txFee: MILLIDIONE.mul(new BN(50)),
-  createSubnetTx: ONEDIONE,
-  createChainTx: ONEDIONE,
+  txFee: ONEDIONE.mul(new BN(50)),
+  createSubnetTx: ONEDIONE.mul(new BN(3000)),
+  createChainTx: ONEDIONE.mul(new BN(3000)),
   creationTxFee: DECIDIONE,
   minConsumption: 0.1,
   maxConsumption: 0.12,
@@ -268,11 +268,11 @@ export class Defaults {
     1: {
       hrp: NetworkIDToHRP[1],
       A: n1A,
-      "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": n1A,
+      "YT3V2LWXBFSaqViCfLuL4KCpSxMy4M516NYBdfq8nuNpcNEdd": n1A,
       O: n1O,
       "11111111111111111111111111111111LpoYY": n1O,
       D: n1D,
-      "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5": n1D
+      "2Hxk7eM8VprbCKwv3gZw9GebajFExRMcJKPCwvysmnUNFwP8Ng": n1D
     },
     5: {
       hrp: NetworkIDToHRP[5],
