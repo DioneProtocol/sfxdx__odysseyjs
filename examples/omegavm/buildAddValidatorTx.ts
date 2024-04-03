@@ -13,15 +13,14 @@ import {
   UnixNow
 } from "../../src/utils"
 
-const ip = "localhost"
-const port = Number("9650")
-const protocol = "http"
-const networkID = Number("1")
+const ip = process.env.IP
+const port = Number(process.env.PORT)
+const protocol = process.env.PROTOCOL
+const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const oKeychain: KeyChain = ochain.keyChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 oKeychain.importKey(privKey)
 const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const threshold: number = 1
@@ -29,17 +28,19 @@ const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
   "OmegaVM utility method buildAddValidatorTx to add a validator to the primary subnet"
 )
+
+const reward = "O-dione18jma8ppw3nhx5r4ap8clazz0dps7rv5ulw7llh"
+const nodeID: string = "NodeID-DE8BWpgUtNkTXzjFArzS1nroouzBcXX8J"
+
 const asOf: BN = UnixNow()
-const nodeID: string = "NodeID-3hwBts7XQCan5bmsXkMvhvp9PKmYU3Vew"
-const startTime: BN = UnixNow().add(new BN(60 * 1))
-const endTime: BN = startTime.add(new BN(26300000))
-const delegationFee: number = 10
+const startTime: BN = UnixNow().add(new BN(20))
+const endTime: BN = startTime.add(new BN(300000))
+const delegationFee: number = 5
 
 const main = async (): Promise<any> => {
   const stakeAmount: any = await ochain.getMinStake()
   const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
-
   const unsignedTx: UnsignedTx = await ochain.buildAddValidatorTx(
     utxoSet,
     oAddressStrings,
@@ -49,7 +50,7 @@ const main = async (): Promise<any> => {
     startTime,
     endTime,
     stakeAmount.minValidatorStake,
-    oAddressStrings,
+    [reward],
     delegationFee,
     locktime,
     threshold,
@@ -62,4 +63,4 @@ const main = async (): Promise<any> => {
   console.log(`Success! TXID: ${txid}`)
 }
 
-main()
+main().catch((e) => console.log(e))

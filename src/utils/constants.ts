@@ -4,6 +4,8 @@
  */
 
 import BN from "bn.js"
+import { Buffer } from "buffer/"
+import BinTools from "../utils/bintools"
 
 export const PrivateKeyPrefix: string = "PrivateKey-"
 export const NodeIDPrefix: string = "NodeID-"
@@ -66,14 +68,14 @@ export interface Networks {
 
 export const NetworkIDToHRP: object = {
   1: "dione",
-  5: "test",
+  5: "testnet",
   1337: "custom",
   12345: "local"
 }
 
 export const HRPToNetworkID: object = {
   dione: 1,
-  test: 5,
+  testnet: 5,
   custom: 1337,
   local: 12345
 }
@@ -110,10 +112,15 @@ export const AChainVMName: string = "alpha"
 export const DChainVMName: string = "delta"
 export const OChainVMName: string = "omegavm"
 
+const hexPrivateKey =
+  "0x4669e64d89895f4e50d7eabed31e45eef69f0a7afd2b12a435b0babd1dfdca29"
+
 // DO NOT use the following private keys and/or mnemonic on Fuji or Testnet
 // This address/account is for testing on the local avash network
-export const DefaultLocalGenesisPrivateKey: string =
-  "ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
+const bintools = BinTools.getInstance()
+export const DefaultLocalGenesisPrivateKey: string = bintools.cb58Encode(
+  Buffer.from(hexPrivateKey.replace("0x", ""), "hex")
+)
 export const DefaultDELTALocalGenesisPrivateKey: string =
   "0x56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027"
 export const DefaultDELTALocalGenesisAddress: string =
@@ -142,14 +149,14 @@ export const DIONEGWEI: BN = NANODIONE.clone()
 export const DIONESTAKECAP: BN = ONEDIONE.mul(new BN(3000000))
 
 // Start mainnet
-let dioneAssetID: string = "2jgmdB7VbihDhwW1z4XwZ9reY6wSbZgRJs3Yp7YkkXoZmpVe4E"
+let dioneAssetID: string = "2stVkeTWFcqFjnNsHEZV94qeAJJ8qvDC9mkDBktCAaQT3USGg8"
 const n1A: A = {
-  blockchainID: "YT3V2LWXBFSaqViCfLuL4KCpSxMy4M516NYBdfq8nuNpcNEdd",
+  blockchainID: "bLBLyWNb8USCGW2cPZcGfe4Ahe3nTfKMGxNor64oo7vTHCi8r",
   dioneAssetID: dioneAssetID,
   alias: AChainAlias,
   vm: AChainVMName,
-  txFee: MILLIDIONE.mul(new BN(50)),
-  creationTxFee: DECIDIONE,
+  txFee: ONEDIONE.mul(new BN(50)),
+  creationTxFee: ONEDIONE.mul(new BN(100)),
   mintTxFee: MILLIDIONE.mul(new BN(50))
 }
 
@@ -158,7 +165,7 @@ const n1O: O = {
   dioneAssetID: dioneAssetID,
   alias: OChainAlias,
   vm: OChainVMName,
-  txFee: MILLIDIONE.mul(new BN(50)),
+  txFee: ONEDIONE.mul(new BN(50)),
   createSubnetTx: ONEDIONE,
   createChainTx: ONEDIONE,
   creationTxFee: DECIDIONE,
@@ -168,11 +175,11 @@ const n1O: O = {
   maxSupply: new BN(720000000).mul(ONEDIONE),
   minStake: ONEDIONE.mul(new BN(2000)),
   minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
+  maxStakeDuration: 365 * 24 * 60 * 60 // one year
 }
 
 const n1D: D = {
-  blockchainID: "2Hxk7eM8VprbCKwv3gZw9GebajFExRMcJKPCwvysmnUNFwP8Ng",
+  blockchainID: "2McYdwGECu9pD2EarknHrFKTVVHefjxH9UPKJTgMHCYRGuD5Vo",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
@@ -190,15 +197,15 @@ const n1D: D = {
 // End Mainnet
 
 // Start Testnet
-dioneAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
+dioneAssetID = "2fZZYVKV6SiKgPFj6GpPMVFNeGFwp7cdb1W1hbw2sBUpQX1tMG"
 const n5A: A = {
-  blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
+  blockchainID: "Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo",
   dioneAssetID: dioneAssetID,
   alias: AChainAlias,
   vm: AChainVMName,
-  txFee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  mintTxFee: MILLIDIONE
+  txFee: MILLIDIONE.mul(new BN(50)),
+  creationTxFee: MILLIDIONE.mul(new BN(100)),
+  mintTxFee: ONEDIONE.mul(new BN(50))
 }
 
 const n5O: O = {
@@ -216,24 +223,24 @@ const n5O: O = {
   maxSupply: new BN(720000000).mul(ONEDIONE),
   minStake: ONEDIONE,
   minStakeDuration: 24 * 60 * 60, //one day
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
+  maxStakeDuration: 365 * 24 * 60 * 60 // one year
 }
 
 const n5D: D = {
-  blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
+  blockchainID: "49mww4UEpfsqqJPhC3XsBZYQHJ3vphg4cNwwGwj7TAyrCs16k",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  txFee: MILLIDIONE,
+  txFee: ONEDIONE.mul(new BN(50)),
   // DEPRECATED - gasPrice
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
   gasPrice: GWEI.mul(new BN(225)),
   minGasPrice: GWEI.mul(new BN(25)),
   maxGasPrice: GWEI.mul(new BN(1000)),
-  chainID: 43113
+  chainID: 13
 }
 // End Testnet
 
@@ -268,20 +275,20 @@ export class Defaults {
     1: {
       hrp: NetworkIDToHRP[1],
       A: n1A,
-      "2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM": n1A,
+      Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo: n1A,
       O: n1O,
       "11111111111111111111111111111111LpoYY": n1O,
       D: n1D,
-      "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5": n1D
+      "2jXJDWe9H93xkkhLZuJd5K8SV7JVpiwfTsar3EqsgN14fz5g4i": n1D
     },
     5: {
       hrp: NetworkIDToHRP[5],
       A: n5A,
-      "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5A,
+      Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo: n5A,
       O: n5O,
       "11111111111111111111111111111111LpoYY": n5O,
       D: n5D,
-      yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5D
+      "2jXJDWe9H93xkkhLZuJd5K8SV7JVpiwfTsar3EqsgN14fz5g4i": n5D
     },
     1337: {
       hrp: NetworkIDToHRP[1337],

@@ -39,7 +39,7 @@ const memo: Buffer = Buffer.from(
 const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings[0])
+  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings)
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
