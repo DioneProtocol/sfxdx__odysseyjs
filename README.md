@@ -37,6 +37,11 @@ We built OdysseyJS with ease of use in mind. With this library, any Javascript d
 
 OdysseyJS requires Node.js LTS version 14.16.0 or higher to compile.
 
+### Customization
+
+If you're launching a new blockchain and intend to use odysseyjs with it, you should change
+some constants. More information can be found [here](./src/utils).
+
 ## Installation
 
 ### Build from Repository
