@@ -1,9 +1,7 @@
 import "dotenv/config"
+import Web3 from "web3"
 import { Odyssey, BN } from "../../src"
-import {
-  OmegaVMAPI,
-  KeyChain as OmegaKeyChain
-} from "../../src/apis/omegavm"
+import { OmegaVMAPI, KeyChain as OmegaKeyChain } from "../../src/apis/omegavm"
 import {
   DELTAAPI,
   KeyChain as DELTAKeyChain,
@@ -33,8 +31,7 @@ const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const dAddressStrings: string[] = dchain.keyChain().getAddressStrings()
 const oChainBlockchainIdStr: string = Defaults.network[networkID].O.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
-const cHeaAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
-const Web3 = require("web3")
+const cHeaAddress: string = "0xfe440A48CFc77fe690594Bc7D1215A1AA4BeE1AE"
 const path: string = "/ext/bc/D/rpc"
 const web3: any = new Web3(`${protocol}://${ip}:${port}${path}`)
 const threshold: number = 1
@@ -45,7 +42,7 @@ const main = async (): Promise<any> => {
   const baseFeeResponse: string = await dchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16))
   const txcount = await web3.eth.getTransactionCount(cHeaAddress)
-  const nonce: number = txcount
+  const nonce: BN = new BN(txcount)
   const locktime: BN = new BN(0)
   let dioneAmount: BN = new BN(1e7)
   let fee: BN = baseFee.div(new BN(1e9))
@@ -58,7 +55,7 @@ const main = async (): Promise<any> => {
     cHeaAddress,
     dAddressStrings[0],
     oAddressStrings,
-    nonce,
+    nonce.toNumber(),
     locktime,
     threshold,
     fee

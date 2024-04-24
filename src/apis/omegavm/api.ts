@@ -349,7 +349,7 @@ export class OmegaVMAPI extends JRPCAPI {
       ? outTotal
       : utx.getOutputTotal(dioneAssetID)
     const fee: BN = utx.getBurn(dioneAssetID)
-    if (fee.lte(ONEDIONE.mul(new BN(10))) || fee.lte(outputTotal)) {
+    if (fee.lte(ONEDIONE.mul(new BN(50))) || fee.lte(outputTotal)) {
       return true
     } else {
       return false
@@ -484,11 +484,11 @@ export class OmegaVMAPI extends JRPCAPI {
    * @returns Promise with the balance as a {@link https://github.com/indutny/bn.js/|BN} on the provided address.
    */
   getBalance = async (addresses: string[]): Promise<GetBalanceResponse> => {
-    addresses.forEach(address => {
+    addresses.forEach((address) => {
       if (typeof this.parseAddress(address) === "undefined") {
         /* istanbul ignore next */
         throw new AddressError(
-            "Error - OmegaVMAPI.getBalance: Invalid address format"
+          "Error - OmegaVMAPI.getBalance: Invalid address format"
         )
       }
     })
@@ -496,8 +496,8 @@ export class OmegaVMAPI extends JRPCAPI {
       addresses
     }
     const response: RequestResponseData = await this.callMethod(
-        "omega.getBalance",
-        params
+      "omega.getBalance",
+      params
     )
     return response.data.result
   }

@@ -1,5 +1,6 @@
 import "dotenv/config"
 import { Odyssey, BinTools, BN, Buffer } from "../../src"
+import Web3 from "web3"
 import { ALPHAAPI, KeyChain as ALPHAKeyChain } from "../../src/apis/alpha"
 import {
   DELTAAPI,
@@ -41,17 +42,16 @@ const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const cHeaAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const deltaInputs: DELTAInput[] = []
 const exportedOuts: TransferableOutput[] = []
-const Web3 = require("web3")
 const path: string = "/ext/bc/D/rpc"
 const web3 = new Web3(`${protocol}://${ip}:${port}${path}`)
 const threshold: number = 1
 
 const main = async (): Promise<any> => {
-  let balance: BN = await web3.eth.getBalance(cHeaAddress)
-  balance = new BN(balance.toString().substring(0, 17))
+  const balanc = await web3.eth.getBalance(cHeaAddress)
+  const balance = new BN(balanc.toString().substring(0, 17))
   const fee: BN = dchain.getDefaultTxFee()
   const txcount = await web3.eth.getTransactionCount(cHeaAddress)
-  const nonce: number = txcount
+  const nonce: BN = new BN(txcount.toString())
   const locktime: BN = new BN(0)
 
   const deltaInput: DELTAInput = new DELTAInput(
@@ -64,7 +64,7 @@ const main = async (): Promise<any> => {
   deltaInputs.push(deltaInput)
 
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    balance.sub(fee),
+    new BN(10000000),
     aAddresses,
     locktime,
     threshold

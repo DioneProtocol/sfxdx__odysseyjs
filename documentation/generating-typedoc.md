@@ -2,7 +2,7 @@
 
 ## Overview
 
-We use [typedoc](https://typedoc.org) to turn comments in our typescript into markdown pages which can be copied into [the Odyssey Docs repo](https://github.com/ava-labs/odyssey-docs) and [the OdysseyJS Docs repo](https://github.com/ava-labs/odysseyjs-docs). Each time a new version of OdysseyJS gets deployed to [npm](https://www.npmjs.com/package/odyssey) then typedocs should be regenerated and pasted into the both docs repo previously mentioned.
+We use [typedoc](https://typedoc.org) to turn comments in our typescript into markdown pages which can be copied into the Odyssey Docs repo and the OdysseyJS Docs repo. Each time a new version of OdysseyJS gets deployed to npm then typedocs should be regenerated and pasted into the both docs repo previously mentioned.
 
 ## Steps
 

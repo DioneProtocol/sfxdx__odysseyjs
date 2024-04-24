@@ -46,15 +46,17 @@ const inputs: TransferableInput[] = []
 const fee: BN = MILLIDIONE
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export DIONE from O-Chain to A-Chain")
+const memo: Buffer = Buffer.from(
+  "Manually Export DIONE from O-Chain to A-Chain"
+)
 
 const main = async (): Promise<any> => {
   const dioneAssetID: Buffer = await ochain.getDIONEAssetID()
-  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings[0])
+  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings)
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   console.log(unlocked.sub(fee).toString())
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
-    unlocked.sub(fee),
+    new BN(1000000),
     aAddresses,
     locktime,
     threshold

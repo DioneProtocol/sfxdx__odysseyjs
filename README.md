@@ -18,7 +18,7 @@ The APIs currently supported by default are:
 * OmegaVM API (O-Chain)
 * Socket
 
-We built OdysseyJS with ease of use in mind. With this library, any Javascript developer is able to interact with a node on the Odyssey Platform who has enabled their API endpoints for the developer's consumption. We keep the library up-to-date with the latest changes in the [Odyssey Platform Specification](https://docs.dione.network).
+We built OdysseyJS with ease of use in mind. With this library, any Javascript developer is able to interact with a node on the Odyssey Platform who has enabled their API endpoints for the developer's consumption.
 
   Using OdysseyJS, developers can:
 
@@ -36,6 +36,11 @@ We built OdysseyJS with ease of use in mind. With this library, any Javascript d
 ### Requirements
 
 OdysseyJS requires Node.js LTS version 14.16.0 or higher to compile.
+
+### Customization
+
+If you're launching a new blockchain and intend to use odysseyjs with it, you should change
+some constants. More information can be found [here](./src/utils).
 
 ## Installation
 
@@ -58,7 +63,7 @@ or
 This will generate a pure JavaScript library and place it in a folder named
 "web" in the project root. The "odysseyjs" file can then be dropped into any
 project as a pure JavaScript implementation of Odyssey.
- 
+
 ## Use OdysseyJS in Projects
 
 The OdysseyJS library can be imported into your existing Node.js project as follows:
@@ -121,32 +126,8 @@ simply run the script:
 
 ### Example
 
-Let's say that the OdysseyJS repository was cloned. There are a lot of 
-useful scripts in `Examples`. Suppose the one we want to run is ALPHA's 
-`getTx`, which has the path `examples/alpha/getTX.ts`. 
-
-To execute the script, we use: 
-
-`ts-node examples/alpha/getTx.ts`
-
-It ran successfully, providing the following output:
-
-```zsh
-user@users-MacBook-Pro odysseyjs % ts-node examples/alpha/getTx.ts
-{
-  unsignedTx: {
-    networkID: 1,
-    blockchainID: '11111111111111111111111111111111LpoYY',
-    outputs: [ [Object] ],
-    inputs: [ [Object] ],
-    memo: '0x',
-    destinationChain: '2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM',
-    exportedOutputs: [ [Object] ]
-  },
-  credentials: [ { signatures: [Array] } ],
-  id: 'MTyhpMPU69qLPJL59dwfYbxpWNzp8bfsHyvy9B4DkzN2kWSQ5'
-}
-```
+Let's say that the OdysseyJS repository was cloned. There are a lot of
+useful scripts in `Examples`
 
 ## Example 1 &mdash; Managing A-Chain Keys
 
@@ -405,7 +386,7 @@ We have 400 coins! We're going to now send 100 of those coins to our friend's ad
 
 ```js
 const sendAmount = new BN(100) // amounts are in BN format
-const friendsAddress = "A-dione1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk" // address format is Bech32
+const friendsAddress = "A-dione1k26jvfdzyukms95puxcceyzsa3lzwf5fzew454" // address format is Bech32
 
 // The below returns a UnsignedTx
 // Parameters sent are (in order of appearance):
@@ -459,21 +440,3 @@ if (newBalance.toNumber() != mybalance.sub(sendAmount).toNumber()) {
   throw Error("heyyy these should equal!")
 }
 ```
-
-### Repo Dependency Updates
-
-Dependabot will make pull requests against the development branch. If all tests pass, it is safe to merge into development, but for redundancy you want to try to build it locally.
-
-```zsh
-git fetch origin
-git checkout -b <branchName>
-git merge development
-yarn build && yarn test
-```
-
-If the E2E check does not pass, go into the 'checks' section of the PR.
-`https://github.com/ava-labs/odysseyjs/pull/<PR number>/checks`
-
-* Click on the `> E2E` tab on the left
-* Click 'Re-run jobs' on the right
-

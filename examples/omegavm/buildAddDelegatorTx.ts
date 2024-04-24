@@ -29,9 +29,9 @@ const memo: Buffer = Buffer.from(
   "OmegaVM utility method buildAddDelegatorTx to add a delegator to the primary subnet"
 )
 const asOf: BN = UnixNow()
-const nodeID: string = "NodeID-DueWyGi3B9jtKfa9mPoecd4YSDJ1ftF69"
-const startTime: BN = UnixNow().add(new BN(60 * 1))
-const endTime: BN = startTime.add(new BN(2630000))
+const nodeID: string = "NodeID-BH5AFWkvXzFyPmMqaUfNtozND8TwWwPtx"
+const startTime: BN = UnixNow().add(new BN(20))
+const endTime: BN = startTime.add(new BN(50))
 
 const main = async (): Promise<any> => {
   const stakeAmount: any = await ochain.getMinStake()
