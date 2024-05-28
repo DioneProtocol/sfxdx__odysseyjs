@@ -13,10 +13,12 @@ import {
   UnixNow
 } from "../../src/utils"
 
-const ip = "localhost"
-const port = Number("9650")
-const protocol = "http"
-const networkID = Number("1")
+// const ip = "localhost"
+// const port = Number("9650")
+const ip = "testnode.dioneprotocol.com"
+const port = undefined
+const protocol = "https"
+const networkID = Number("5")
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const oKeychain: KeyChain = ochain.keyChain()
@@ -30,9 +32,9 @@ const memo: Buffer = Buffer.from(
   "OmegaVM utility method buildAddValidatorTx to add a validator to the primary subnet"
 )
 const asOf: BN = UnixNow()
-const nodeID: string = "NodeID-3hwBts7XQCan5bmsXkMvhvp9PKmYU3Vew"
+const nodeID: string = "NodeID-2nA8Ggj4FaSpqKBFdQrTcuM2LSCZM7KU9"
 const startTime: BN = UnixNow().add(new BN(60 * 1))
-const endTime: BN = startTime.add(new BN(26300000))
+const endTime: BN = startTime.add(new BN(60 * 60 * 24))
 const delegationFee: number = 10
 
 const main = async (): Promise<any> => {

@@ -12,22 +12,25 @@ import {
   UnixNow
 } from "../../src/utils"
 
-const ip = process.env.IP
-const port = Number(process.env.PORT)
-const protocol = process.env.PROTOCOL
-const networkID = Number(process.env.NETWORK_ID)
-const xBlockchainID: string = Defaults.network[networkID].A.blockchainID
+// const ip = "localhost"
+// const port = Number("9650")
+const ip = "testnode.dioneprotocol.com"
+const port = undefined
+const protocol = "https"
+const networkID = Number("5")
+const aBlockchainID: string = Defaults.network[networkID].A.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const odyssey: Odyssey = new Odyssey(
   ip,
   port,
   protocol,
   networkID,
-  xBlockchainID
+  aBlockchainID
 )
 const achain: ALPHAAPI = odyssey.AChain()
 const aKeychain: KeyChain = achain.keyChain()
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
 aKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const asOf: BN = UnixNow()
@@ -46,13 +49,17 @@ const main = async (): Promise<any> => {
     aAddressStrings
   )
   const utxoSet: UTXOSet = alphaUTXOResponse.utxos
-  const amount: BN = balance.sub(fee)
+  // const amount: BN = balance.sub(fee)
+  console.log(balance.toString())
+  console.log(fee.toString())
+  const amount: BN = new BN(50000000000)
+  const toAddresses: [string] = ["A-testnet1zgjm3xv0qy62tevqztz86qyz78q7cl0e38zkaw"]
 
   const unsignedTx: UnsignedTx = await achain.buildBaseTx(
     utxoSet,
     amount,
     dioneAssetID,
-    aAddressStrings,
+    toAddresses,
     aAddressStrings,
     aAddressStrings,
     memo,

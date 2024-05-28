@@ -26,18 +26,19 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const xBlockchainID: string = Defaults.network[networkID].A.blockchainID
-const xBlockchainIDBuf: Buffer = bintools.cb58Decode(xBlockchainID)
+const aBlockchainID: string = Defaults.network[networkID].A.blockchainID
+const aBlockchainIDBuf: Buffer = bintools.cb58Decode(aBlockchainID)
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const oKeychain: KeyChain = ochain.keyChain()
-let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey1: Buffer = new Buffer(key, 'hex')
 // A-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-oKeychain.importKey(privKey)
+oKeychain.importKey(privKey1)
 
-privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
+let privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
 // A-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
 oKeychain.importKey(privKey)
 
@@ -59,7 +60,7 @@ const memo: Buffer = Buffer.from(
 
 const main = async (): Promise<any> => {
   const getBalanceResponse: GetBalanceResponse = await ochain.getBalance(
-    aAddressStrings[0]
+    aAddressStrings
   )
   const balance: BN = new BN(getBalanceResponse.balance)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
@@ -101,7 +102,7 @@ const main = async (): Promise<any> => {
 
   const baseTx: BaseTx = new BaseTx(
     networkID,
-    xBlockchainIDBuf,
+    aBlockchainIDBuf,
     outputs,
     inputs,
     memo

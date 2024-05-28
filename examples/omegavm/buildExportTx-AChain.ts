@@ -24,7 +24,8 @@ const achain: ALPHAAPI = odyssey.AChain()
 const ochain: OmegaVMAPI = odyssey.OChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
 const oKeychain: KeyChain = ochain.keyChain()
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
 aKeychain.importKey(privKey)
 oKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
@@ -39,8 +40,9 @@ const memo: Buffer = Buffer.from(
 const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
-  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings[0])
-  const unlocked: BN = new BN(getBalanceResponse.unlocked)
+  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings)
+  // const unlocked: BN = new BN(getBalanceResponse.unlocked)
+  const unlocked: BN = new BN(100000000000)
   const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
   const unsignedTx: UnsignedTx = await ochain.buildExportTx(

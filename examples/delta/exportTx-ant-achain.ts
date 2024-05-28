@@ -37,7 +37,7 @@ const aChainBlockchainIdStr: string = Defaults.network[networkID].A.blockchainID
 const aChainBlockchainIdBuf: Buffer = bintools.cb58Decode(aChainBlockchainIdStr)
 const dChainBlockchainIdStr: string = Defaults.network[networkID].D.blockchainID
 const dChainBlockchainIdBuf: Buffer = bintools.cb58Decode(dChainBlockchainIdStr)
-const cHeaAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
+const dHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const deltaInputs: DELTAInput[] = []
@@ -53,22 +53,22 @@ const main = async (): Promise<any> => {
   const antAssetIDBuf: Buffer = bintools.cb58Decode(antAssetIDStr)
   const antAssetBalanceResponse: RequestResponseData = await dchain.callMethod(
     "eth_getAssetBalance",
-    [cHeaAddress, "latest", antAssetIDStr],
+    [dHexAddress, "latest", antAssetIDStr],
     "ext/bc/D/rpc"
   )
   const antAssetBalance: number = parseInt(
     antAssetBalanceResponse.data.result,
     16
   )
-  let dioneBalance: BN = await web3.eth.getBalance(cHeaAddress)
+  let dioneBalance: BN = await web3.eth.getBalance(dHexAddress)
   dioneBalance = new BN(dioneBalance.toString().substring(0, 17))
   const fee: BN = dchain.getDefaultTxFee()
-  const txcount = await web3.eth.getTransactionCount(cHeaAddress)
+  const txcount = await web3.eth.getTransactionCount(dHexAddress)
   const nonce: number = txcount
   const locktime: BN = new BN(0)
 
   let deltaInput: DELTAInput = new DELTAInput(
-    cHeaAddress,
+    dHexAddress,
     dioneBalance,
     dioneAssetID,
     nonce
@@ -76,7 +76,7 @@ const main = async (): Promise<any> => {
   deltaInput.addSignatureIdx(0, dAddresses[0])
   deltaInputs.push(deltaInput)
 
-  deltaInput = new DELTAInput(cHeaAddress, antAssetBalance, antAssetIDStr, nonce)
+  deltaInput = new DELTAInput(dHexAddress, antAssetBalance, antAssetIDStr, nonce)
   deltaInput.addSignatureIdx(0, dAddresses[0])
   deltaInputs.push(deltaInput)
 

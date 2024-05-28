@@ -27,7 +27,7 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const dchain: DELTAAPI = odyssey.DChain()
 const bintools: BinTools = BinTools.getInstance()
 const dKeychain: KeyChain = dchain.keyChain()
-const cHeaAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
+const dHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 dKeychain.importKey(privKey)
 const dAddresses: Buffer[] = dchain.keyChain().getAddresses()
@@ -61,7 +61,7 @@ const main = async (): Promise<any> => {
     importedIns.push(xferin)
 
     const deltaOutput: DELTAOutput = new DELTAOutput(
-      cHeaAddress,
+      dHexAddress,
       amt.sub(fee),
       assetID
     )
