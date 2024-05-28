@@ -227,7 +227,7 @@ const n5O: O = {
 };
 
 const n5D: D = {
-  blockchainID: "ZkZhY2RX1F3z65N2w3yUh6cpsy1oDkg5RHeJjS8UyJEBD7xWe",
+  blockchainID: "49mww4UEpfsqqJPhC3XsBZYQHJ3vphg4cNwwGwj7TAyrCs16k",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
