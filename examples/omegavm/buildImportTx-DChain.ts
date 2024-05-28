@@ -14,10 +14,10 @@ import {
   UnixNow
 } from "../../src//utils"
 
-const ip = process.env.IP
-const port = Number(process.env.PORT)
-const protocol = process.env.PROTOCOL
-const networkID = Number(process.env.NETWORK_ID)
+const ip = "testnode.dioneprotocol.com"
+const port = undefined
+const protocol = "https"
+const networkID = Number("5")
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const oKeychain: KeyChain = ochain.keyChain()
