@@ -66,7 +66,7 @@ export interface Networks {
 
 export const NetworkIDToHRP: object = {
   1: "dione",
-  5: "test",
+  5: "testnet",
   1337: "custom",
   12345: "local"
 }
@@ -172,33 +172,33 @@ const n1O: O = {
 }
 
 const n1D: D = {
-  blockchainID: "2Hxk7eM8VprbCKwv3gZw9GebajFExRMcJKPCwvysmnUNFwP8Ng",
+  blockchainID: "2McYdwGECu9pD2EarknHrFKTVVHefjxH9UPKJTgMHCYRGuD5Vo",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
   costPerSignature: 1000,
   // DEPRECATED - txFee
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  txFee: MILLIDIONE,
+  txFee: ONEDIONE.mul(new BN(50)),
   // DEPRECATED - gasPrice
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  gasPrice: GWEI.mul(new BN(225)),
-  minGasPrice: GWEI.mul(new BN(25)),
-  maxGasPrice: GWEI.mul(new BN(1000)),
-  chainID: 43112
+  gasPrice: new BN("2380952380952381"),
+  minGasPrice: new BN("2380952380952381"),
+  maxGasPrice: new BN("7142857142857143"),
+  chainID: 13
 }
 // End Mainnet
 
 // Start Testnet
-dioneAssetID = "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK"
+dioneAssetID = "2fZZYVKV6SiKgPFj6GpPMVFNeGFwp7cdb1W1hbw2sBUpQX1tMG"
 const n5A: A = {
-  blockchainID: "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm",
+  blockchainID: "Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo",
   dioneAssetID: dioneAssetID,
   alias: AChainAlias,
   vm: AChainVMName,
-  txFee: MILLIDIONE,
-  creationTxFee: CENTIDIONE,
-  mintTxFee: MILLIDIONE
+  txFee: MILLIDIONE.mul(new BN(50)),
+  creationTxFee: MILLIDIONE.mul(new BN(100)),
+  mintTxFee: MILLIDIONE.mul(new BN(50))
 }
 
 const n5O: O = {
@@ -206,7 +206,7 @@ const n5O: O = {
   dioneAssetID: dioneAssetID,
   alias: OChainAlias,
   vm: OChainVMName,
-  txFee: MILLIDIONE,
+  txFee: MILLIDIONE.mul(new BN(50)),
   creationTxFee: CENTIDIONE,
   createSubnetTx: ONEDIONE,
   createChainTx: ONEDIONE,
@@ -220,7 +220,7 @@ const n5O: O = {
 }
 
 const n5D: D = {
-  blockchainID: "yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp",
+  blockchainID: "ZkZhY2RX1F3z65N2w3yUh6cpsy1oDkg5RHeJjS8UyJEBD7xWe",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
@@ -272,16 +272,16 @@ export class Defaults {
       O: n1O,
       "11111111111111111111111111111111LpoYY": n1O,
       D: n1D,
-      "2Hxk7eM8VprbCKwv3gZw9GebajFExRMcJKPCwvysmnUNFwP8Ng": n1D
+      "2McYdwGECu9pD2EarknHrFKTVVHefjxH9UPKJTgMHCYRGuD5Vo": n1D
     },
     5: {
       hrp: NetworkIDToHRP[5],
       A: n5A,
-      "2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm": n5A,
+      "Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo": n5A,
       O: n5O,
       "11111111111111111111111111111111LpoYY": n5O,
       D: n5D,
-      yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp: n5D
+      "ZkZhY2RX1F3z65N2w3yUh6cpsy1oDkg5RHeJjS8UyJEBD7xWe": n5D
     },
     1337: {
       hrp: NetworkIDToHRP[1337],

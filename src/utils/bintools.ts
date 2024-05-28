@@ -365,7 +365,7 @@ export default class BinTools {
 
     if (
       humanReadablePart !== "dione" &&
-      humanReadablePart !== "fuji" &&
+      humanReadablePart !== "testnet" &&
       humanReadablePart != "local" &&
       humanReadablePart != "custom" &&
       humanReadablePart != hrp
