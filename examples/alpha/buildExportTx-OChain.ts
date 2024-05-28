@@ -31,7 +31,8 @@ const achain: ALPHAAPI = odyssey.AChain()
 const ochain: OmegaVMAPI = odyssey.OChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
 const oKeychain: OmegaVMKeyChain = ochain.keyChain()
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
 aKeychain.importKey(privKey)
 oKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
@@ -55,7 +56,8 @@ const main = async (): Promise<any> => {
     dioneAssetID
   )
   const balance: BN = new BN(getBalanceResponse.balance)
-  const amount: BN = balance.sub(fee)
+  // const amount: BN = balance.sub(fee)
+  const amount: BN = new BN(100000000000)
 
   const unsignedTx: UnsignedTx = await achain.buildExportTx(
     utxoSet,

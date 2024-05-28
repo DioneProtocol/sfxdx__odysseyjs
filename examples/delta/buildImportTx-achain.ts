@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { Odyssey, BN } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import { ALPHAAPI, KeyChain as ALPHAKeyChain } from "../../src/apis/alpha"
 import {
   DELTAAPI,
@@ -23,8 +23,9 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 const dchain: DELTAAPI = odyssey.DChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
-const cHeaAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const dHexAddress: string = "0x3B90Beea0B5a93EF3cAD0244DC6be0c1aA0Ece5A"
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
 const dKeychain: DELTAKeyChain = dchain.keyChain()
 aKeychain.importKey(privKey)
 dKeychain.importKey(privKey)
@@ -33,7 +34,7 @@ const aChainBlockchainId: string = Defaults.network[networkID].A.blockchainID
 
 const main = async (): Promise<any> => {
   const baseFeeResponse: string = await dchain.getBaseFee()
-  const baseFee = new BN(parseInt(baseFeeResponse, 16) / 1e9)
+  const baseFee = new BN(parseInt(baseFeeResponse, 16) / 1e9).add(new BN(1))
   let fee: BN = baseFee
   const deltaUTXOResponse: any = await dchain.getUTXOs(
     dAddressStrings,
@@ -42,7 +43,7 @@ const main = async (): Promise<any> => {
   const utxoSet: UTXOSet = deltaUTXOResponse.utxos
   let unsignedTx: UnsignedTx = await dchain.buildImportTx(
     utxoSet,
-    cHeaAddress,
+    dHexAddress,
     dAddressStrings,
     aChainBlockchainId,
     dAddressStrings,
@@ -50,10 +51,12 @@ const main = async (): Promise<any> => {
   )
   const importCost: number = costImportTx(unsignedTx)
   fee = baseFee.mul(new BN(importCost))
-
+  console.log(fee.toString())
+  console.log(baseFee.toString())
+  // fee = new BN(30000000000)
   unsignedTx = await dchain.buildImportTx(
     utxoSet,
-    cHeaAddress,
+    dHexAddress,
     dAddressStrings,
     aChainBlockchainId,
     dAddressStrings,

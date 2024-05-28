@@ -34,7 +34,7 @@ import {
   AssetAmount
 } from "../../common/assetamount"
 import { Output } from "../../common/output"
-import { AddDelegatorTx, AddValidatorTx } from "./validationtx"
+import { AddDelegatorTx, AddValidatorTx, AddPermissionlessDelegatorTx } from "./validationtx"
 import { CreateSubnetTx } from "./createsubnettx"
 import { Serialization, SerializedEncoding } from "../../utils/serialization"
 import {
@@ -1106,6 +1106,127 @@ export class UTXOSet extends StandardUTXOSet<UTXO> {
       startTime,
       endTime,
       stakeAmount,
+      stakeOuts,
+      new ParseableOutput(rewardOutputOwners)
+    )
+    return new UnsignedTx(UTx)
+  }
+
+  /**
+   * Class representing an unsigned [[AddPermissionlessDelegatorTx]] transaction.
+   *
+   * @param networkID Networkid, [[DefaultNetworkID]]
+   * @param blockchainID Blockchainid, default undefined
+   * @param dioneAssetID {@link https://github.com/feross/buffer|Buffer} of the asset ID for DIONE
+   * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} recieves the stake at the end of the staking period
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who pays the fees and the stake
+   * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the staking payment
+   * @param nodeID The node ID of the validator being added.
+   * @param startTime The Unix time when the validator starts validating the Primary Network.
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
+   * @param stakeAmount A {@link https://github.com/indutny/bn.js/|BN} for the amount of stake to be delegated in nDIONE.
+   * @param subnet A subnet
+   * @param rewardLocktime The locktime field created in the resulting reward outputs
+   * @param rewardThreshold The number of signatures required to spend the funds in the resultant reward UTXO
+   * @param rewardAddresses The addresses the validator reward goes.
+   * @param fee Optional. The amount of fees to burn in its smallest denomination, represented as {@link https://github.com/indutny/bn.js/|BN}
+   * @param feeAssetID Optional. The assetID of the fees being burned.
+   * @param memo Optional contains arbitrary bytes, up to 256 bytes
+   * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+   * @param changeThreshold Optional. The number of signatures required to spend the funds in the change UTXO
+   *
+   * @returns An unsigned transaction created from the passed in parameters.
+   */
+  buildAddPermissionlessDelegatorTx = (
+    networkID: number = DefaultNetworkID,
+    blockchainID: Buffer,
+    dioneAssetID: Buffer,
+    toAddresses: Buffer[],
+    fromAddresses: Buffer[],
+    changeAddresses: Buffer[],
+    nodeID: Buffer,
+    startTime: BN,
+    endTime: BN,
+    stakeAmount: BN,
+    subnet: Buffer,
+    rewardLocktime: BN,
+    rewardThreshold: number,
+    rewardAddresses: Buffer[],
+    fee: BN = undefined,
+    feeAssetID: Buffer = undefined,
+    memo: Buffer = undefined,
+    asOf: BN = UnixNow(),
+    changeThreshold: number = 1
+  ): UnsignedTx => {
+    if (rewardThreshold > rewardAddresses.length) {
+      /* istanbul ignore next */
+      throw new ThresholdError(
+        "Error - UTXOSet.buildAddDelegatorTx: reward threshold is greater than number of addresses"
+      )
+    }
+
+    if (typeof changeAddresses === "undefined") {
+      changeAddresses = toAddresses
+    }
+
+    let ins: TransferableInput[] = []
+    let outs: TransferableOutput[] = []
+    let stakeOuts: TransferableOutput[] = []
+
+    const zero: BN = new BN(0)
+    const now: BN = UnixNow()
+    if (startTime.lt(now) || endTime.lte(startTime)) {
+      throw new TimeError(
+        "UTXOSet.buildAddDelegatorTx -- startTime must be in the future and endTime must come after startTime"
+      )
+    }
+
+    const aad: AssetAmountDestination = new AssetAmountDestination(
+      toAddresses,
+      fromAddresses,
+      changeAddresses
+    )
+    if (dioneAssetID.toString("hex") === feeAssetID.toString("hex")) {
+      aad.addAssetAmount(dioneAssetID, stakeAmount, fee)
+    } else {
+      aad.addAssetAmount(dioneAssetID, stakeAmount, zero)
+      if (this._feeCheck(fee, feeAssetID)) {
+        aad.addAssetAmount(feeAssetID, zero, fee)
+      }
+    }
+
+    const minSpendableErr: Error = this.getMinimumSpendable(
+      aad,
+      asOf,
+      undefined,
+      changeThreshold,
+      true
+    )
+    if (typeof minSpendableErr === "undefined") {
+      ins = aad.getInputs()
+      outs = aad.getChangeOutputs()
+      stakeOuts = aad.getOutputs()
+    } else {
+      throw minSpendableErr
+    }
+
+    const rewardOutputOwners: SECPOwnerOutput = new SECPOwnerOutput(
+      rewardAddresses,
+      rewardLocktime,
+      rewardThreshold
+    )
+
+    const UTx: AddPermissionlessDelegatorTx = new AddPermissionlessDelegatorTx(
+      networkID,
+      blockchainID,
+      outs,
+      ins,
+      memo,
+      nodeID,
+      startTime,
+      endTime,
+      stakeAmount,
+      subnet,
       stakeOuts,
       new ParseableOutput(rewardOutputOwners)
     )

@@ -56,7 +56,7 @@ const dChainId: string = Defaults.network[networkID].D.blockchainID
 const dChainIdBuf: Buffer = bintools.cb58Decode(dChainId)
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
-const cHeaAddress: string = "0xeA6B543A9E625C04745EcA3D7a74D74B733b8C15"
+const dHexAddress: string = "0xeA6B543A9E625C04745EcA3D7a74D74B733b8C15"
 const deltaInputs: DELTAInput[] = []
 const exportedOuts: TransferableOutput[] = []
 const path: string = "/ext/bc/D/rpc"
@@ -64,15 +64,15 @@ const web3 = new Web3(`${protocol}://${ip}:${port}${path}`)
 const threshold: number = 2
 
 const main = async (): Promise<any> => {
-  let balance: BN = await web3.eth.getBalance(cHeaAddress)
+  let balance: BN = await web3.eth.getBalance(dHexAddress)
   balance = new BN(balance.toString().substring(0, 17))
   const fee: BN = dchain.getDefaultTxFee()
-  const txcount = await web3.eth.getTransactionCount(cHeaAddress)
+  const txcount = await web3.eth.getTransactionCount(dHexAddress)
   const nonce: number = txcount
   const locktime: BN = new BN(0)
 
   const deltaInput: DELTAInput = new DELTAInput(
-    cHeaAddress,
+    dHexAddress,
     ONEDIONE,
     dioneAssetID,
     nonce

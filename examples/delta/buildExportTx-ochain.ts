@@ -1,6 +1,6 @@
 import "dotenv/config"
 import Web3 from "web3"
-import { Odyssey, BN } from "../../src"
+import { Odyssey, BN, Buffer } from "../../src"
 import { OmegaVMAPI, KeyChain as OmegaKeyChain } from "../../src/apis/omegavm"
 import {
   DELTAAPI,
@@ -22,7 +22,8 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const dchain: DELTAAPI = odyssey.DChain()
-const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
 const oKeychain: OmegaKeyChain = ochain.keyChain()
 const dKeychain: DELTAKeyChain = dchain.keyChain()
 oKeychain.importKey(privKey)
@@ -31,31 +32,50 @@ const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const dAddressStrings: string[] = dchain.keyChain().getAddressStrings()
 const oChainBlockchainIdStr: string = Defaults.network[networkID].O.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
-const cHeaAddress: string = "0xfe440A48CFc77fe690594Bc7D1215A1AA4BeE1AE"
+const dHexAddress: string = "0x3B90Beea0B5a93EF3cAD0244DC6be0c1aA0Ece5A"
 const path: string = "/ext/bc/D/rpc"
 const web3: any = new Web3(`${protocol}://${ip}:${port}${path}`)
 const threshold: number = 1
 
 const main = async (): Promise<any> => {
-  let balance: BN = await web3.eth.getBalance(cHeaAddress)
+  let balance: BN = await web3.eth.getBalance(dHexAddress)
   balance = new BN(balance.toString().substring(0, 17))
   const baseFeeResponse: string = await dchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16))
-  const txcount = await web3.eth.getTransactionCount(cHeaAddress)
-  const nonce: BN = new BN(txcount)
+  const txcount = await web3.eth.getTransactionCount(dHexAddress)
+  const nonce: number = txcount
   const locktime: BN = new BN(0)
-  let dioneAmount: BN = new BN(1e7)
+  let dioneAmount: BN = new BN(100000000000)
   let fee: BN = baseFee.div(new BN(1e9))
-  fee = fee.add(new BN(1e6))
+  fee = fee.add(new BN(1))
+  // fee = fee.add(new BN(1e6))
+  console.log(fee.toString())
 
   let unsignedTx: UnsignedTx = await dchain.buildExportTx(
     dioneAmount,
     dioneAssetID,
     oChainBlockchainIdStr,
-    cHeaAddress,
+    dHexAddress,
     dAddressStrings[0],
     oAddressStrings,
-    nonce.toNumber(),
+    nonce,
+    locktime,
+    threshold,
+    fee
+  )
+  const exportCost: number = costExportTx(unsignedTx)
+  fee = fee.mul(new BN(exportCost))
+  console.log(exportCost)
+  console.log(fee.toString())
+
+  unsignedTx = await dchain.buildExportTx(
+    dioneAmount,
+    dioneAssetID,
+    oChainBlockchainIdStr,
+    dHexAddress,
+    dAddressStrings[0],
+    oAddressStrings,
+    nonce,
     locktime,
     threshold,
     fee

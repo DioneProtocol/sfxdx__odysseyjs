@@ -13,7 +13,7 @@ import { OmegaVMConstants } from "./constants"
 import { DefaultNetworkID } from "../../utils/constants"
 import { bufferToNodeIDString } from "../../utils/helperfunctions"
 import { AmountOutput, ParseableOutput } from "./outputs"
-import { Serialization, SerializedEncoding } from "../../utils/serialization"
+import { Serialization, SerializedEncoding, SerializedType } from "../../utils/serialization"
 import { DelegationFeeError } from "../../utils/errors"
 
 /**
@@ -541,5 +541,201 @@ export class AddValidatorTx extends AddDelegatorTx {
         )
       }
     }
+  }
+}
+
+const cb58: SerializedType = "cb58"
+const buffer: SerializedType = "Buffer"
+
+/**
+ * Class representing an unsigned AddPermissionlessDelegatorTx transaction.
+ */
+export class AddPermissionlessDelegatorTx extends WeightedValidatorTx {
+  protected _typeName = "AddPermissionlessDelegatorTx"
+  protected _typeID = OmegaVMConstants.ADDPERMISSIONLESSDELEGATORTX
+
+  serialize(encoding: SerializedEncoding = "hex"): object {
+    let fields: object = super.serialize(encoding)
+    return {
+      ...fields,
+      subnet: serialization.encoder(
+        this.subnet,
+        encoding,
+        buffer,
+        cb58
+      ),
+      stakeOuts: this.stakeOuts.map((s) => s.serialize(encoding)),
+      rewardOwners: this.rewardOwners.serialize(encoding)
+    }
+  }
+  deserialize(fields: object, encoding: SerializedEncoding = "hex") {
+    super.deserialize(fields, encoding)
+    this.subnet = serialization.decoder(
+      fields["subnet"],
+      encoding,
+      cb58,
+      buffer,
+      32
+    )
+    this.stakeOuts = fields["stakeOuts"].map((s: object) => {
+      let xferout: TransferableOutput = new TransferableOutput()
+      xferout.deserialize(s, encoding)
+      return xferout
+    })
+    this.rewardOwners = new ParseableOutput()
+    this.rewardOwners.deserialize(fields["rewardOwners"], encoding)
+  }
+
+  protected stakeOuts: TransferableOutput[] = []
+  protected rewardOwners: ParseableOutput = undefined
+  protected subnet: Buffer = Buffer.alloc(32)
+
+  /**
+   * Returns the id of the [[AddDelegatorTx]]
+   */
+  getTxType(): number {
+    return this._typeID
+  }
+
+  /**
+   * Returns a {@link https://github.com/indutny/bn.js/|BN} for the stake amount.
+   */
+  getStakeAmount(): BN {
+    return this.getWeight()
+  }
+
+  /**
+   * Returns a {@link https://github.com/feross/buffer|Buffer} for the stake amount.
+   */
+  getStakeAmountBuffer(): Buffer {
+    return this.weight
+  }
+
+  /**
+   * Returns the array of outputs being staked.
+   */
+  getStakeOuts(): TransferableOutput[] {
+    return this.stakeOuts
+  }
+
+  /**
+   * Should match stakeAmount. Used in sanity checking.
+   */
+  getStakeOutsTotal(): BN {
+    let val: BN = new BN(0)
+    for (let i: number = 0; i < this.stakeOuts.length; i++) {
+      val = val.add(
+        (this.stakeOuts[`${i}`].getOutput() as AmountOutput).getAmount()
+      )
+    }
+    return val
+  }
+
+  /**
+   * Returns a {@link https://github.com/feross/buffer|Buffer} for the reward address.
+   */
+  getRewardOwners(): ParseableOutput {
+    return this.rewardOwners
+  }
+
+  getTotalOuts(): TransferableOutput[] {
+    return [...(this.getOuts() as TransferableOutput[]), ...this.getStakeOuts()]
+  }
+
+  fromBuffer(bytes: Buffer, offset: number = 0): number {
+    offset = super.fromBuffer(bytes, offset)
+    this.blockchainID = bintools.copyFrom(bytes, offset, offset + 32)
+    offset += 32
+    const numstakeouts = bintools.copyFrom(bytes, offset, offset + 4)
+    offset += 4
+    const outcount: number = numstakeouts.readUInt32BE(0)
+    this.stakeOuts = []
+    for (let i: number = 0; i < outcount; i++) {
+      const xferout: TransferableOutput = new TransferableOutput()
+      offset = xferout.fromBuffer(bytes, offset)
+      this.stakeOuts.push(xferout)
+    }
+    this.rewardOwners = new ParseableOutput()
+    offset = this.rewardOwners.fromBuffer(bytes, offset)
+    return offset
+  }
+
+  /**
+   * Returns a {@link https://github.com/feross/buffer|Buffer} representation of the [[AddDelegatorTx]].
+   */
+  toBuffer(): Buffer {
+    const superbuff: Buffer = super.toBuffer()
+    let bsize: number = superbuff.length + this.subnet.length
+    const numouts: Buffer = Buffer.alloc(4)
+    numouts.writeUInt32BE(this.stakeOuts.length, 0)
+    let barr: Buffer[] = [super.toBuffer(), this.subnet, numouts]
+    bsize += numouts.length
+    this.stakeOuts = this.stakeOuts.sort(TransferableOutput.comparator())
+    for (let i: number = 0; i < this.stakeOuts.length; i++) {
+      let out: Buffer = this.stakeOuts[`${i}`].toBuffer()
+      barr.push(out)
+      bsize += out.length
+    }
+    let ro: Buffer = this.rewardOwners.toBuffer()
+    barr.push(ro)
+    bsize += ro.length
+    return Buffer.concat(barr, bsize)
+  }
+
+  clone(): this {
+    let newbase: AddPermissionlessDelegatorTx = new AddPermissionlessDelegatorTx()
+    newbase.fromBuffer(this.toBuffer())
+    return newbase as this
+  }
+
+  create(...args: any[]): this {
+    return new AddPermissionlessDelegatorTx(...args) as this
+  }
+
+  /**
+   * Class representing an unsigned AddDelegatorTx transaction.
+   *
+   * @param networkID Optional. Networkid, [[DefaultNetworkID]]
+   * @param blockchainID Optional. Blockchainid, default Buffer.alloc(32, 16)
+   * @param outs Optional. Array of the [[TransferableOutput]]s
+   * @param ins Optional. Array of the [[TransferableInput]]s
+   * @param memo Optional. {@link https://github.com/feross/buffer|Buffer} for the memo field
+   * @param nodeID Optional. The node ID of the validator being added.
+   * @param startTime Optional. The Unix time when the validator starts validating the Primary Network.
+   * @param endTime Optional. The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
+   * @param stakeAmount Optional. The amount of nDIONE the validator is staking.
+   * @param stakeOuts Optional. The outputs used in paying the stake.
+   * @param rewardOwners Optional. The [[ParseableOutput]] containing a [[SECPOwnerOutput]] for the rewards.
+   */
+  constructor(
+    networkID: number = DefaultNetworkID,
+    blockchainID: Buffer = Buffer.alloc(32, 16),
+    outs: TransferableOutput[] = undefined,
+    ins: TransferableInput[] = undefined,
+    memo: Buffer = undefined,
+    nodeID: Buffer = undefined,
+    startTime: BN = undefined,
+    endTime: BN = undefined,
+    stakeAmount: BN = undefined,
+    subnet: Buffer = Buffer.alloc(32, 16),
+    stakeOuts: TransferableOutput[] = undefined,
+    rewardOwners: ParseableOutput = undefined
+  ) {
+    super(
+      networkID,
+      blockchainID,
+      outs,
+      ins,
+      memo,
+      nodeID,
+      startTime,
+      endTime,
+      stakeAmount
+    )
+    this.subnet = subnet
+    if (typeof stakeOuts !== undefined) {
+      this.stakeOuts = stakeOuts
+    }
+    this.rewardOwners = rewardOwners
   }
 }

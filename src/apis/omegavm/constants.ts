@@ -49,6 +49,10 @@ export class OmegaVMConstants {
 
   static REMOVESUBNETVALIDATORTX: number = 23
 
+  static TRANSFORMSUBNETTX: number = 24
+
+  static ADDPERMISSIONLESSDELEGATORTX: number = 26
+
   static SECPCREDENTIAL: number = 9
 
   static ASSETIDLEN: number = 32

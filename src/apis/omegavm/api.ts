@@ -349,7 +349,7 @@ export class OmegaVMAPI extends JRPCAPI {
       ? outTotal
       : utx.getOutputTotal(dioneAssetID)
     const fee: BN = utx.getBurn(dioneAssetID)
-    if (fee.lte(ONEDIONE.mul(new BN(50))) || fee.lte(outputTotal)) {
+    if (fee.lte(ONEDIONE.mul(new BN(3000))) || fee.lte(outputTotal)) {
       return true
     } else {
       return false
@@ -1654,6 +1654,110 @@ export class OmegaVMAPI extends JRPCAPI {
       startTime,
       endTime,
       stakeAmount,
+      rewardLocktime,
+      rewardThreshold,
+      rewards,
+      new BN(0),
+      dioneAssetID,
+      memo,
+      asOf
+    )
+
+    if (!(await this.checkGooseEgg(builtUnsignedTx))) {
+      /* istanbul ignore next */
+      throw new GooseEggCheckError("Failed Goose Egg Check")
+    }
+
+    return builtUnsignedTx
+  }
+
+  /**
+   * Helper function which creates an unsigned [[AddPermissionlessDelegatorTx]]. For more granular control, you may create your own
+   * [[UnsignedTx]] manually and import the [[AddPermissionlessDelegatorTx]] class directly.
+   *
+   * @param utxoset A set of UTXOs that the transaction is built on
+   * @param toAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who received the staked tokens at the end of the staking period
+   * @param fromAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who own the staking UTXOs the fees in DIONE
+   * @param changeAddresses An array of addresses as {@link https://github.com/feross/buffer|Buffer} who gets the change leftover from the fee payment
+   * @param nodeID The node ID of the validator being added.
+   * @param startTime The Unix time when the validator starts validating the Primary Network.
+   * @param endTime The Unix time when the validator stops validating the Primary Network (and staked DIONE is returned).
+   * @param stakeAmount The amount being delegated as a {@link https://github.com/indutny/bn.js/|BN}
+   * @param subnet The subnet
+   * @param rewardAddresses The addresses which will recieve the rewards from the delegated stake.
+   * @param rewardLocktime Optional. The locktime field created in the resulting reward outputs
+   * @param rewardThreshold Opional. The number of signatures required to spend the funds in the resultant reward UTXO. Default 1.
+   * @param memo Optional contains arbitrary bytes, up to 256 bytes
+   * @param asOf Optional. The timestamp to verify the transaction against as a {@link https://github.com/indutny/bn.js/|BN}
+   *
+   * @returns An unsigned transaction created from the passed in parameters.
+   */
+  buildAddPermissionlessDelegatorTx = async (
+    utxoset: UTXOSet,
+    toAddresses: string[],
+    fromAddresses: string[],
+    changeAddresses: string[],
+    nodeID: string,
+    startTime: BN,
+    endTime: BN,
+    stakeAmount: BN,
+    subnet: string,
+    rewardAddresses: string[],
+    rewardLocktime: BN = new BN(0),
+    rewardThreshold: number = 1,
+    memo: PayloadBase | Buffer = undefined,
+    asOf: BN = UnixNow()
+  ): Promise<UnsignedTx> => {
+    const to: Buffer[] = this._cleanAddressArray(
+      toAddresses,
+      "buildAddPermissionlessDelegatorTx"
+    ).map((a: string): Buffer => bintools.stringToAddress(a))
+    const from: Buffer[] = this._cleanAddressArray(
+      fromAddresses,
+      "buildAddPermissionlessDelegatorTx"
+    ).map((a: string): Buffer => bintools.stringToAddress(a))
+    const change: Buffer[] = this._cleanAddressArray(
+      changeAddresses,
+      "buildAddPermissionlessDelegatorTx"
+    ).map((a: string): Buffer => bintools.stringToAddress(a))
+    const rewards: Buffer[] = this._cleanAddressArray(
+      rewardAddresses,
+      "buildAddPermissionlessDelegatorTx"
+    ).map((a: string): Buffer => bintools.stringToAddress(a))
+
+    if (memo instanceof PayloadBase) {
+      memo = memo.getPayload()
+    }
+
+    const minStake: BN = (await this.getMinStake())["minDelegatorStake"]
+    if (stakeAmount.lt(minStake)) {
+      throw new StakeError(
+        "OmegaVMAPI.buildAddPermissionlessDelegatorTx -- stake amount must be at least " +
+          minStake.toString(10)
+      )
+    }
+
+    const dioneAssetID: Buffer = await this.getDIONEAssetID()
+
+    const now: BN = UnixNow()
+    if (startTime.lt(now) || endTime.lte(startTime)) {
+      throw new TimeError(
+        "OmegaVMAPI.buildAddDelegatorTx -- startTime must be in the future and endTime must come after startTime"
+      )
+    }
+
+    const builtUnsignedTx: UnsignedTx = utxoset.buildAddPermissionlessDelegatorTx(
+      this.core.getNetworkID(),
+      bintools.cb58Decode(this.blockchainID),
+      dioneAssetID,
+      to,
+      from,
+      change,
+      NodeIDStringToBuffer(nodeID),
+      startTime,
+      endTime,
+      stakeAmount,
+      bintools.cb58Decode(subnet),
       rewardLocktime,
       rewardThreshold,
       rewards,

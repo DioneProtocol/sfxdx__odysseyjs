@@ -13,35 +13,34 @@ import {
   UnixNow
 } from "../../src/utils"
 
-const ip = "testnode.dioneprotocol.com"
-const port = undefined
-const protocol = "https"
-const networkID = Number("5")
+const ip = "localhost"
+const port = Number("9650")
+const protocol = "http"
+const networkID = Number("1")
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const oKeychain: KeyChain = ochain.keyChain()
-let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey: Buffer = new Buffer(key, 'hex')
 oKeychain.importKey(privKey)
 const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
 const threshold: number = 1
 const locktime: BN = new BN(0)
 const memo: Buffer = Buffer.from(
-  "OmegaVM utility method buildAddValidatorTx to add a validator to the primary subnet"
+  "OmegaVM utility method buildAddPermissionlessDelegatorTx to add a delegator to the subnet"
 )
-
-const reward = "O-dione18jma8ppw3nhx5r4ap8clazz0dps7rv5ulw7llh"
-const nodeID: string = "NodeID-DE8BWpgUtNkTXzjFArzS1nroouzBcXX8J"
-
 const asOf: BN = UnixNow()
+const nodeID: string = "NodeID-7sECFXYT5k6VR4LzHRhFbqWdPcSBnXfK3"
+const subnetID: string = "2ivEh5xHybHhusC2ZzXY7EY99SuR8s2Vet7qwuTsazvnj2VXg2"
 const startTime: BN = UnixNow().add(new BN(60 * 1))
-const endTime: BN = startTime.add(new BN(60 * 60 * 24))
-const delegationFee: number = 10
+const endTime: BN = startTime.add(new BN(150))
 
 const main = async (): Promise<any> => {
   const stakeAmount: any = await ochain.getMinStake()
   const omegaVMUTXOResponse: any = await ochain.getUTXOs(oAddressStrings)
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
-  const unsignedTx: UnsignedTx = await ochain.buildAddValidatorTx(
+
+  const unsignedTx: UnsignedTx = await ochain.buildAddPermissionlessDelegatorTx(
     utxoSet,
     oAddressStrings,
     oAddressStrings,
@@ -49,9 +48,9 @@ const main = async (): Promise<any> => {
     nodeID,
     startTime,
     endTime,
-    stakeAmount.minValidatorStake,
-    [reward],
-    delegationFee,
+    stakeAmount.minDelegatorStake,
+    subnetID,
+    oAddressStrings,
     locktime,
     threshold,
     memo,
@@ -63,4 +62,4 @@ const main = async (): Promise<any> => {
   console.log(`Success! TXID: ${txid}`)
 }
 
-main().catch((e) => console.log(e))
+main()

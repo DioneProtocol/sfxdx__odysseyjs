@@ -26,7 +26,7 @@ const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const dchain: DELTAAPI = odyssey.DChain()
 const oKeychain: OmegaVMKeyChain = ochain.keyChain()
-const cHeaAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
+const dHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
 const dKeychain: DELTAKeyChain = dchain.keyChain()
 oKeychain.importKey(privKey)
@@ -45,7 +45,7 @@ const main = async (): Promise<any> => {
   const utxoSet: UTXOSet = deltaUTXOResponse.utxos
   let unsignedTx: UnsignedTx = await dchain.buildImportTx(
     utxoSet,
-    cHeaAddress,
+    dHexAddress,
     dAddressStrings,
     oChainBlockchainId,
     dAddressStrings,
@@ -56,7 +56,7 @@ const main = async (): Promise<any> => {
 
   unsignedTx = await dchain.buildImportTx(
     utxoSet,
-    cHeaAddress,
+    dHexAddress,
     dAddressStrings,
     oChainBlockchainId,
     dAddressStrings,

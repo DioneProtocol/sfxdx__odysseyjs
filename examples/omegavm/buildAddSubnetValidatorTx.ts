@@ -23,12 +23,13 @@ const ochain: OmegaVMAPI = odyssey.OChain()
 // Keychain with 4 keys-A, B, D, and D
 const oKeychain: KeyChain = ochain.keyChain()
 // Keypair A
-let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey1: Buffer = new Buffer(key, 'hex')
 // O-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-oKeychain.importKey(privKey)
+oKeychain.importKey(privKey1)
 
 // Keypair B
-privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
+let privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
 // O-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
 oKeychain.importKey(privKey)
 
@@ -42,9 +43,9 @@ privKey = "PrivateKey-2uWuEQbY5t7NPzgqzDrXSgGPhi3uyKj2FeAvPUHYo6CmENHJfn"
 // O-custom1t3qjau2pf3ys83yallqt4y5xc3l6ya5f7wr6aq
 oKeychain.importKey(privKey)
 const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
-const nodeID: string = "NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN"
-const startTime: BN = new BN(1652217329)
-const endTime: BN = new BN(1653511017)
+const nodeID: string = "NodeID-7sECFXYT5k6VR4LzHRhFbqWdPcSBnXfK3"
+const startTime: BN = UnixNow().add(new BN(60 * 1))
+const endTime: BN = startTime.add(new BN(1000))
 const asOf: BN = UnixNow()
 
 const main = async (): Promise<any> => {
@@ -55,7 +56,7 @@ const main = async (): Promise<any> => {
   const utxoSet: UTXOSet = omegaVMUTXOResponse.utxos
 
   const weight: BN = new BN(1)
-  const subnetID: string = "2tFRAeosSsgd1XV9Bn2y9VEHKPkeuk41RdnAZh9PuZJDWWkR5"
+  const subnetID: string = "2ivEh5xHybHhusC2ZzXY7EY99SuR8s2Vet7qwuTsazvnj2VXg2"
   const memo: Buffer = Buffer.from(
     "Utility function to create a AddSubnetValidatorTx transaction"
   )

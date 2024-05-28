@@ -27,7 +27,7 @@ const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
 
-const xBlockchainID: string = Defaults.network[networkID].A.blockchainID
+const aBlockchainID: string = Defaults.network[networkID].A.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
@@ -91,7 +91,7 @@ const main = async (): Promise<any> => {
 
   const baseTx: BaseTx = new BaseTx(
     networkID,
-    bintools.cb58Decode(xBlockchainID),
+    bintools.cb58Decode(aBlockchainID),
     outputs,
     inputs,
     memo

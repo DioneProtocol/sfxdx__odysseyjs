@@ -23,12 +23,13 @@ const ochain: OmegaVMAPI = odyssey.OChain()
 // Keychain with 4 keys-A, B, D, and D
 const oKeychain: KeyChain = ochain.keyChain()
 // Keypair A
-let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey1: Buffer = new Buffer(key, 'hex')
 // O-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-oKeychain.importKey(privKey)
+oKeychain.importKey(privKey1)
 
 // Keypair B
-privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
+let privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
 // O-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
 oKeychain.importKey(privKey)
 

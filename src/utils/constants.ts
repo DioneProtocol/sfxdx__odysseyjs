@@ -186,18 +186,18 @@ const n1D: D = {
   costPerSignature: 1000,
   // DEPRECATED - txFee
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  txFee: MILLIDIONE,
+  txFee: ONEDIONE.mul(new BN(50)),
   // DEPRECATED - gasPrice
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  gasPrice: GWEI.mul(new BN(225)),
-  minGasPrice: GWEI.mul(new BN(25)),
-  maxGasPrice: GWEI.mul(new BN(1000)),
-  chainID: 43112,
-};
+  gasPrice: new BN("2380952380952381"),
+  minGasPrice: new BN("2380952380952381"),
+  maxGasPrice: new BN("7142857142857143"),
+  chainID: 13
+}
 // End Mainnet
 
 // Start Testnet
-dioneAssetID = "2fZZYVKV6SiKgPFj6GpPMVFNeGFwp7cdb1W1hbw2sBUpQX1tMG";
+dioneAssetID = "2fZZYVKV6SiKgPFj6GpPMVFNeGFwp7cdb1W1hbw2sBUpQX1tMG"
 const n5A: A = {
   blockchainID: "Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo",
   dioneAssetID: dioneAssetID,
@@ -205,15 +205,15 @@ const n5A: A = {
   vm: AChainVMName,
   txFee: MILLIDIONE.mul(new BN(50)),
   creationTxFee: MILLIDIONE.mul(new BN(100)),
-  mintTxFee: ONEDIONE.mul(new BN(50)),
-};
+  mintTxFee: MILLIDIONE.mul(new BN(50))
+}
 
 const n5O: O = {
   blockchainID: OmegaChainID,
   dioneAssetID: dioneAssetID,
   alias: OChainAlias,
   vm: OChainVMName,
-  txFee: MILLIDIONE,
+  txFee: MILLIDIONE.mul(new BN(50)),
   creationTxFee: CENTIDIONE,
   createSubnetTx: ONEDIONE,
   createChainTx: ONEDIONE,
@@ -227,7 +227,7 @@ const n5O: O = {
 };
 
 const n5D: D = {
-  blockchainID: "49mww4UEpfsqqJPhC3XsBZYQHJ3vphg4cNwwGwj7TAyrCs16k",
+  blockchainID: "ZkZhY2RX1F3z65N2w3yUh6cpsy1oDkg5RHeJjS8UyJEBD7xWe",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
@@ -279,16 +279,16 @@ export class Defaults {
       O: n1O,
       "11111111111111111111111111111111LpoYY": n1O,
       D: n1D,
-      "2Hxk7eM8VprbCKwv3gZw9GebajFExRMcJKPCwvysmnUNFwP8Ng": n1D,
+      "2McYdwGECu9pD2EarknHrFKTVVHefjxH9UPKJTgMHCYRGuD5Vo": n1D
     },
     5: {
       hrp: NetworkIDToHRP[5],
       A: n5A,
-      Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo: n5A,
+      "Tv3yjrRiBDoyarcwXtezFEHaGKumWBPC5KAD3f4YEx4thhXwo": n5A,
       O: n5O,
       "11111111111111111111111111111111LpoYY": n5O,
       D: n5D,
-      "49mww4UEpfsqqJPhC3XsBZYQHJ3vphg4cNwwGwj7TAyrCs16k": n5D,
+      "ZkZhY2RX1F3z65N2w3yUh6cpsy1oDkg5RHeJjS8UyJEBD7xWe": n5D
     },
     1337: {
       hrp: NetworkIDToHRP[1337],

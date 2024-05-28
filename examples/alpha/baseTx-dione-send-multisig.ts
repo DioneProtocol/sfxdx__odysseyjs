@@ -25,8 +25,8 @@ const ip = process.env.IP
 const port = Number(process.env.PORT)
 const protocol = process.env.PROTOCOL
 const networkID = Number(process.env.NETWORK_ID)
-const xBlockchainID: string = Defaults.network[networkID].A.blockchainID
-const xBlockchainIDBuf: Buffer = bintools.cb58Decode(xBlockchainID)
+const aBlockchainID: string = Defaults.network[networkID].A.blockchainID
+const aBlockchainIDBuf: Buffer = bintools.cb58Decode(aBlockchainID)
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
 const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const odyssey: Odyssey = new Odyssey(
@@ -34,7 +34,7 @@ const odyssey: Odyssey = new Odyssey(
   port,
   protocol,
   networkID,
-  xBlockchainID
+  aBlockchainID
 )
 const achain: ALPHAAPI = odyssey.AChain()
 const aKeychain: KeyChain = achain.keyChain()
@@ -109,7 +109,7 @@ const main = async (): Promise<any> => {
 
   const baseTx: BaseTx = new BaseTx(
     networkID,
-    xBlockchainIDBuf,
+    aBlockchainIDBuf,
     outputs,
     inputs,
     memo

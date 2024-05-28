@@ -32,12 +32,13 @@ const ochain: OmegaVMAPI = odyssey.OChain()
 // Keychain with 4 keys-A, B, D, and D
 const oKeychain: KeyChain = ochain.keyChain()
 // Keypair A
-let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`
+const key = "";
+const privKey1: Buffer = new Buffer(key, 'hex')
 // O-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
-oKeychain.importKey(privKey)
+oKeychain.importKey(privKey1)
 
 // Keypair B
-privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
+let privKey = "PrivateKey-R6e8f5QSa89DjpvL9asNdhdJ4u8VqzMJStPV8VVdDmLgPd8a4"
 // O-custom15s7p7mkdev0uajrd0pzxh88kr8ryccztnlmzvj
 oKeychain.importKey(privKey)
 
@@ -59,15 +60,15 @@ const inputs: TransferableInput[] = []
 const fee: BN = ochain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const nodeID: string = "NodeID-NFBbbJ4qCmNaCzeW7sxErhvWqvEQMnYcN"
+const nodeID: string = "NodeID-3hwBts7XQCan5bmsXkMvhvp9PKmYU3Vew"
 const memo: Buffer = Buffer.from(
   "Manually create a removeSubnetValidatorTx which creates a 1-of-2 DIONE utxo and removes a validator from a subnet by correctly signing the 2-of-3 SubnetAuth"
 )
-const dioneUTXOKeychain: Buffer[] = [oAddresses[0], oAddresses[1]]
+const dioneUTXOKeychain: Buffer[] = [oAddresses[0]]
 
 const main = async (): Promise<any> => {
   const dioneAssetID: Buffer = await ochain.getDIONEAssetID()
-  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings[0])
+  const getBalanceResponse: any = await ochain.getBalance(oAddressStrings)
   const unlocked: BN = new BN(getBalanceResponse.unlocked)
   const secpTransferOutput: SECPTransferOutput = new SECPTransferOutput(
     unlocked.sub(fee),
@@ -106,7 +107,7 @@ const main = async (): Promise<any> => {
   })
 
   const subnetID: Buffer = bintools.cb58Decode(
-    "8T4oUrP7kXzetGF2bYWF21oJHUT18rJCjfBt3J299hA1Smcqa"
+    "2ivEh5xHybHhusC2ZzXY7EY99SuR8s2Vet7qwuTsazvnj2VXg2"
   )
   const nodeIDBuf: Buffer = NodeIDStringToBuffer(nodeID)
   const removeSubnetValidatorTx: RemoveSubnetValidatorTx =

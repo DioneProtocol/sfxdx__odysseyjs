@@ -31,18 +31,18 @@ const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const dAddressStrings: string[] = dchain.keyChain().getAddressStrings()
 const aChainBlockchainIdStr: string = Defaults.network[networkID].A.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID
-const cHeaAddress: string = "0x3B90Beea0B5a93EF3cAD0244DC6be0c1aA0Ece5A"
+const dHexAddress: string = "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC"
 const path: string = "/ext/bc/D/rpc"
 const web3 = new Web3(`${protocol}://${ip}:${port}${path}`)
 const threshold: number = 1
 
 const main = async (): Promise<any> => {
-  const balanc = await web3.eth.getBalance(cHeaAddress)
-  const balance = new BN(balanc.toString().substring(0, 17))
+  let balance: BN = await web3.eth.getBalance(dHexAddress)
+  balance = new BN(balance.toString().substring(0, 17))
   const baseFeeResponse: string = await dchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16))
-  const txcount = await web3.eth.getTransactionCount(cHeaAddress)
-  const nonce = new BN(txcount.toString()).toNumber()
+  const txcount = await web3.eth.getTransactionCount(dHexAddress)
+  const nonce: number = txcount
   const locktime: BN = new BN(0)
   let dioneAmount: BN = new BN(1e11)
   let fee: BN = baseFee
@@ -51,7 +51,7 @@ const main = async (): Promise<any> => {
     dioneAmount,
     dioneAssetID,
     aChainBlockchainIdStr,
-    cHeaAddress,
+    dHexAddress,
     dAddressStrings[0],
     aAddressStrings,
     nonce,
