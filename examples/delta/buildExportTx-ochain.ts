@@ -42,7 +42,7 @@ const main = async (): Promise<any> => {
   const baseFeeResponse: string = await dchain.getBaseFee()
   const baseFee = new BN(parseInt(baseFeeResponse, 16))
   const txcount = await web3.eth.getTransactionCount(dHexAddress)
-  const nonce: number = txcount
+  const nonce: number = Number(txcount)
   const locktime: BN = new BN(0)
   let dioneAmount: BN = new BN(20000000000)
   let fee: BN = baseFee.div(new BN(1e9))
