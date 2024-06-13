@@ -203,7 +203,7 @@ export abstract class TransformSubnetTx extends BaseTx {
     blockchainID: Buffer,
     outs: TransferableOutput[],
     ins: TransferableInput[],
-    memo?: Buffer,
+    memo: Buffer,
     subnetID: string | Buffer,
     assetID: string | Buffer,
     initialSupply: BN,
