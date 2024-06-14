@@ -1,0 +1,113 @@
+stages:
+  - install
+  - lint
+  - test
+  - build
+  - publish
+
+variables:
+  IMAGE_DOCKER: node:18.20.3-slim
+  NPM_TOKEN_DEV: $NPM_TOKEN_DEV # Check CICD Variables
+
+include:
+  - local: ".gitlab/ci/send_code.yml"
+
+install:
+  stage: install
+  image: $IMAGE_DOCKER
+  script: |
+    yarn install
+  rules:
+    - if: "$CI_COMMIT_REF_NAME == 'devops'"
+      when: on_success
+    - if: "$CI_COMMIT_REF_NAME == 'develop'"
+      when: on_success
+    - when: never
+  cache:
+    policy: pull-push
+    unprotect: false
+    untracked: false
+    when: on_success
+    paths:
+      - node_modules/
+
+lint:
+  stage: lint
+  image: $IMAGE_DOCKER
+  script: |
+    yarn lint
+  rules:
+    - if: "$CI_COMMIT_REF_NAME == 'devops'"
+      when: on_success
+    - if: "$CI_COMMIT_REF_NAME == 'develop'"
+      when: on_success
+    - when: never
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  needs:
+    - install
+  dependencies:
+    - install
+  allow_failure: true
+
+test:
+  stage: test
+  image: $IMAGE_DOCKER
+  script: |
+    yarn test
+  rules:
+    - if: "$CI_COMMIT_REF_NAME == 'devops'"
+      when: on_success
+    - if: "$CI_COMMIT_REF_NAME == 'develop'"
+      when: on_success
+    - when: never
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  needs:
+    - install
+  dependencies:
+    - install
+  allow_failure: true
+
+build:
+  stage: build
+  image: $IMAGE_DOCKER
+  script: |
+    yarn build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  rules:
+    - if: "$CI_COMMIT_REF_NAME == 'devops'"
+      when: on_success
+    - if: "$CI_COMMIT_REF_NAME == 'develop'"
+      when: on_success
+    - when: never
+  needs:
+    - install
+  dependencies:
+    - install
+
+publish:
+  stage: publish
+  image: $IMAGE_DOCKER
+  rules:
+    - if: "$CI_COMMIT_REF_NAME == 'develop'"
+      variables:
+        NPM_TOKEN: $NPM_TOKEN_DEV
+      when: on_success
+    - when: never
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  needs:
+    - install
+    - build
+  dependencies:
+    - install

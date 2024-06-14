@@ -1,0 +1,28 @@
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: always
+
+stages:
+  - post_actions
+
+include:
+  - project: "external-cicd-jobs/auto-pusher-job"
+    file: ".gitlab-ci.yml"
+    ref: main
+
+Send code to repo client:
+  stage: post_actions
+  image: "ubuntu:22.04"
+  variables:
+    GIT_STRATEGY: none
+    SRC_PROJECT_URL: $CI_PROJECT_URL
+    DST_PROJECT_URL: $CLIENT_GITLAB_URL
+    SRC_BRANCH_NAME: $CI_COMMIT_REF_NAME
+    DST_BRANCH_NAME: prod
+  extends:
+    - .send_code
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "develop"'
+      when: manual
+  needs: []
