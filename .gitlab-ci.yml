@@ -1,37 +1,51 @@
 stages:
-  - install
   - lint
   - test
   - build
   - publish
+  - post_actions
 
 variables:
+  FF_USE_FASTZIP: "true"
+  ARTIFACT_COMPRESSION_LEVEL: "fastest"
+  CACHE_COMPRESSION_LEVEL: "fast"
+  TRANSFER_METER_FREQUENCY: "1s"
+  GIT_DEPTH: "1"
+
   IMAGE_DOCKER: node:18.20.3-slim
+  IMAGE_MERGER: "alpine:3.18.3"
   NPM_REGISTRY: "registry.npmjs.org"
   NPM_TOKEN_DEV: $NPM_TOKEN_DEV # Check CICD Variables
 
 include:
   - local: ".gitlab/ci/send_code.yml"
 
-install:
-  stage: install
+cache:
+  - &global_cache_node_mods
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules/
+    policy: pull
+
+Install dependencies:
+  stage: .pre # always first, no matter if it is listed in stages
   image: $IMAGE_DOCKER
+  cache:
+    - <<: *global_cache_node_mods
+      when: on_success
+      policy: pull-push
   script: |
-    yarn install
+    yarn install --frozen-lockfile
   rules:
     - if: "$CI_COMMIT_REF_NAME == 'devops'"
       when: on_success
     - if: "$CI_COMMIT_REF_NAME == 'develop'"
       when: on_success
     - when: never
-  cache:
-    policy: pull-push
-    untracked: false
-    when: on_success
-    paths:
-      - node_modules/
 
-lint:
+Check Lint:
   stage: lint
   image: $IMAGE_DOCKER
   script: |
@@ -42,17 +56,11 @@ lint:
     - if: "$CI_COMMIT_REF_NAME == 'develop'"
       when: on_success
     - when: never
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
   needs:
-    - install
-  dependencies:
-    - install
+    - Install dependencies
   allow_failure: true
 
-test:
+Testing:
   stage: test
   image: $IMAGE_DOCKER
   script: |
@@ -63,26 +71,16 @@ test:
     - if: "$CI_COMMIT_REF_NAME == 'develop'"
       when: on_success
     - when: never
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
   needs:
-    - install
-    - lint
-  dependencies:
-    - install
+    - Install dependencies
+    - Check Lint
   allow_failure: true
 
-build:
+Build library:
   stage: build
   image: $IMAGE_DOCKER
   script: |
     yarn build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
   rules:
     - if: "$CI_COMMIT_REF_NAME == 'devops'"
       when: on_success
@@ -90,13 +88,11 @@ build:
       when: on_success
     - when: never
   needs:
-    - install
-    - lint
-    - test
-  dependencies:
-    - install
+    - Install dependencies
+    - Check Lint
+    - Testing
 
-publish:
+Publish NPM package:
   stage: publish
   image: $IMAGE_DOCKER
   script: |
@@ -108,21 +104,24 @@ publish:
         NPM_TOKEN: $NPM_TOKEN_DEV
       when: on_success
     - when: never
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
   needs:
-    - install
-    - lint
-    - test
-    - build
-  dependencies:
-    - install
+    - Install dependencies
+    - Check Lint
+    - Testing
+    - Build library
 
-.merge_devops_to_dev:
+Deploy to develop:
   stage: post_actions
   image: $IMAGE_MERGER
+  before_script:
+    - apk add --update --no-cache openssh git
+    - mkdir ~/.ssh/ && touch ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY_GIT" > ~/.ssh/id_rsa
+    - chmod -R 600 ~/.ssh/id_rsa
+    - ssh-keyscan -t rsa $CI_SERVER_HOST >> ~/.ssh/known_hosts
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - git config --global user.email "repo@sfxdx.com"
+    - git config --global user.name "IntegralTeam"
   script:
     - export PUSH_REPO=$(echo "$CI_REPOSITORY_URL" | sed -e "s|.*@\(.*\)|git@\1|" -e "s|/|:/|" )
     - git remote set-url origin $PUSH_REPO
@@ -137,22 +136,6 @@ publish:
     - git commit -am "modified CI"
     - git push origin develop
     - git push origin --delete devops
-
-.before_merge:
-  before_script:
-    - apk add --update --no-cache openssh git
-    - mkdir ~/.ssh/ && touch ~/.ssh/id_rsa
-    - echo "$SSH_PRIVATE_KEY_GIT" > ~/.ssh/id_rsa
-    - chmod -R 600 ~/.ssh/id_rsa
-    - ssh-keyscan -t rsa $CI_SERVER_HOST >> ~/.ssh/known_hosts
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - git config --global user.email "repo@sfxdx.com"
-    - git config --global user.name "IntegralTeam"
-
-Deploy to develop:
-  extends:
-    - .before_merge
-    - .merge_devops_to_dev
   rules:
     - if: '$CI_COMMIT_REF_NAME == "devops"'
       when: manual
