@@ -7,6 +7,7 @@ stages:
 
 variables:
   IMAGE_DOCKER: node:18.20.3-slim
+  NPM_REGISTRY: "registry.npmjs.org"
   NPM_TOKEN_DEV: $NPM_TOKEN_DEV # Check CICD Variables
 
 include:
@@ -98,6 +99,9 @@ build:
 publish:
   stage: publish
   image: $IMAGE_DOCKER
+  script: |
+    echo "//$NPM_REGISTRY/:_authToken=$NPM_TOKEN"
+    npm publish
   rules:
     - if: "$CI_COMMIT_REF_NAME == 'develop'"
       variables:
