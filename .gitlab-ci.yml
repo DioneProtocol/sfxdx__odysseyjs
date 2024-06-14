@@ -25,7 +25,6 @@ install:
     - when: never
   cache:
     policy: pull-push
-    unprotect: false
     untracked: false
     when: on_success
     paths:
