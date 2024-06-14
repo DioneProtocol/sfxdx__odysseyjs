@@ -22,14 +22,14 @@ const networkID = Number("5")
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const dchain: DELTAAPI = odyssey.DChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 const oKeychain: OmegaKeyChain = ochain.keyChain()
 const dKeychain: DELTAKeyChain = dchain.keyChain()
 oKeychain.importKey(privKey)
 dKeychain.importKey(privKey)
 const oAddressStrings: string[] = ochain.keyChain().getAddressStrings()
-console.log(oAddressStrings);
+console.log(oAddressStrings)
 const dAddressStrings: string[] = dchain.keyChain().getAddressStrings()
 const oChainBlockchainIdStr: string = Defaults.network[networkID].O.blockchainID
 const dioneAssetID: string = Defaults.network[networkID].A.dioneAssetID

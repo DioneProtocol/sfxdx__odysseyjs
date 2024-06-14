@@ -29,7 +29,10 @@ const bintools: BinTools = BinTools.getInstance()
  *
  * @returns An instance of an [[DELTABaseTx]]-extended class.
  */
-export const SelectTxClass = (txTypeID: number, ...args: any[]): DELTABaseTx => {
+export const SelectTxClass = (
+  txTypeID: number,
+  ...args: any[]
+): DELTABaseTx => {
   if (txTypeID === DELTAConstants.IMPORTTX) {
     return new ImportTx(...args)
   } else if (txTypeID === DELTAConstants.EXPORTTX) {

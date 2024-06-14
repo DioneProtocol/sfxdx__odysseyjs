@@ -266,7 +266,9 @@ describe("Transactions", (): void => {
     expect(createAssetTx.getTypeID()).toBe(ALPHAConstants.CREATEASSETTX)
     createAssetTx.setCodecID(codecID_one)
     expect(createAssetTx.getCodecID()).toBe(codecID_one)
-    expect(createAssetTx.getTypeID()).toBe(ALPHAConstants.CREATEASSETTX_CODECONE)
+    expect(createAssetTx.getTypeID()).toBe(
+      ALPHAConstants.CREATEASSETTX_CODECONE
+    )
     createAssetTx.setCodecID(codecID_zero)
     expect(createAssetTx.getCodecID()).toBe(codecID_zero)
     expect(createAssetTx.getTypeID()).toBe(ALPHAConstants.CREATEASSETTX)

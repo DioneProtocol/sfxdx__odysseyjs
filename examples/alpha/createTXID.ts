@@ -8,10 +8,7 @@ import {
   UnsignedTx,
   Tx
 } from "../../src/apis/alpha"
-import {
-  KeyChain as OmegaVMKeyChain,
-  OmegaVMAPI
-} from "../../src/apis/omegavm"
+import { KeyChain as OmegaVMKeyChain, OmegaVMAPI } from "../../src/apis/omegavm"
 import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,

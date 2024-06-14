@@ -24,8 +24,8 @@ const achain: ALPHAAPI = odyssey.AChain()
 const dchain: DELTAAPI = odyssey.DChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
 const dHexAddress: string = "0x3B90Beea0B5a93EF3cAD0244DC6be0c1aA0Ece5A"
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 const dKeychain: DELTAKeyChain = dchain.keyChain()
 aKeychain.importKey(privKey)
 dKeychain.importKey(privKey)

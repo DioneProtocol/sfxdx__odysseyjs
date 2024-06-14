@@ -1,6 +1,12 @@
 import "dotenv/config"
 import { Odyssey, BN, Buffer } from "../../src"
-import { ALPHAAPI, KeyChain, UTXOSet, UnsignedTx, Tx } from "../../src/apis/alpha"
+import {
+  ALPHAAPI,
+  KeyChain,
+  UTXOSet,
+  UnsignedTx,
+  Tx
+} from "../../src/apis/alpha"
 import { GetUTXOsResponse } from "../../src/apis/alpha/interfaces"
 import {
   PrivateKeyPrefix,
@@ -16,8 +22,8 @@ const networkID = Number(process.env.NETWORK_ID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 const aKeychain: KeyChain = achain.keyChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 aKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const dChainBlockchainID: string = Defaults.network[networkID].D.blockchainID

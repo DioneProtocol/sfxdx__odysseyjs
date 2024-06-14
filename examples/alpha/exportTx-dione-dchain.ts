@@ -42,7 +42,9 @@ const inputs: TransferableInput[] = []
 const fee: BN = achain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export DIONE from A-Chain to D-Chain")
+const memo: Buffer = Buffer.from(
+  "Manually Export DIONE from A-Chain to D-Chain"
+)
 // Uncomment for codecID 00 01
 // const codecID: number = 1
 

@@ -200,21 +200,61 @@ describe("Inputs", (): void => {
     const nonce7: number = 6
     const nonce8: number = 7
 
-    const input1: DELTAInput = new DELTAInput(address1, amount1, assetID1, nonce1)
+    const input1: DELTAInput = new DELTAInput(
+      address1,
+      amount1,
+      assetID1,
+      nonce1
+    )
     inputs.push(input1)
-    const input2: DELTAInput = new DELTAInput(address1, amount2, assetID2, nonce2)
+    const input2: DELTAInput = new DELTAInput(
+      address1,
+      amount2,
+      assetID2,
+      nonce2
+    )
     inputs.push(input2)
-    const input3: DELTAInput = new DELTAInput(address3, amount3, assetID2, nonce3)
+    const input3: DELTAInput = new DELTAInput(
+      address3,
+      amount3,
+      assetID2,
+      nonce3
+    )
     inputs.push(input3)
-    const input4: DELTAInput = new DELTAInput(address4, amount4, assetID3, nonce4)
+    const input4: DELTAInput = new DELTAInput(
+      address4,
+      amount4,
+      assetID3,
+      nonce4
+    )
     inputs.push(input4)
-    const input5: DELTAInput = new DELTAInput(address1, amount5, assetID5, nonce5)
+    const input5: DELTAInput = new DELTAInput(
+      address1,
+      amount5,
+      assetID5,
+      nonce5
+    )
     inputs.push(input5)
-    const input6: DELTAInput = new DELTAInput(address6, amount6, assetID6, nonce6)
+    const input6: DELTAInput = new DELTAInput(
+      address6,
+      amount6,
+      assetID6,
+      nonce6
+    )
     inputs.push(input6)
-    const input7: DELTAInput = new DELTAInput(address1, amount7, assetID7, nonce7)
+    const input7: DELTAInput = new DELTAInput(
+      address1,
+      amount7,
+      assetID7,
+      nonce7
+    )
     inputs.push(input7)
-    const input8: DELTAInput = new DELTAInput(address8, amount8, assetID8, nonce8)
+    const input8: DELTAInput = new DELTAInput(
+      address8,
+      amount8,
+      assetID8,
+      nonce8
+    )
     inputs.push(input8)
     inputs = inputs.sort(DELTAInput.comparator())
     expect(inputs[0].getAmount().toString()).toBe("8")

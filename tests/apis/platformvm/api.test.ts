@@ -63,12 +63,7 @@ const serialzeit = (aThing: Serializable, name: string): void => {
   if (dumpSerialization) {
     console.log(
       JSON.stringify(
-        serializer.serialize(
-          aThing,
-          "omegavm",
-          "hex",
-          name + " -- Hex Encoded"
-        )
+        serializer.serialize(aThing, "omegavm", "hex", name + " -- Hex Encoded")
       )
     )
     console.log(
@@ -1115,16 +1110,10 @@ describe("OmegaVMAPI", (): void => {
 
       for (let i: number = 0; i < 3; i++) {
         addrs1.push(
-          omegavm.addressFromBuffer(
-            omegavm.keyChain().makeKey().getAddress()
-          )
+          omegavm.addressFromBuffer(omegavm.keyChain().makeKey().getAddress())
         )
-        addrs2.push(
-          omegavm.addressFromBuffer(keymgr2.makeKey().getAddress())
-        )
-        addrs3.push(
-          omegavm.addressFromBuffer(keymgr3.makeKey().getAddress())
-        )
+        addrs2.push(omegavm.addressFromBuffer(keymgr2.makeKey().getAddress()))
+        addrs3.push(omegavm.addressFromBuffer(keymgr3.makeKey().getAddress()))
       }
       const amount: BN = ONEDIONE.mul(new BN(amnt))
       addressbuffs = omegavm.keyChain().getAddresses()

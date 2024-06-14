@@ -33,8 +33,8 @@ const dioneAssetIDBuf: Buffer = bintools.cb58Decode(dioneAssetID)
 const odyssey: Odyssey = new Odyssey(ip, port, protocol, networkID)
 const ochain: OmegaVMAPI = odyssey.OChain()
 const oKeychain: KeyChain = ochain.keyChain()
-const key = "";
-const privKey1: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey1: Buffer = new Buffer(key, "hex")
 // A-custom18jma8ppw3nhx5r4ap8clazz0dps7rv5u9xde7p
 oKeychain.importKey(privKey1)
 

@@ -96,7 +96,9 @@ export class Vertex extends Serializable {
     }
     this._codecID = codecID
     this._typeID =
-      this._codecID === 0 ? ALPHAConstants.VERTEX : ALPHAConstants.VERTEX_CODECONE
+      this._codecID === 0
+        ? ALPHAConstants.VERTEX
+        : ALPHAConstants.VERTEX_CODECONE
   }
 
   /**

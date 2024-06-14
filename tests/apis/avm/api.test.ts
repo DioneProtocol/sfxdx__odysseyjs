@@ -62,7 +62,12 @@ const serialzeit = (aThing: Serializable, name: string): void => {
   if (dumpSerailization) {
     console.log(
       JSON.stringify(
-        serialization.serialize(aThing, "alpha", "hex", name + " -- Hex Encoded")
+        serialization.serialize(
+          aThing,
+          "alpha",
+          "hex",
+          name + " -- Hex Encoded"
+        )
       )
     )
     console.log(

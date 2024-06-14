@@ -1,6 +1,12 @@
 import "dotenv/config"
 import { Odyssey, BN, Buffer } from "../../src"
-import { ALPHAAPI, KeyChain, UTXOSet, UnsignedTx, Tx } from "../../src/apis/alpha"
+import {
+  ALPHAAPI,
+  KeyChain,
+  UTXOSet,
+  UnsignedTx,
+  Tx
+} from "../../src/apis/alpha"
 import {
   GetBalanceResponse,
   GetUTXOsResponse
@@ -29,14 +35,16 @@ const odyssey: Odyssey = new Odyssey(
 )
 const achain: ALPHAAPI = odyssey.AChain()
 const aKeychain: KeyChain = achain.keyChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 aKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
 const asOf: BN = UnixNow()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("ALPHA utility method buildBaseTx to send DIONE")
+const memo: Buffer = Buffer.from(
+  "ALPHA utility method buildBaseTx to send DIONE"
+)
 const fee: BN = achain.getDefaultTxFee()
 
 const main = async (): Promise<any> => {
@@ -53,7 +61,9 @@ const main = async (): Promise<any> => {
   console.log(balance.toString())
   console.log(fee.toString())
   const amount: BN = new BN(50000000000)
-  const toAddresses: [string] = ["A-testnet1zgjm3xv0qy62tevqztz86qyz78q7cl0e38zkaw"]
+  const toAddresses: [string] = [
+    "A-testnet1zgjm3xv0qy62tevqztz86qyz78q7cl0e38zkaw"
+  ]
 
   const unsignedTx: UnsignedTx = await achain.buildBaseTx(
     utxoSet,

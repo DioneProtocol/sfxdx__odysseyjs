@@ -10,7 +10,11 @@ import { bufferToNodeIDString } from "../../utils/helperfunctions"
 import { AmountOutput, ParseableOutput } from "./outputs"
 import { SelectCredentialClass, SubnetAuth } from "."
 import { Credential, SigIdx, Signature } from "../../common/credentials"
-import { Serialization, SerializedEncoding, SerializedType } from "../../utils/serialization"
+import {
+  Serialization,
+  SerializedEncoding,
+  SerializedType
+} from "../../utils/serialization"
 import { DelegationFeeError } from "../../utils/errors"
 
 /**
@@ -29,20 +33,20 @@ export abstract class TransformSubnetTx extends BaseTx {
   serialize(encoding: SerializedEncoding = "hex"): object {
     let fields: object = super.serialize(encoding)
     return {
-      ...fields,
-    //   subnetID: serialization.encoder(this.subnetID, encoding, "Buffer", "cb58"),
-    //   startTime: serialization.encoder(
-    //     this.startTime,
-    //     encoding,
-    //     "Buffer",
-    //     "decimalString"
-    //   ),
-    //   endTime: serialization.encoder(
-    //     this.endTime,
-    //     encoding,
-    //     "Buffer",
-    //     "decimalString"
-    //   )
+      ...fields
+      //   subnetID: serialization.encoder(this.subnetID, encoding, "Buffer", "cb58"),
+      //   startTime: serialization.encoder(
+      //     this.startTime,
+      //     encoding,
+      //     "Buffer",
+      //     "decimalString"
+      //   ),
+      //   endTime: serialization.encoder(
+      //     this.endTime,
+      //     encoding,
+      //     "Buffer",
+      //     "decimalString"
+      //   )
     }
   }
   deserialize(fields: object, encoding: SerializedEncoding = "hex") {
@@ -94,7 +98,11 @@ export abstract class TransformSubnetTx extends BaseTx {
     offset = super.fromBuffer(bytes, offset)
     this.subnetID = bintools.copyFrom(bytes, offset, offset + 32)
     offset += 32
-    this.assetID = bintools.copyFrom(bytes, offset, offset + OmegaVMConstants.ASSETIDLEN)
+    this.assetID = bintools.copyFrom(
+      bytes,
+      offset,
+      offset + OmegaVMConstants.ASSETIDLEN
+    )
     offset += OmegaVMConstants.ASSETIDLEN
     this.initialSupply = bintools.copyFrom(bytes, offset, offset + 8)
     offset += 8
@@ -108,13 +116,29 @@ export abstract class TransformSubnetTx extends BaseTx {
     offset += 8
     this.maxValidatorStake = bintools.copyFrom(bytes, offset, offset + 8)
     offset += 8
-    this.minValidatorStakeDuration = bintools.copyFrom(bytes, offset, offset + 4)
+    this.minValidatorStakeDuration = bintools.copyFrom(
+      bytes,
+      offset,
+      offset + 4
+    )
     offset += 4
-    this.maxValidatorStakeDuration = bintools.copyFrom(bytes, offset, offset + 4)
+    this.maxValidatorStakeDuration = bintools.copyFrom(
+      bytes,
+      offset,
+      offset + 4
+    )
     offset += 4
-    this.minDelegatorStakeDuration = bintools.copyFrom(bytes, offset, offset + 4)
+    this.minDelegatorStakeDuration = bintools.copyFrom(
+      bytes,
+      offset,
+      offset + 4
+    )
     offset += 4
-    this.maxDelegatorStakeDuration = bintools.copyFrom(bytes, offset, offset + 4)
+    this.maxDelegatorStakeDuration = bintools.copyFrom(
+      bytes,
+      offset,
+      offset + 4
+    )
     offset += 4
     this.minDelegationFee = bintools.copyFrom(bytes, offset, offset + 4)
     offset += 4
@@ -155,27 +179,27 @@ export abstract class TransformSubnetTx extends BaseTx {
       this.maxValidatorWeightFactor.length +
       this.uptimeRequirement.length
 
-      const barr: Buffer[] = [
-        superbuff,
-        this.subnetID,
-        this.assetID,
-        this.initialSupply,
-        this.maximumSupply,
-        this.minConsumptionRate,
-        this.maxConsumptionRate,
-        this.minValidatorStake,
-        this.maxValidatorStake,
-        this.minValidatorStakeDuration,
-        this.maxValidatorStakeDuration,
-        this.minDelegatorStakeDuration,
-        this.maxDelegatorStakeDuration,
-        this.minDelegationFee,
-        this.minDelegatorStake,
-        this.maxValidatorWeightFactor,
-        this.uptimeRequirement,
-        this.subnetAuth.toBuffer()
-      ]
-      return Buffer.concat(barr, bsize)
+    const barr: Buffer[] = [
+      superbuff,
+      this.subnetID,
+      this.assetID,
+      this.initialSupply,
+      this.maximumSupply,
+      this.minConsumptionRate,
+      this.maxConsumptionRate,
+      this.minValidatorStake,
+      this.maxValidatorStake,
+      this.minValidatorStakeDuration,
+      this.maxValidatorStakeDuration,
+      this.minDelegatorStakeDuration,
+      this.maxDelegatorStakeDuration,
+      this.minDelegationFee,
+      this.minDelegatorStake,
+      this.maxValidatorWeightFactor,
+      this.uptimeRequirement,
+      this.subnetAuth.toBuffer()
+    ]
+    return Buffer.concat(barr, bsize)
   }
 
   /**
@@ -223,18 +247,18 @@ export abstract class TransformSubnetTx extends BaseTx {
   ) {
     super(networkID, blockchainID, outs, ins, memo)
     if (typeof subnetID != "undefined") {
-        if (typeof subnetID === "string") {
-          this.subnetID = bintools.cb58Decode(subnetID)
-        } else {
-          this.subnetID = subnetID
-        }
+      if (typeof subnetID === "string") {
+        this.subnetID = bintools.cb58Decode(subnetID)
+      } else {
+        this.subnetID = subnetID
+      }
     }
     if (typeof assetID != "undefined") {
-        if (typeof assetID === "string") {
-          this.assetID = bintools.cb58Decode(assetID)
-        } else {
-          this.assetID = assetID
-        }
+      if (typeof assetID === "string") {
+        this.assetID = bintools.cb58Decode(assetID)
+      } else {
+        this.assetID = assetID
+      }
     }
     this.initialSupply = bintools.fromBNToBuffer(initialSupply, 8)
     this.maximumSupply = bintools.fromBNToBuffer(maximumSupply, 8)
@@ -242,13 +266,28 @@ export abstract class TransformSubnetTx extends BaseTx {
     this.maxConsumptionRate = bintools.fromBNToBuffer(maxConsumptionRate, 8)
     this.minValidatorStake = bintools.fromBNToBuffer(minValidatorStake, 8)
     this.maxValidatorStake = bintools.fromBNToBuffer(maxValidatorStake, 8)
-    this.minValidatorStakeDuration = bintools.fromBNToBuffer(minValidatorStakeDuration, 4)
-    this.maxValidatorStakeDuration = bintools.fromBNToBuffer(maxValidatorStakeDuration, 4)
-    this.minDelegatorStakeDuration = bintools.fromBNToBuffer(minDelegatorStakeDuration, 4)
-    this.maxDelegatorStakeDuration = bintools.fromBNToBuffer(maxDelegatorStakeDuration, 4)
+    this.minValidatorStakeDuration = bintools.fromBNToBuffer(
+      minValidatorStakeDuration,
+      4
+    )
+    this.maxValidatorStakeDuration = bintools.fromBNToBuffer(
+      maxValidatorStakeDuration,
+      4
+    )
+    this.minDelegatorStakeDuration = bintools.fromBNToBuffer(
+      minDelegatorStakeDuration,
+      4
+    )
+    this.maxDelegatorStakeDuration = bintools.fromBNToBuffer(
+      maxDelegatorStakeDuration,
+      4
+    )
     this.minDelegationFee = bintools.fromBNToBuffer(minDelegationFee, 4)
     this.minDelegatorStake = bintools.fromBNToBuffer(minDelegatorStake, 8)
-    this.maxValidatorWeightFactor = bintools.fromBNToBuffer(maxValidatorWeightFactor, 1)
+    this.maxValidatorWeightFactor = bintools.fromBNToBuffer(
+      maxValidatorWeightFactor,
+      1
+    )
     this.uptimeRequirement = bintools.fromBNToBuffer(uptimeRequirement, 4)
 
     const subnetAuth: SubnetAuth = new SubnetAuth()

@@ -1,9 +1,6 @@
 import "dotenv/config"
 import { Odyssey, BinTools, BN, Buffer } from "../../src"
-import {
-  OmegaVMAPI,
-  KeyChain as OmegaVMKeyChain
-} from "../../src/apis/omegavm"
+import { OmegaVMAPI, KeyChain as OmegaVMKeyChain } from "../../src/apis/omegavm"
 import {
   DELTAAPI,
   KeyChain as DELTAKeyChain,

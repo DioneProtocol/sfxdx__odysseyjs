@@ -13,7 +13,11 @@ import { OmegaVMConstants } from "./constants"
 import { DefaultNetworkID } from "../../utils/constants"
 import { bufferToNodeIDString } from "../../utils/helperfunctions"
 import { AmountOutput, ParseableOutput } from "./outputs"
-import { Serialization, SerializedEncoding, SerializedType } from "../../utils/serialization"
+import {
+  Serialization,
+  SerializedEncoding,
+  SerializedType
+} from "../../utils/serialization"
 import { DelegationFeeError } from "../../utils/errors"
 
 /**
@@ -558,12 +562,7 @@ export class AddPermissionlessDelegatorTx extends WeightedValidatorTx {
     let fields: object = super.serialize(encoding)
     return {
       ...fields,
-      subnet: serialization.encoder(
-        this.subnet,
-        encoding,
-        buffer,
-        cb58
-      ),
+      subnet: serialization.encoder(this.subnet, encoding, buffer, cb58),
       stakeOuts: this.stakeOuts.map((s) => s.serialize(encoding)),
       rewardOwners: this.rewardOwners.serialize(encoding)
     }
@@ -683,7 +682,8 @@ export class AddPermissionlessDelegatorTx extends WeightedValidatorTx {
   }
 
   clone(): this {
-    let newbase: AddPermissionlessDelegatorTx = new AddPermissionlessDelegatorTx()
+    let newbase: AddPermissionlessDelegatorTx =
+      new AddPermissionlessDelegatorTx()
     newbase.fromBuffer(this.toBuffer())
     return newbase as this
   }
