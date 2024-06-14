@@ -69,6 +69,7 @@ test:
       - node_modules/
   needs:
     - install
+    - lint
   dependencies:
     - install
   allow_failure: true
@@ -90,6 +91,8 @@ build:
     - when: never
   needs:
     - install
+    - lint
+    - test
   dependencies:
     - install
 
@@ -108,6 +111,8 @@ publish:
       - node_modules/
   needs:
     - install
+    - lint
+    - test
     - build
   dependencies:
     - install
