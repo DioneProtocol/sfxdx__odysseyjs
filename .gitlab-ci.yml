@@ -95,8 +95,11 @@ Build library:
 Publish NPM package:
   stage: publish
   image: $IMAGE_DOCKER
+  before_script: |
+    echo "@integralteam:registry=$NPM_REGISTRY_URL" > .npmrc
+    npm login
   script: |
-    echo "//$NPM_REGISTRY/:_authToken=$NPM_TOKEN"
+    echo "//$NPM_REGISTRY/:_authToken=$NPM_TOKEN" >> .npmrc
     npm publish
   rules:
     - if: "$CI_COMMIT_REF_NAME == 'develop'"

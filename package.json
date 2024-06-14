@@ -1,5 +1,5 @@
 {
-  "name": "odysseyjs",
+  "name": "@integralteam/odysseyjs",
   "version": "3.17.0-alpha.2",
   "description": "Odyssey Platform JS Library",
   "main": "dist/index.js",
