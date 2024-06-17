@@ -92,25 +92,6 @@ Build library:
     - Check Lint
     - Testing
 
-Publish NPM package:
-  stage: publish
-  image: $IMAGE_DOCKER
-  script: |
-    echo "@integralteam:registry=$NPM_REGISTRY_URL" > .npmrc
-    echo "//$NPM_REGISTRY/:_authToken=$NPM_TOKEN" >> .npmrc
-    npm publish
-  rules:
-    - if: "$CI_COMMIT_REF_NAME == 'develop'"
-      variables:
-        NPM_TOKEN: $NPM_TOKEN_DEV
-      when: on_success
-    - when: never
-  needs:
-    - Install dependencies
-    - Check Lint
-    - Testing
-    - Build library
-
 Deploy to develop:
   stage: post_actions
   image: $IMAGE_MERGER
