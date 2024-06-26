@@ -115,7 +115,10 @@ export class DELTAOutput {
    * Returns a function used to sort an array of [[DELTAOutput]]s
    */
   static comparator =
-    (): ((a: DELTAOutput | DELTAInput, b: DELTAOutput | DELTAInput) => 1 | -1 | 0) =>
+    (): ((
+      a: DELTAOutput | DELTAInput,
+      b: DELTAOutput | DELTAInput
+    ) => 1 | -1 | 0) =>
     (a: DELTAOutput | DELTAInput, b: DELTAOutput | DELTAInput): 1 | -1 | 0 => {
       // primarily sort by address
       let sorta: Buffer = a.getAddress()

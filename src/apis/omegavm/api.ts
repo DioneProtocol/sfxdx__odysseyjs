@@ -1746,26 +1746,27 @@ export class OmegaVMAPI extends JRPCAPI {
       )
     }
 
-    const builtUnsignedTx: UnsignedTx = utxoset.buildAddPermissionlessDelegatorTx(
-      this.core.getNetworkID(),
-      bintools.cb58Decode(this.blockchainID),
-      dioneAssetID,
-      to,
-      from,
-      change,
-      NodeIDStringToBuffer(nodeID),
-      startTime,
-      endTime,
-      stakeAmount,
-      bintools.cb58Decode(subnet),
-      rewardLocktime,
-      rewardThreshold,
-      rewards,
-      new BN(0),
-      dioneAssetID,
-      memo,
-      asOf
-    )
+    const builtUnsignedTx: UnsignedTx =
+      utxoset.buildAddPermissionlessDelegatorTx(
+        this.core.getNetworkID(),
+        bintools.cb58Decode(this.blockchainID),
+        dioneAssetID,
+        to,
+        from,
+        change,
+        NodeIDStringToBuffer(nodeID),
+        startTime,
+        endTime,
+        stakeAmount,
+        bintools.cb58Decode(subnet),
+        rewardLocktime,
+        rewardThreshold,
+        rewards,
+        new BN(0),
+        dioneAssetID,
+        memo,
+        asOf
+      )
 
     if (!(await this.checkGooseEgg(builtUnsignedTx))) {
       /* istanbul ignore next */

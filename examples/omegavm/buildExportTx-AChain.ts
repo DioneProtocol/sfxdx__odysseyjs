@@ -24,8 +24,8 @@ const achain: ALPHAAPI = odyssey.AChain()
 const ochain: OmegaVMAPI = odyssey.OChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
 const oKeychain: KeyChain = ochain.keyChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 aKeychain.importKey(privKey)
 oKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()

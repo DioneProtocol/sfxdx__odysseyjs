@@ -13,7 +13,12 @@ import BN from "bn.js"
 import { Buffer } from "buffer/"
 import BinTools from "../utils/bintools"
 import { PrivateKeyError, NodeIdError } from "../utils/errors"
-import { ExportTx, ImportTx, TransferableInput, UnsignedTx } from "../apis/delta"
+import {
+  ExportTx,
+  ImportTx,
+  TransferableInput,
+  UnsignedTx
+} from "../apis/delta"
 
 /**
  * @ignore

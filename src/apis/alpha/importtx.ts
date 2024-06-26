@@ -38,7 +38,9 @@ export class ImportTx extends BaseTx {
   protected _typeName = "ImportTx"
   protected _codecID = ALPHAConstants.LATESTCODEC
   protected _typeID =
-    this._codecID === 0 ? ALPHAConstants.IMPORTTX : ALPHAConstants.IMPORTTX_CODECONE
+    this._codecID === 0
+      ? ALPHAConstants.IMPORTTX
+      : ALPHAConstants.IMPORTTX_CODECONE
 
   serialize(encoding: SerializedEncoding = "hex"): object {
     const fields: object = super.serialize(encoding)

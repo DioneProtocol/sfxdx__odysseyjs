@@ -42,7 +42,9 @@ const inputs: TransferableInput[] = []
 const fee: BN = achain.getDefaultTxFee()
 const threshold: number = 1
 const locktime: BN = new BN(0)
-const memo: Buffer = Buffer.from("Manually Export DIONE from A-Chain to O-Chain")
+const memo: Buffer = Buffer.from(
+  "Manually Export DIONE from A-Chain to O-Chain"
+)
 
 const main = async (): Promise<any> => {
   const getBalanceResponse: any = await achain.getBalance(

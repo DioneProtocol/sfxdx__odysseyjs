@@ -14,12 +14,7 @@ import { Output } from "../../src/common"
 //      1337 - A-custom19rknw8l0grnfunjrzwxlxync6zrlu33yeg5dya
 //     12345 - A-local19rknw8l0grnfunjrzwxlxync6zrlu33ynpm3qq
 const networkID: number = 12345
-const odyssey: Odyssey = new Odyssey(
-  undefined,
-  undefined,
-  undefined,
-  networkID
-)
+const odyssey: Odyssey = new Odyssey(undefined, undefined, undefined, networkID)
 const achain: ALPHAAPI = odyssey.AChain()
 
 const main = async (): Promise<any> => {

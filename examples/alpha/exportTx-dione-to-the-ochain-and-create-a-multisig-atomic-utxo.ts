@@ -14,10 +14,7 @@ import {
   Tx,
   ExportTx
 } from "../../src/apis/alpha"
-import {
-  OmegaVMAPI,
-  KeyChain as OmegaVMKeyChain
-} from "../../src/apis/omegavm"
+import { OmegaVMAPI, KeyChain as OmegaVMKeyChain } from "../../src/apis/omegavm"
 import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,

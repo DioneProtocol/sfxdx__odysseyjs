@@ -94,7 +94,9 @@ export class BaseTx extends StandardBaseTx<KeyPair, KeyChain> {
     }
     this._codecID = codecID
     this._typeID =
-      this._codecID === 0 ? ALPHAConstants.BASETX : ALPHAConstants.BASETX_CODECONE
+      this._codecID === 0
+        ? ALPHAConstants.BASETX
+        : ALPHAConstants.BASETX_CODECONE
   }
 
   /**

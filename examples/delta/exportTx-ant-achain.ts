@@ -76,7 +76,12 @@ const main = async (): Promise<any> => {
   deltaInput.addSignatureIdx(0, dAddresses[0])
   deltaInputs.push(deltaInput)
 
-  deltaInput = new DELTAInput(dHexAddress, antAssetBalance, antAssetIDStr, nonce)
+  deltaInput = new DELTAInput(
+    dHexAddress,
+    antAssetBalance,
+    antAssetIDStr,
+    nonce
+  )
   deltaInput.addSignatureIdx(0, dAddresses[0])
   deltaInputs.push(deltaInput)
 

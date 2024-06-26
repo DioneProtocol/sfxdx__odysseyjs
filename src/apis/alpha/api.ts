@@ -666,7 +666,9 @@ export class ALPHAAPI extends JRPCAPI {
     if (typeof changeAddr !== "undefined") {
       if (typeof this.parseAddress(changeAddr) === "undefined") {
         /* istanbul ignore next */
-        throw new AddressError("Error - ALPHAAPI.mintNFT: Invalid address format")
+        throw new AddressError(
+          "Error - ALPHAAPI.mintNFT: Invalid address format"
+        )
       }
       params["changeAddr"] = changeAddr
     }
@@ -730,7 +732,9 @@ export class ALPHAAPI extends JRPCAPI {
     if (typeof changeAddr !== "undefined") {
       if (typeof this.parseAddress(changeAddr) === "undefined") {
         /* istanbul ignore next */
-        throw new AddressError("Error - ALPHAAPI.sendNFT: Invalid address format")
+        throw new AddressError(
+          "Error - ALPHAAPI.sendNFT: Invalid address format"
+        )
       }
       params["changeAddr"] = changeAddr
     }
@@ -758,7 +762,9 @@ export class ALPHAAPI extends JRPCAPI {
   ): Promise<string> => {
     if (typeof this.parseAddress(address) === "undefined") {
       /* istanbul ignore next */
-      throw new AddressError("Error - ALPHAAPI.exportKey: Invalid address format")
+      throw new AddressError(
+        "Error - ALPHAAPI.exportKey: Invalid address format"
+      )
     }
     const params: ExportKeyParams = {
       username,

@@ -2,7 +2,11 @@ import BN from "bn.js"
 import { Buffer } from "buffer/"
 import { SECPTransferOutput } from "../../../src/apis/alpha/outputs"
 import { InitialStates } from "../../../src/apis/alpha/initialstates"
-import { GenesisData, GenesisAsset, ALPHAConstants } from "../../../src/apis/alpha"
+import {
+  GenesisData,
+  GenesisAsset,
+  ALPHAConstants
+} from "../../../src/apis/alpha"
 import { Serialization, SerializedType } from "../../../src/utils"
 
 /**

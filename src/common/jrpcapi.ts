@@ -82,11 +82,7 @@ export class JRPCAPI extends APIBase {
    * @param baseURL Path of the APIs baseURL - ex: "/ext/bc/alpha"
    * @param jrpcVersion The jrpc version to use, default "2.0".
    */
-  constructor(
-    core: OdysseyCore,
-    baseURL: string,
-    jrpcVersion: string = "2.0"
-  ) {
+  constructor(core: OdysseyCore, baseURL: string, jrpcVersion: string = "2.0") {
     super(core, baseURL)
     this.jrpcVersion = jrpcVersion
     this.rpcID = 1

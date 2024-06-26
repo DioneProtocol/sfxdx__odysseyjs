@@ -132,7 +132,12 @@ describe("DELTAAPI", (): void => {
     let username: string = "Robert"
     let password: string = "Paulson"
     let txID: string = "valid"
-    let result: Promise<string> = api.exportDIONE(username, password, to, amount)
+    let result: Promise<string> = api.exportDIONE(
+      username,
+      password,
+      to,
+      amount
+    )
     let payload: object = {
       result: {
         txID: txID

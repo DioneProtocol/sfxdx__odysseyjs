@@ -755,7 +755,10 @@ export class DELTAAPI extends JRPCAPI {
         assetDescription.assetID,
         nonce
       )
-      deltaDIONEInput.addSignatureIdx(0, bintools.stringToAddress(fromAddressBech))
+      deltaDIONEInput.addSignatureIdx(
+        0,
+        bintools.stringToAddress(fromAddressBech)
+      )
       deltaInputs.push(deltaDIONEInput)
 
       const deltaANTInput: DELTAInput = new DELTAInput(
@@ -764,7 +767,10 @@ export class DELTAAPI extends JRPCAPI {
         assetID,
         nonce
       )
-      deltaANTInput.addSignatureIdx(0, bintools.stringToAddress(fromAddressBech))
+      deltaANTInput.addSignatureIdx(
+        0,
+        bintools.stringToAddress(fromAddressBech)
+      )
       deltaInputs.push(deltaANTInput)
     }
 

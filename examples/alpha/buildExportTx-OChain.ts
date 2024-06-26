@@ -11,10 +11,7 @@ import {
   GetBalanceResponse,
   GetUTXOsResponse
 } from "../../src/apis/alpha/interfaces"
-import {
-  KeyChain as OmegaVMKeyChain,
-  OmegaVMAPI
-} from "../../src/apis/omegavm"
+import { KeyChain as OmegaVMKeyChain, OmegaVMAPI } from "../../src/apis/omegavm"
 import {
   PrivateKeyPrefix,
   DefaultLocalGenesisPrivateKey,
@@ -31,8 +28,8 @@ const achain: ALPHAAPI = odyssey.AChain()
 const ochain: OmegaVMAPI = odyssey.OChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
 const oKeychain: OmegaVMKeyChain = ochain.keyChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 aKeychain.importKey(privKey)
 oKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()

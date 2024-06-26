@@ -28,8 +28,8 @@ const achain: ALPHAAPI = odyssey.AChain()
 const dchain: DELTAAPI = odyssey.DChain()
 const aKeychain: ALPHAKeyChain = achain.keyChain()
 const dKeychain: DELTAKeyChain = dchain.keyChain()
-const key = "";
-const privKey: Buffer = new Buffer(key, 'hex')
+const key = ""
+const privKey: Buffer = new Buffer(key, "hex")
 aKeychain.importKey(privKey)
 dKeychain.importKey(privKey)
 const aAddressStrings: string[] = achain.keyChain().getAddressStrings()
