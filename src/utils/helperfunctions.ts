@@ -95,7 +95,7 @@ export function costImportTx(tx: UnsignedTx): number {
     const inCost: number = input.getCost()
     bytesCost += inCost
   })
-  const fixedFee: number = 10000
+  const fixedFee: number = 21000
   return bytesCost + fixedFee
 }
 
