@@ -155,9 +155,9 @@ const n1A: A = {
   dioneAssetID: dioneAssetID,
   alias: AChainAlias,
   vm: AChainVMName,
-  txFee: ONEDIONE.mul(new BN(50)),
-  creationTxFee: ONEDIONE.mul(new BN(100)),
-  mintTxFee: ONEDIONE.mul(new BN(50)),
+  txFee: ONEDIONE.mul(new BN(5)),
+  creationTxFee: ONEDIONE.mul(new BN(10)),
+  mintTxFee: ONEDIONE.mul(new BN(5)),
 };
 
 const n1O: O = {
@@ -165,17 +165,17 @@ const n1O: O = {
   dioneAssetID: dioneAssetID,
   alias: OChainAlias,
   vm: OChainVMName,
-  txFee: ONEDIONE.mul(new BN(50)),
-  createSubnetTx: ONEDIONE.mul(new BN(3000)),
-  createChainTx: ONEDIONE.mul(new BN(3000)),
-  creationTxFee: DECIDIONE,
+  txFee: ONEDIONE.mul(new BN(5)),
+  createSubnetTx: ONEDIONE.mul(new BN(300)),
+  createChainTx: ONEDIONE.mul(new BN(300)),
+  creationTxFee: ONEDIONE.mul(new BN(10)),
   minConsumption: 0.1,
   maxConsumption: 0.12,
   maxStakingDuration: new BN(31536000),
   maxSupply: new BN(720000000).mul(ONEDIONE),
-  minStake: ONEDIONE.mul(new BN(2000)),
-  minStakeDuration: 2 * 7 * 24 * 60 * 60, //two weeks
-  maxStakeDuration: 365 * 24 * 60 * 60, // one year
+  minStake: ONEDIONE.mul(new BN(500000)),
+  minStakeDuration: 365 * 24 * 60 * 60,
+  maxStakeDuration: 6 * 365 * 24 * 60 * 60,
 };
 
 const n1D: D = {
@@ -192,7 +192,7 @@ const n1D: D = {
   gasPrice: new BN("2380952380952381"),
   minGasPrice: new BN("2380952380952381"),
   maxGasPrice: new BN("7142857142857143"),
-  chainID: 13
+  chainID: 153153
 }
 // End Mainnet
 
@@ -214,9 +214,9 @@ const n5O: O = {
   alias: OChainAlias,
   vm: OChainVMName,
   txFee: MILLIDIONE.mul(new BN(50)),
-  creationTxFee: CENTIDIONE,
+  creationTxFee: MILLIDIONE.mul(new BN(100)),
   createSubnetTx: ONEDIONE,
-  createChainTx: ONEDIONE,
+  createChainTx: new BN(10).mul(ONEDIONE),
   minConsumption: 0.1,
   maxConsumption: 0.12,
   maxStakingDuration: new BN(31536000),
@@ -234,13 +234,13 @@ const n5D: D = {
   costPerSignature: 1000,
   // DEPRECATED - txFee
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  txFee: ONEDIONE.mul(new BN(50)),
+  txFee: ONEDIONE.mul(new BN(5)),
   // DEPRECATED - gasPrice
   // WILL BE REMOVED IN NEXT MAJOR VERSION BUMP
-  gasPrice: GWEI.mul(new BN(225)),
-  minGasPrice: GWEI.mul(new BN(25)),
-  maxGasPrice: GWEI.mul(new BN(1000)),
-  chainID: 13,
+  gasPrice: new BN("238095238095238"),
+  minGasPrice: new BN("238095238095238"),
+  maxGasPrice: new BN("714285714285714"),
+  chainID: 131313,
 };
 // End Testnet
 
