@@ -17,8 +17,8 @@ import {
   UnixNow
 } from "../../src/utils"
 
-// run ts-node examples/alpha/buildCreateNFTMintTx.ts
-// before you run this example buildCreateNFTAssetTx.ts
+// run ts-node buildCreateNFTAssetTx.ts
+// before you run this example examples/alpha/buildCreateNFTMintTx.ts
 
 const getUTXOIDs = (
   utxoSet: UTXOSet,
