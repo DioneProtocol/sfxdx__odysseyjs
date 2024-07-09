@@ -227,7 +227,7 @@ const n5O: O = {
 }
 
 const n5D: D = {
-  blockchainID: "49mww4UEpfsqqJPhC3XsBZYQHJ3vphg4cNwwGwj7TAyrCs16k",
+  blockchainID: "2PQemmQmJ8UDGfsznCnsDrBfYRnZxMqrU1tgvS8uWbukLV2bGa",
   alias: DChainAlias,
   vm: DChainVMName,
   txBytesGas: 1,
@@ -288,7 +288,7 @@ export class Defaults {
       O: n5O,
       "11111111111111111111111111111111LpoYY": n5O,
       D: n5D,
-      "49mww4UEpfsqqJPhC3XsBZYQHJ3vphg4cNwwGwj7TAyrCs16k": n5D
+      "2PQemmQmJ8UDGfsznCnsDrBfYRnZxMqrU1tgvS8uWbukLV2bGa": n5D
     },
     1337: {
       hrp: NetworkIDToHRP[1337],
