@@ -50,7 +50,7 @@ You can also pull the repo down directly and build it from scratch.
 
 Clone the OdysseyJS repository:
 
-`git clone https://git.sfxdx.com/green-energy1/odysseyjs`
+`git clone https://github.com/DioneProtocol/sfxdx__odysseyjs`
 
 Then build it:
 
